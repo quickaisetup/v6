@@ -102,21 +102,25 @@ const JourneyRoadmap = ({ activeGoalId, hasInteracted = false }: { activeGoalId:
                 </Reveal>
 
                 <div className="relative max-w-5xl mx-auto">
-                    {/* Vertical Line Container */}
-                    <div className="absolute top-0 bottom-0 left-[20px] md:left-1/2 w-px bg-white/10 overflow-hidden">
-                        {/* Animated Progress Line */}
-                        <motion.div 
-                            style={{ scaleY: isMobile ? 1 : roadmapLineScale, originY: 0 }}
-                            className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-b from-blue-500 via-emerald-400 to-blue-500"
-                        />
-                    </div>
-                    
-                    {steps
-                    .filter(step => !hasInteracted || step.goals.includes(activeGoalId))
-                    .map((step, idx) => (
-                        <div key={step.id} className="relative mb-20 md:mb-32 group">
-                            {/* Dot on line */}
-                            <div className="absolute top-8 left-[20px] md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-slate-900 border-2 border-blue-500 z-30 group-hover:scale-125 transition-transform duration-300" />
+                    {/* Steps Container with localized line to keep it clean & professional on mobile */}
+                    <div className="relative">
+                        {/* Vertical Line Container */}
+                        <div className="absolute top-8 bottom-4 left-[20px] md:left-1/2 w-px bg-gradient-to-b from-white/15 via-white/10 to-transparent overflow-hidden">
+                            {/* Animated Progress Line */}
+                            <motion.div 
+                                style={{ scaleY: isMobile ? 1 : roadmapLineScale, originY: 0 }}
+                                className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-b from-blue-500 via-emerald-400 to-transparent"
+                            />
+                        </div>
+                        
+                        {steps
+                        .filter(step => !hasInteracted || step.goals.includes(activeGoalId))
+                        .map((step, idx) => (
+                            <div key={step.id} className="relative mb-20 md:mb-32 group">
+                                {/* Dot on line - Hidden on mobile to avoid overlapping with high-density icon shapes */}
+                                {!isMobile && (
+                                    <div className="absolute top-8 left-[20px] md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-slate-900 border-2 border-blue-500 z-30 group-hover:scale-125 transition-transform duration-300" />
+                                )}
                             
                             <motion.div 
                                 initial={{ opacity: 0, y: 40 }}
@@ -142,7 +146,7 @@ const JourneyRoadmap = ({ activeGoalId, hasInteracted = false }: { activeGoalId:
                                     </div>
                                 </div>
 
-                                {/* Icon Side (Center on desktop) */}
+                                {/* Icon Side (Center on desktop) - Serves as the primary timeline node. Opaque BG masks line. */}
                                 <div className="absolute left-0 md:relative md:w-0 flex items-center justify-center z-20">
                                     <motion.div 
                                         animate={isMobile ? undefined : { 
@@ -153,9 +157,9 @@ const JourneyRoadmap = ({ activeGoalId, hasInteracted = false }: { activeGoalId:
                                             repeat: Infinity,
                                             ease: "easeInOut"
                                         }}
-                                        className={`w-10 h-10 md:w-24 md:h-24 rounded-2xl md:rounded-[2.5rem] bg-gradient-to-br from-white/[0.1] to-transparent border border-white/20 flex items-center justify-center relative shadow-2xl backdrop-blur-2xl group transition-all duration-500 group-hover:border-blue-500/50 group-hover:shadow-blue-500/20`}
+                                        className={`w-10 h-10 md:w-24 md:h-24 rounded-full md:rounded-[2.5rem] bg-[#0B1224] bg-gradient-to-br from-white/[0.15] to-white/[0.02] border border-white/25 flex items-center justify-center relative shadow-2xl backdrop-blur-2xl group transition-all duration-500 group-hover:border-blue-500/50 group-hover:shadow-blue-500/20`}
                                     >
-                                        <div className={`absolute inset-0 rounded-2xl md:rounded-[2.5rem] blur-2xl ${step.bg} opacity-0 group-hover:opacity-30 transition-opacity duration-700`} />
+                                        <div className={`absolute inset-0 rounded-full md:rounded-[2.5rem] blur-2xl ${step.bg} opacity-0 group-hover:opacity-30 transition-opacity duration-700`} />
                                         <step.icon className={`w-5 h-5 md:w-10 md:h-10 ${step.color} relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]`} />
                                         
                                         {/* Decorative orbit ring */}
@@ -170,6 +174,7 @@ const JourneyRoadmap = ({ activeGoalId, hasInteracted = false }: { activeGoalId:
                             </motion.div>
                         </div>
                     ))}
+                    </div>
 
                     {/* FAQ Mini-Section at the end of Roadmap */}
                     <div className="relative z-10 max-w-4xl mx-auto mt-24 md:mt-48 pt-16 md:pt-32 border-t border-white/5">
