@@ -38,9 +38,25 @@ import {
   ArrowLeft
 } from 'lucide-react';
 
+// --- Custom Hooks ---
+
+const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 768px)");
+        const handleMatch = (e: MediaQueryListEvent | MediaQueryList) => setIsMobile(e.matches);
+        
+        handleMatch(mediaQuery);
+        mediaQuery.addEventListener("change", handleMatch);
+        return () => mediaQuery.removeEventListener("change", handleMatch);
+    }, []);
+    return isMobile;
+};
+
 // --- Components ---
 
 const JourneyRoadmap = ({ activeGoalId, hasInteracted = false }: { activeGoalId: string, hasInteracted?: boolean }) => {
+    const isMobile = useIsMobile();
     const containerRef = useRef(null);
     const { scrollYProgress: roadmapProgress } = useScroll({
       target: containerRef,
@@ -90,7 +106,7 @@ const JourneyRoadmap = ({ activeGoalId, hasInteracted = false }: { activeGoalId:
                     <div className="absolute top-0 bottom-0 left-[20px] md:left-1/2 w-px bg-white/10 overflow-hidden">
                         {/* Animated Progress Line */}
                         <motion.div 
-                            style={{ scaleY: roadmapLineScale, originY: 0 }}
+                            style={{ scaleY: isMobile ? 1 : roadmapLineScale, originY: 0 }}
                             className="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-b from-blue-500 via-emerald-400 to-blue-500"
                         />
                     </div>
@@ -129,10 +145,10 @@ const JourneyRoadmap = ({ activeGoalId, hasInteracted = false }: { activeGoalId:
                                 {/* Icon Side (Center on desktop) */}
                                 <div className="absolute left-0 md:relative md:w-0 flex items-center justify-center z-20">
                                     <motion.div 
-                                        animate={{ 
+                                        animate={isMobile ? undefined : { 
                                             y: [0, -8, 0],
                                         }}
-                                        transition={{ 
+                                        transition={isMobile ? undefined : { 
                                             duration: 4 + Math.random() * 2,
                                             repeat: Infinity,
                                             ease: "easeInOut"
@@ -143,7 +159,9 @@ const JourneyRoadmap = ({ activeGoalId, hasInteracted = false }: { activeGoalId:
                                         <step.icon className={`w-5 h-5 md:w-10 md:h-10 ${step.color} relative z-10 transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]`} />
                                         
                                         {/* Decorative orbit ring */}
-                                        <div className="absolute inset-[-15px] md:inset-[-25px] rounded-full border border-dashed border-white/10 animate-[spin_30s_linear_infinite] group-hover:border-blue-500/20 transition-colors" />
+                                        {!isMobile && (
+                                            <div className="absolute inset-[-15px] md:inset-[-25px] rounded-full border border-dashed border-white/10 animate-[spin_30s_linear_infinite] group-hover:border-blue-500/20 transition-colors" />
+                                        )}
                                     </motion.div>
                                 </div>
 
@@ -186,11 +204,13 @@ const JourneyRoadmap = ({ activeGoalId, hasInteracted = false }: { activeGoalId:
 };
 
 const Reveal = ({ children, width = "w-full", delay = 0, y = 20 }: { children: React.ReactNode, width?: string, delay?: number, y?: number }) => {
+    const isMobile = useIsMobile();
     const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-10%" });
+    const isInViewObserved = useInView(ref, { once: true, margin: isMobile ? "0px" : "-10%" });
+    const isInView = isMobile ? true : isInViewObserved;
     
     return (
-        <div ref={ref} className={`${width} relative overflow-hidden h-full`}>
+        <div ref={ref} className={`${width} relative`}>
             <motion.div
                 initial={{ opacity: 0, y: y }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: y }}
@@ -553,15 +573,13 @@ const AuditModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void 
 const Nav = ({ onOpenAudit }: { onOpenAudit: () => void }) => {
     const [scrolled, setScrolled] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    
-    const { scrollY } = useScroll();
-    const navBackgroundOpacity = useTransform(scrollY, [0, 100], [0, 0.9]);
-    const navBlur = useTransform(scrollY, [0, 100], [0, 20]);
-    const navPadding = useTransform(scrollY, [0, 100], [32, 12]);
 
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 50);
-        window.addEventListener('scroll', handleScroll);
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 30);
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -574,14 +592,12 @@ const Nav = ({ onOpenAudit }: { onOpenAudit: () => void }) => {
 
     return (
         <>
-            <motion.nav 
-                style={{ 
-                    backgroundColor: useTransform(navBackgroundOpacity, o => `rgba(15, 23, 42, ${o})`),
-                    backdropFilter: useTransform(navBlur, b => `blur(${b}px)`),
-                    paddingTop: navPadding,
-                    paddingBottom: navPadding
-                }}
-                className="fixed top-0 left-0 right-0 z-[60] transition-colors duration-500 border-b border-transparent md:border-white/0 flex items-center"
+            <nav 
+                className={`fixed top-0 left-0 right-0 z-[60] transition-all duration-300 border-b flex items-center ${
+                    scrolled 
+                        ? 'bg-[#0f172a]/90 backdrop-blur-md py-3 md:py-4 border-white/5 shadow-lg' 
+                        : 'bg-transparent py-6 md:py-8 border-transparent'
+                }`}
             >
                 <div className={`max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between w-full transition-all duration-500 ${scrolled ? 'border-none' : ''}`}>
                     <Logo />
@@ -610,7 +626,7 @@ const Nav = ({ onOpenAudit }: { onOpenAudit: () => void }) => {
                         </button>
                     </div>
                 </div>
-            </motion.nav>
+            </nav>
 
             <AnimatePresence>
                 {mobileMenuOpen && (
@@ -672,13 +688,17 @@ const FaqItem = ({ q, a, index, active, setActive }: any) => (
 );
 
 const CountUp = ({ to, from = 0, prefix = "", suffix = "", decimals = 0, duration = 30, drift = false, driftRate = 0.15 }: { to: number, from?: number, prefix?: string, suffix?: string, decimals?: number, duration?: number, drift?: boolean, driftRate?: number }) => {
+    const isMobile = useIsMobile();
     const [count, setCount] = useState(from);
     const nodeRef = useRef<HTMLSpanElement>(null);
-    const isInView = useInView(nodeRef, { once: true, margin: "-10%" });
+    const isInViewObserved = useInView(nodeRef, { once: true, margin: isMobile ? "0px" : "-10%" });
+    const isInView = isMobile ? true : isInViewObserved;
 
     useEffect(() => {
         if (isInView) {
             let startTimestamp: number | null = null;
+            let animationFrameId: number;
+
             const step = (timestamp: number) => {
                 if (!startTimestamp) startTimestamp = timestamp;
                 const progress = Math.min((timestamp - startTimestamp) / (duration * 1000), 1);
@@ -694,10 +714,16 @@ const CountUp = ({ to, from = 0, prefix = "", suffix = "", decimals = 0, duratio
                 }
                 
                 if (progress < 1 || drift) {
-                    window.requestAnimationFrame(step);
+                    animationFrameId = window.requestAnimationFrame(step);
                 }
             };
-            window.requestAnimationFrame(step);
+            animationFrameId = window.requestAnimationFrame(step);
+
+            return () => {
+                if (animationFrameId) {
+                    window.cancelAnimationFrame(animationFrameId);
+                }
+            };
         }
     }, [to, from, duration, isInView, drift, driftRate]);
 
@@ -709,6 +735,7 @@ const CountUp = ({ to, from = 0, prefix = "", suffix = "", decimals = 0, duratio
 };
 
 const LiveChart = () => {
+    const isMobile = useIsMobile();
     return (
         <div className="relative h-24 w-full mt-6 mb-10 group/chart">
             {/* Grid Lines */}
@@ -736,14 +763,14 @@ const LiveChart = () => {
                 <motion.path
                     d="M 0 80 Q 40 20, 80 50 T 160 30 T 240 70 T 320 40 T 400 60 L 400 100 L 0 100 Z"
                     fill="url(#fillGradient)"
-                    animate={{
+                    animate={isMobile ? undefined : {
                         d: [
                             "M 0 80 Q 40 20, 80 50 T 160 30 T 240 70 T 320 40 T 400 60 L 400 100 L 0 100 Z",
                             "M 0 75 Q 45 25, 85 48 T 165 32 T 245 68 T 325 38 T 400 58 L 400 100 L 0 100 Z",
                             "M 0 80 Q 40 20, 80 50 T 160 30 T 240 70 T 320 40 T 400 60 L 400 100 L 0 100 Z"
                         ]
                     }}
-                    transition={{
+                    transition={isMobile ? undefined : {
                         duration: 12,
                         repeat: Infinity,
                         ease: "easeInOut"
@@ -757,7 +784,9 @@ const LiveChart = () => {
                     strokeWidth="2.5"
                     strokeLinecap="round"
                     initial={{ pathLength: 0 }}
-                    animate={{ 
+                    animate={isMobile ? { 
+                        pathLength: 1 
+                    } : { 
                         pathLength: 1,
                         d: [
                             "M 0 80 Q 40 20, 80 50 T 160 30 T 240 70 T 320 40 T 400 60",
@@ -765,7 +794,9 @@ const LiveChart = () => {
                             "M 0 80 Q 40 20, 80 50 T 160 30 T 240 70 T 320 40 T 400 60"
                         ]
                     }}
-                    transition={{
+                    transition={isMobile ? {
+                        pathLength: { duration: 1.5, ease: "easeInOut" }
+                    } : {
                         pathLength: { duration: 4, ease: "easeInOut" },
                         d: { duration: 12, repeat: Infinity, ease: "easeInOut" }
                     }}
@@ -790,7 +821,7 @@ const DashboardNotification = ({ message, delay = 0, icon: Icon, color = "blue",
             repeatDelay: 5,
             times: [0, 0.1, 0.9, 1]
         }}
-        className={`flex items-center gap-3 px-4 py-2.5 bg-[#0a0f1d]/90 backdrop-blur-3xl border border-white/10 rounded-2xl shadow-2xl pointer-events-none whitespace-nowrap absolute z-30 ${className}`}
+        className={`hidden md:flex items-center gap-3 px-4 py-2.5 bg-[#0a0f1d]/90 backdrop-blur-3xl border border-white/10 rounded-2xl shadow-2xl pointer-events-none whitespace-nowrap absolute z-30 ${className}`}
     >
         <div className={`w-2 h-2 rounded-full ${color === 'emerald' ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : (color === 'orange' ? 'bg-orange-500 shadow-[0_0_10px_#f97316]' : 'bg-blue-500 shadow-[0_0_10px_#3b82f6]')} animate-pulse`} />
         <Icon className="w-3.5 h-3.5 text-white/50" />
@@ -799,11 +830,12 @@ const DashboardNotification = ({ message, delay = 0, icon: Icon, color = "blue",
 );
 
 const HeroDashboard = () => {
+    const isMobile = useIsMobile();
     const cardRef = useRef<HTMLDivElement>(null);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
     const handleMouseMove = (e: React.MouseEvent) => {
-        if (!cardRef.current) return;
+        if (isMobile || !cardRef.current) return;
         const rect = cardRef.current.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width - 0.5;
         const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -816,8 +848,8 @@ const HeroDashboard = () => {
 
     return (
         <motion.div 
-            animate={{ y: [0, -20, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            animate={isMobile ? undefined : { y: [0, -20, 0] }}
+            transition={isMobile ? undefined : { duration: 8, repeat: Infinity, ease: "easeInOut" }}
             className="relative w-full max-w-[360px] mx-auto xl:ml-auto xl:mr-0 perspective-1000"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
@@ -828,14 +860,14 @@ const HeroDashboard = () => {
             <motion.div 
                 ref={cardRef}
                 initial={{ opacity: 0, y: 10 }}
-                whileHover={{ scale: 1.02 }}
+                whileHover={isMobile ? undefined : { scale: 1.02 }}
                 animate={{ 
                     opacity: 1, 
                     y: 0,
-                    rotateX: mousePos.y * -20,
-                    rotateY: mousePos.x * 20,
+                    rotateX: isMobile ? 0 : mousePos.y * -20,
+                    rotateY: isMobile ? 0 : mousePos.x * 20,
                 }}
-                transition={{ 
+                transition={isMobile ? { opacity: { duration: 1 } } : { 
                     rotateX: { type: "spring", stiffness: 100, damping: 20 },
                     rotateY: { type: "spring", stiffness: 100, damping: 20 },
                     scale: { type: "spring", stiffness: 400, damping: 25 },
@@ -1348,6 +1380,7 @@ const GoalBrowser = ({
                                                         src={`https://api.dicebear.com/7.x/avataaars/svg?seed=BizOwner${i + (activeGoal.id.length * 11)}`} 
                                                         alt="Business Owner" 
                                                         referrerPolicy="no-referrer"
+                                                        loading="lazy"
                                                         className="w-full h-full object-cover"
                                                     />
                                                 </div>
@@ -1393,7 +1426,7 @@ const brands = [
 ];
 
 const BrandMarquee = () => {
-    const row1 = brands;
+    const row1 = [...brands, ...brands, ...brands, ...brands];
 
     return (
         <div className="relative w-full overflow-hidden py-4">
@@ -1402,11 +1435,11 @@ const BrandMarquee = () => {
             
             <div className="relative">
                 <motion.div 
-                    animate={{ x: [0, -4000] }}
-                    transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+                    animate={{ x: ["0%", "-50%"] }}
+                    transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
                     className="flex whitespace-nowrap gap-8 md:gap-16 items-center opacity-70 hover:opacity-100 transition-opacity duration-300"
                 >
-                    {[...row1, ...row1, ...row1, ...row1, ...row1, ...row1, ...row1, ...row1].map((brand, i) => (
+                    {row1.map((brand, i) => (
                         <div key={i} className="flex items-center gap-4 md:gap-8">
                             <span className="text-white/[0.4] text-[10px] md:text-xs font-black uppercase tracking-[0.3em] italic hover:text-blue-400 transition-colors cursor-default select-none">
                                 {brand}
@@ -1421,6 +1454,7 @@ const BrandMarquee = () => {
 };
 
 export default function App() {
+  const isMobile = useIsMobile();
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [activeGoalId, setActiveGoalId] = useState(goals[0].id);
@@ -1428,7 +1462,6 @@ export default function App() {
   
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
-    target: containerRef,
     offset: ["start start", "end end"]
   });
 
@@ -1438,10 +1471,16 @@ export default function App() {
     restDelta: 0.001
   });
 
+  const bgTransformY1 = useTransform(smoothProgress, [0, 1], [0, -200]);
+  const bgTransformScale1 = useTransform(smoothProgress, [0, 1], [1, 1.2]);
+  const bgTransformY2 = useTransform(smoothProgress, [0, 1], [0, 300]);
+  const bgTransformX2 = useTransform(smoothProgress, [0, 1], [0, -100]);
+  const bgTransformY3 = useTransform(smoothProgress, [0, 1], [0, -150]);
+  const bgTransformX3 = useTransform(smoothProgress, [0, 1], [0, 150]);
+
   return (
     <div ref={containerRef} className="min-h-screen bg-[#0F172A] text-white selection:bg-blue-600 selection:text-white font-sans overflow-x-hidden">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         html { scroll-behavior: smooth; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0F172A; }
@@ -1450,43 +1489,47 @@ export default function App() {
       `}</style>
       
       {/* Dynamic Background Elements */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <motion.div 
-            style={{ 
-                y: useTransform(smoothProgress, [0, 1], [0, -200]),
-                scale: useTransform(smoothProgress, [0, 1], [1, 1.2])
-            }}
-            animate={{ 
-                opacity: [0.1, 0.15, 0.1],
-                rotate: [0, 10, 0]
-            }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-blue-600/10 blur-[140px] rounded-full"
-        />
-        <motion.div 
-            style={{ 
-                y: useTransform(smoothProgress, [0, 1], [0, 300]),
-                x: useTransform(smoothProgress, [0, 1], [0, -100])
-            }}
-            animate={{ 
-                opacity: [0.05, 0.1, 0.05],
-                rotate: [0, -15, 0]
-            }}
-            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-            className="absolute top-[30%] -right-[10%] w-[45%] h-[45%] bg-purple-600/10 blur-[120px] rounded-full"
-        />
-        <motion.div 
-            style={{ 
-                y: useTransform(smoothProgress, [0, 1], [0, -150]),
-                x: useTransform(smoothProgress, [0, 1], [0, 150])
-            }}
-            animate={{ 
-                opacity: [0.03, 0.08, 0.03]
-            }}
-            transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-            className="absolute bottom-[10%] left-[10%] w-[40%] h-[40%] bg-emerald-600/10 blur-[130px] rounded-full"
-        />
-      </div>
+      {!isMobile ? (
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+          <motion.div 
+              style={{ 
+                  y: bgTransformY1,
+                  scale: bgTransformScale1
+              }}
+              animate={{ 
+                  opacity: [0.1, 0.15, 0.1],
+                  rotate: [0, 10, 0]
+              }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-blue-600/10 blur-[140px] rounded-full"
+          />
+          <motion.div 
+              style={{ 
+                  y: bgTransformY2,
+                  x: bgTransformX2
+              }}
+              animate={{ 
+                  opacity: [0.05, 0.1, 0.05],
+                  rotate: [0, -15, 0]
+              }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+              className="absolute top-[30%] -right-[10%] w-[45%] h-[45%] bg-purple-600/10 blur-[120px] rounded-full"
+          />
+          <motion.div 
+              style={{ 
+                  y: bgTransformY3,
+                  x: bgTransformX3
+              }}
+              animate={{ 
+                  opacity: [0.03, 0.08, 0.03]
+              }}
+              transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+              className="absolute bottom-[10%] left-[10%] w-[40%] h-[40%] bg-emerald-600/10 blur-[130px] rounded-full"
+          />
+        </div>
+      ) : (
+        <div className="fixed inset-0 pointer-events-none z-0 bg-[#0F172A] opacity-80" />
+      )}
 
       <Nav onOpenAudit={() => setIsAuditModalOpen(true)} />
       <AuditModal isOpen={isAuditModalOpen} onClose={() => setIsAuditModalOpen(false)} />
@@ -1873,6 +1916,7 @@ export default function App() {
                                         alt="Sándor Bárány" 
                                         className="w-full h-full object-contain relative z-10 transition-transform duration-700 group-hover:scale-105"
                                         referrerPolicy="no-referrer"
+                                        loading="lazy"
                                     />
                                 </div>
 
@@ -1908,6 +1952,7 @@ export default function App() {
                                         alt="Sándor Bárány" 
                                         className="w-full h-full object-cover"
                                         referrerPolicy="no-referrer"
+                                        loading="lazy"
                                     />
                                 </div>
                                 <div className="flex flex-col justify-center">
