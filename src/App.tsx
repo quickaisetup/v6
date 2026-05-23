@@ -670,11 +670,11 @@ const FaqItem = ({ q, a, index, active, setActive }: any) => (
     <div className="border-b border-white/5 overflow-hidden">
         <button 
             onClick={() => setActive(active === index ? null : index)}
-            className="w-full py-8 md:py-10 flex items-center justify-between text-left group"
+            className="w-full py-6 md:py-8 flex items-center justify-between text-left group"
         >
-            <span className={`text-base md:text-xl font-bold tracking-tight transition-colors ${active === index ? 'text-blue-400' : 'text-white/60 group-hover:text-white'}`}>{q}</span>
-            <div className={`p-2 transition-transform duration-300 ${active === index ? 'rotate-180 text-blue-400' : 'text-white/20'}`}>
-                <ChevronDown className="w-6 h-6" />
+            <span className={`text-base md:text-lg lg:text-xl font-semibold tracking-tight transition-colors duration-200 ${active === index ? 'text-blue-400 font-bold' : 'text-slate-100 group-hover:text-blue-400'}`}>{q}</span>
+            <div className={`p-2 transition-transform duration-300 ${active === index ? 'rotate-180 text-blue-400' : 'text-white/40 group-hover:text-white/80'}`}>
+                <ChevronDown className="w-5 h-5 md:w-6 md:h-6" />
             </div>
         </button>
         <AnimatePresence>
@@ -685,7 +685,7 @@ const FaqItem = ({ q, a, index, active, setActive }: any) => (
                     exit={{ height: 0, opacity: 0 }}
                     className="overflow-hidden"
                 >
-                    <p className="pb-10 text-white/40 leading-relaxed text-base md:text-lg max-w-2xl font-medium">{a}</p>
+                    <p className="pb-8 text-slate-350 leading-relaxed text-sm md:text-base max-w-2xl font-normal text-white/70">{a}</p>
                 </motion.div>
             )}
         </AnimatePresence>
@@ -1579,13 +1579,6 @@ export default function App() {
                     <span className="relative z-10">Get Your Growth Audit</span>
                     <ArrowUpRight className="w-5 h-5 md:w-6 md:h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform relative z-10" />
                 </button>
-                <button 
-                    onClick={() => setIsAuditModalOpen(true)}
-                    className="flex items-center gap-3 text-white/40 hover:text-white transition-colors font-bold uppercase tracking-[0.4em] text-[9px] md:text-[10px] px-6 py-4 group"
-                >
-                    See Example Audit
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
-                </button>
             </motion.div>
           </div>
           
@@ -1725,24 +1718,24 @@ export default function App() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 1.05 }}
-                  className="p-8 md:p-16 lg:p-20 rounded-[4rem] bg-white/[0.02] border border-white/5 relative group overflow-hidden"
+                  className="p-8 md:p-16 lg:p-20 rounded-[2rem] md:rounded-[4rem] bg-white/[0.02] border border-white/5 relative group overflow-hidden"
               >
-                  <div className="absolute top-0 right-0 p-12 translate-y-4 -translate-x-4">
-                      <Quote className="w-16 h-16 text-blue-500/5 group-hover:text-blue-500/10 transition-colors" />
+                  <div className="absolute top-0 right-0 p-6 md:p-12 translate-y-2 md:translate-y-4 -translate-x-2 md:-translate-x-4">
+                      <Quote className="w-10 h-10 md:w-16 md:h-16 text-blue-500/5 group-hover:text-blue-500/10 transition-colors" />
                   </div>
-                  <p className="text-xl md:text-2xl lg:text-3xl text-white/90 font-medium tracking-tight mb-12 relative z-10 italic max-w-4xl mx-auto leading-relaxed">
+                  <p className="text-lg md:text-2xl lg:text-3xl text-white/90 font-medium tracking-tight mb-8 md:mb-12 relative z-10 italic max-w-4xl mx-auto leading-relaxed">
                       {goals.find(g => g.id === activeGoalId)?.testimonial?.q || goals[0].testimonial.q}
                   </p>
-                  <div className="flex items-center justify-center gap-6">
-                      <div className="h-px w-8 bg-blue-500/20" />
-                      <span className="text-[11px] md:text-[13px] font-bold uppercase tracking-[0.6em] text-white/30 whitespace-nowrap">
+                  <div className="flex items-center justify-center gap-2 md:gap-6">
+                      <div className="hidden md:block h-px w-8 bg-blue-500/20" />
+                      <span className="text-[10px] md:text-[13px] font-bold uppercase tracking-[0.2em] md:tracking-[0.6em] text-white/40 break-words text-center max-w-full px-2">
                       {(goals.find(g => g.id === activeGoalId) || goals[0])?.testimonial && (
                           <>
                               {(goals.find(g => g.id === activeGoalId) || goals[0]).testimonial.name}, {(goals.find(g => g.id === activeGoalId) || goals[0]).testimonial.business}
                           </>
                       )}
                       </span>
-                      <div className="h-px w-8 bg-blue-500/20" />
+                      <div className="hidden md:block h-px w-8 bg-blue-500/20" />
                   </div>
               </motion.div>
               </AnimatePresence>
@@ -2006,7 +1999,9 @@ export default function App() {
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-8 md:mb-12">
                 <SectionTag blue={false}>Common Questions</SectionTag>
-                <h3 className="text-3xl md:text-5xl font-bold tracking-tighter leading-tight italic text-white/20">Everything you need to know.</h3>
+                <h3 className="text-3xl md:text-5xl font-light tracking-tight leading-tight text-white mb-2">
+                    Everything you <span className="text-white/60 italic font-light">need to know.</span>
+                </h3>
             </div>
             <div className="space-y-2">
                 {[
