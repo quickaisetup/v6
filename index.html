@@ -418,9 +418,9 @@ footer a:hover { color: #fff }
     <span class="brand">quick<b>ai</b>setup</span>
     <small>© <span id="yr"></span> Quick AI Setup</small>
     <div class="links">
-      <a href="https://my.quickaisetup.com/legal/privacy-policy" target="_blank" rel="noopener" data-t="lPriv"></a>
-      <a href="https://my.quickaisetup.com/legal/terms" target="_blank" rel="noopener" data-t="lTerms"></a>
-      <a href="https://d1yei2z3i6k35z.cloudfront.net/13085579/68d67fcd3986c_GDPRAdatkezeles-QuickAISetup.com.pdf" target="_blank" rel="noopener">GDPR</a>
+      <a href="/privacy-policy/" id="lnkPriv" data-t="lPriv"></a>
+      <a href="/terms/" data-t="lTerms"></a>
+      <a href="/adatkezelesi-tajekoztato/">GDPR</a>
       <a href="#audit" data-t="lContact"></a>
     </div>
   </div>
@@ -442,7 +442,7 @@ const T = {
     creds: ['Founder of Pont Club', 'Hungary’s #1 small club, 2017', 'Budapest hospitality', 'Hungary + Thailand'],
     auEy: 'Free audit', auH: 'Where are you <span>losing customers?</span>', auP: 'Two minutes to ask. We show you where we’d start.',
     fName: 'Full name', fEmail: 'Email', fBiz: 'Business', fWeb: 'Website', fGoal: 'What would you improve?', fGoalPh: 'E.g. we miss calls at peak times…',
-    fConsent: 'I agree to the <a href="https://my.quickaisetup.com/legal/privacy-policy" target="_blank" rel="noopener">privacy policy</a> and to being contacted about my request.',
+    fConsent: 'I agree to the <a href="/privacy-policy/" target="_blank">Privacy Policy</a> and <a href="/terms/" target="_blank">Terms</a>, and to being contacted about my request.',
     fSend: 'Request my free audit', fSending: 'Sending…',
     fErrReq: 'Please fill in name, email, business and goal, and tick the box.', fErrMail: 'Please check your email address.', fErr: 'Something went wrong. Please try again.',
     doneH: 'Got it, thank you!', doneP: 'We’ll get back to you within 1–2 working days.',
@@ -462,7 +462,7 @@ const T = {
     creds: ['A Pont Club alapítója', 'Magyarország legjobb kisklubja, 2017', 'Budapesti vendéglátás', 'Magyarország + Thaiföld'],
     auEy: 'Ingyenes felmérés', auH: 'Hol vesztek el <span>vendégeket?</span>', auP: 'Két perc kérni. Megmutatjuk, hol kezdenénk.',
     fName: 'Teljes név', fEmail: 'E-mail', fBiz: 'Vállalkozás', fWeb: 'Weboldal', fGoal: 'Min javítanál?', fGoalPh: 'Pl. csúcsidőben nem vesszük fel a telefont…',
-    fConsent: 'Elfogadom az <a href="https://my.quickaisetup.com/legal/privacy-policy" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>, és hozzájárulok, hogy a kérésemmel kapcsolatban felvegyétek velem a kapcsolatot.',
+    fConsent: 'Elfogadom az <a href="/adatkezelesi-tajekoztato/" target="_blank">adatkezelési tájékoztatót</a> és a <a href="/terms/" target="_blank">felhasználási feltételeket</a>, és hozzájárulok, hogy a kérésemmel kapcsolatban felvegyétek velem a kapcsolatot.',
     fSend: 'Kérem az ingyenes felmérést', fSending: 'Küldés…',
     fErrReq: 'Add meg a neved, e-mailed, a vállalkozást és a célt, és pipáld be a hozzájárulást.', fErrMail: 'Ellenőrizd az e-mail-címet.', fErr: 'Valami hiba történt. Próbáld újra.',
     doneH: 'Megkaptuk, köszönjük!', doneP: '1–2 munkanapon belül jelentkezünk.',
@@ -651,6 +651,7 @@ function render() {
   document.querySelectorAll('[data-t]').forEach(el => { const v = t[el.dataset.t]; if (v == null) return; if (el.hasAttribute('data-html')) el.innerHTML = v; else el.textContent = v; });
   document.querySelectorAll('[data-ph]').forEach(el => el.placeholder = t[el.dataset.ph]);
   document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+  $('lnkPriv').href = lang === 'hu' ? '/adatkezelesi-tajekoztato/' : '/privacy-policy/';
   const logos = CLIENTS.map(c => `<div class="logo"><em>${c[1]}</em><b>${esc(c[0])}</b></div>`).join('');
   $('marq').innerHTML = logos + logos;
   $('stories').innerHTML = STORIES[lang].map((s, i) => `<article class="story rv" style="--d:${(i % 3) * .12}s"><div class="who"><div class="mono-av">${s[0]}</div><div><h4>${esc(s[1])}</h4><div class="meta">${esc(s[2])}</div></div></div><div class="big">${esc(s[3])}<small>${esc(s[4])}</small></div><div class="tags">${s[5].map(x => `<span>${esc(x)}</span>`).join('')}</div></article>`).join('');
