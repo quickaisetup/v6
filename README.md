@@ -1,20 +1,7 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# quickaisetup.com
 
-# Run and deploy your AI Studio app
+One static page (`index.html`, EN + HU), built by Vite and deployed by Vercel from `main`.
 
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/43b2ef3a-ab57-4d6c-875a-5c0effe92a43
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- `npm install && npm run dev` to preview on http://localhost:3000
+- Push to `main` to go live (Vercel project `v6`).
+- Product copy comes from the QAIS Radar service catalogue.

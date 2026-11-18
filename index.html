@@ -1,13 +1,646 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Quick AI Setup | AI Automation for Gyms & Businesses</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Quick AI Setup | AI systems for gyms, salons and hospitality</title>
+<meta name="description" content="AI chatbot, AI phone receptionist, automatic Google reviews, GEO and your own branded app. We build and run it for gyms, massage salons, cafés and hotels.">
+<meta property="og:title" content="Quick AI Setup">
+<meta property="og:description" content="AI systems that answer, book and follow up for you, 24/7.">
+<meta property="og:image" content="https://quickaisetup.com/og.png">
+<meta property="og:url" content="https://quickaisetup.com">
+<meta name="theme-color" content="#0B1221">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300..800;1,400..600&display=swap">
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0B1221; --side: #080E1B; --surface: #0F172A; --raised: #131D33; --line: #1C2741;
+  --ink: #FFFFFF; --muted: #94A3B8; --faint: #64748B; --soft: #CBD5E1;
+  --accent: #2563EB; --accent-hi: #60A5FA; --accent-soft: rgb(37 99 235 / .14);
+  --good: #34D399; --flag: #FB923C;
+  --f: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --w: 1180px;
+}
+* { box-sizing: border-box }
+html { scroll-behavior: smooth; scroll-padding-top: 80px }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--f); -webkit-font-smoothing: antialiased; overflow-x: hidden }
+a { color: inherit; text-decoration: none }
+button, input, textarea { font: inherit; color: inherit }
+button { cursor: pointer }
+:focus-visible { outline: 2px solid var(--accent-hi); outline-offset: 3px }
+img { max-width: 100%; display: block }
+.wrap { max-width: var(--w); margin: 0 auto; padding: 0 24px }
+.eyebrow { font: 600 11px/1.3 var(--f); letter-spacing: .2em; text-transform: uppercase; color: var(--muted) }
+.pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid rgb(37 99 235 / .35); background: rgb(37 99 235 / .08); color: var(--accent-hi); border-radius: 999px; padding: 7px 14px }
+.pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-hi); box-shadow: 0 0 10px var(--accent-hi) }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 999px; background: var(--accent); color: #fff; padding: 16px 28px; font: 700 12.5px/1 var(--f); letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; box-shadow: 0 14px 34px -12px rgb(37 99 235 / .9); transition: filter .2s, transform .2s }
+.btn:hover { filter: brightness(1.12); transform: translateY(-1px) }
+.btn.ghost { background: transparent; border: 1px solid var(--line); box-shadow: none }
+.btn.ghost:hover { border-color: var(--muted) }
+.brand { font: 500 22px/1 var(--f); letter-spacing: -.05em; white-space: nowrap }
+.brand b { color: var(--accent); font-weight: 800 }
+h1, h2, h3 { margin: 0; letter-spacing: -.04em; text-wrap: balance }
+h2 { font: 700 clamp(32px, 4.6vw, 54px)/1.05 var(--f) }
+h2 span, h1 span { font-weight: 500; font-style: italic; color: rgb(255 255 255 / .36) }
+.lead { color: var(--muted); font-size: 17px; max-width: 60ch; margin: 0 }
+section { padding: 110px 0; position: relative }
+.sec-head { display: grid; gap: 18px; margin-bottom: 56px; max-width: 760px }
 
+/* nav */
+.nav { position: sticky; top: 0; z-index: 50; background: rgb(8 14 27 / .78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line) }
+.nav .wrap { display: flex; align-items: center; gap: 28px; height: 68px }
+.nav nav { display: flex; gap: 26px; margin-left: 12px }
+.nav nav a { font: 600 12px var(--f); letter-spacing: .14em; text-transform: uppercase; color: var(--muted) }
+.nav nav a:hover { color: var(--ink) }
+.nav .sp { flex: 1 }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; overflow: hidden }
+.seg button { border: 0; background: none; padding: 7px 11px; font: 700 11px var(--mono); color: var(--muted) }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--side) }
+.nav .btn { padding: 12px 20px; font-size: 11px }
+
+/* hero */
+.hero { padding: 90px 0 100px; background: radial-gradient(900px 520px at 85% -10%, rgb(37 99 235 / .2), transparent 65%), radial-gradient(700px 400px at -10% 110%, rgb(37 99 235 / .08), transparent 60%) }
+.hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: center }
+.hero h1 { font: 700 clamp(44px, 6.4vw, 84px)/1.0 var(--f); margin: 22px 0 24px }
+.hero h1 span { display: block }
+.hero .lead { font-size: 18px }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 34px }
+.for { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 36px }
+.for span { font-size: 13px; color: var(--soft); border: 1px solid var(--line); border-radius: 999px; padding: 6px 13px; background: rgb(255 255 255 / .02) }
+
+/* hero live panel */
+.live { background: linear-gradient(180deg, var(--raised), var(--surface)); border: 1px solid var(--line); border-radius: 26px; padding: 18px; box-shadow: 0 40px 90px -40px rgb(2 6 23 / 1), 0 0 0 1px rgb(37 99 235 / .06) }
+.live-top { display: flex; align-items: center; gap: 10px; padding: 4px 6px 14px; border-bottom: 1px solid var(--line) }
+.live-top .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); box-shadow: 0 0 10px var(--good); animation: pulse 2s infinite }
+@keyframes pulse { 50% { opacity: .35 } }
+.live-top b { font-size: 14px }
+.live-top .mono { margin-left: auto; font: 600 11px var(--mono); color: var(--faint) }
+.feed { display: grid; gap: 10px; padding-top: 14px; min-height: 360px; align-content: start }
+.ev { display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; padding: 12px; border-radius: 16px; background: rgb(255 255 255 / .025); border: 1px solid var(--line); opacity: 0; transform: translateY(10px); transition: opacity .5s, transform .5s }
+.ev.on { opacity: 1; transform: none }
+.ev i { font-style: normal; width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; background: var(--accent-soft); font-size: 16px }
+.ev small { display: block; font: 600 10.5px var(--f); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 3px }
+.ev p { margin: 0; font-size: 14px; color: var(--soft); line-height: 1.45 }
+.ev p b { color: #fff }
+.ev .ok { color: var(--good); font-weight: 600 }
+
+/* featured products */
+.feat { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px }
+.fp { position: relative; background: linear-gradient(180deg, var(--raised), var(--surface)); border: 1px solid var(--line); border-radius: 28px; padding: 34px; display: grid; grid-template-rows: auto auto 1fr auto; gap: 16px; overflow: hidden; transition: border-color .3s, transform .3s }
+.fp:hover { border-color: rgb(37 99 235 / .5); transform: translateY(-3px) }
+.fp::after { content: ""; position: absolute; inset: -40% -30% auto auto; width: 70%; height: 70%; background: radial-gradient(closest-side, rgb(37 99 235 / .16), transparent); pointer-events: none }
+.fp .num { font: 700 12px var(--mono); color: var(--accent-hi) }
+.fp h3 { font: 700 30px/1.1 var(--f) }
+.fp p { margin: 0; color: var(--muted) }
+.fp ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px }
+.fp li { display: grid; grid-template-columns: 20px 1fr; gap: 8px; font-size: 15px; color: var(--soft) }
+.fp li::before { content: "✓"; color: var(--good); font-weight: 700 }
+.vis { border: 1px solid var(--line); background: var(--side); border-radius: 18px; padding: 16px; min-height: 172px; display: grid; gap: 8px; align-content: center }
+.bub { max-width: 82%; padding: 9px 13px; border-radius: 15px; font-size: 13.5px; line-height: 1.4 }
+.bub.l { justify-self: start; background: var(--raised); border: 1px solid var(--line); border-bottom-left-radius: 5px }
+.bub.r { justify-self: end; background: var(--accent); border-bottom-right-radius: 5px }
+.bub small { display: block; font-size: 10.5px; opacity: .65; margin-bottom: 2px; letter-spacing: .05em }
+.stars { color: #FBBF24; letter-spacing: 2px }
+.call { display: grid; grid-template-columns: 46px 1fr auto; gap: 14px; align-items: center }
+.call .av { width: 46px; height: 46px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; font-size: 20px; box-shadow: 0 0 0 6px rgb(37 99 235 / .15), 0 0 0 12px rgb(37 99 235 / .07) }
+.call b { display: block; font-size: 15px }
+.call span { font-size: 12.5px; color: var(--muted) }
+.call .t { font: 600 13px var(--mono); color: var(--good) }
+.wave { display: flex; align-items: center; gap: 3px; height: 34px; margin: 6px 0 }
+.wave s { flex: 1; background: var(--accent-hi); border-radius: 3px; opacity: .8; animation: wv 1.2s ease-in-out infinite }
+@keyframes wv { 0%, 100% { height: 20% } 50% { height: 100% } }
+.tline { font-size: 13px; color: var(--soft) } .tline em { font-style: normal; color: var(--good) }
+.ai-q { display: flex; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; font-size: 13.5px; color: var(--soft) }
+.ai-q::before { content: "✦"; color: var(--accent-hi) }
+.ai-a { font-size: 13.5px; color: var(--soft); line-height: 1.5; padding: 4px 4px 0 }
+.ai-a mark { background: rgb(52 211 153 / .14); color: var(--good); border-radius: 6px; padding: 1px 6px; font-weight: 700 }
+.engines { display: flex; gap: 6px; flex-wrap: wrap }
+.engines span { font: 600 10.5px var(--mono); color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px }
+.appv { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center }
+.phone { width: 112px; height: 172px; border-radius: 22px; border: 2px solid #334155; background: linear-gradient(160deg, rgb(37 99 235 / .25), var(--surface)); padding: 12px 9px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; align-content: start }
+.phone b { grid-column: 1 / -1; font-size: 11px; text-align: center; letter-spacing: .1em; margin-bottom: 4px }
+.phone i { font-style: normal; aspect-ratio: 1; border-radius: 10px; background: rgb(255 255 255 / .07); display: grid; place-items: center; font-size: 17px }
+.repl { display: grid; gap: 6px }
+.repl s { text-decoration: line-through; color: #F87171; opacity: .6; font-size: 13px }
+.repl strong { font-size: 13px; color: var(--good) }
+.fp .btn { justify-self: start; padding: 13px 22px; font-size: 11px }
+
+/* catalogue */
+.cats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px }
+.cats button { border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px; padding: 9px 16px; font: 600 13px var(--f) }
+.cats button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
+.svc { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px; display: grid; gap: 10px; align-content: start }
+.svc h4 { margin: 0; font: 700 17px/1.3 var(--f); letter-spacing: -.02em }
+.svc p { margin: 0; font-size: 14.5px; color: var(--muted) }
+.svc ul { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 5px }
+.svc li { font-size: 13.5px; color: var(--soft); padding-left: 16px; position: relative }
+.svc li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent) }
+.svc.hide { display: none }
+
+/* industries */
+.inds { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px }
+.ind { border: 1px solid var(--line); border-radius: 22px; padding: 26px; background: linear-gradient(180deg, rgb(37 99 235 / .07), transparent) }
+.ind i { font-style: normal; font-size: 30px }
+.ind h4 { margin: 14px 0 8px; font: 700 19px var(--f); letter-spacing: -.02em }
+.ind p { margin: 0; font-size: 14.5px; color: var(--muted) }
+
+/* why + work */
+.why { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 22px; overflow: hidden }
+.why div { background: var(--bg); padding: 26px }
+.why b { display: block; font-size: 16px; margin-bottom: 6px }
+.why span { font-size: 14px; color: var(--muted) }
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; counter-reset: s }
+.step { border-top: 2px solid var(--accent); padding-top: 22px; counter-increment: s }
+.step::before { content: "0" counter(s); font: 700 13px var(--mono); color: var(--accent-hi) }
+.step h4 { margin: 10px 0 8px; font: 700 19px/1.25 var(--f); letter-spacing: -.02em }
+.step p { margin: 0; color: var(--muted); font-size: 14.5px }
+.models { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 48px }
+.model { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 22px }
+.model b { display: block; margin-bottom: 6px }
+.model span { font-size: 14px; color: var(--muted) }
+
+/* founder */
+.founder { background: var(--side); border-block: 1px solid var(--line) }
+.founder .wrap { display: grid; grid-template-columns: 360px 1fr; gap: 60px; align-items: center }
+.ph { position: relative; aspect-ratio: 1; display: grid; place-items: center }
+.ph::before { content: ""; position: absolute; inset: 4%; border-radius: 50%; background: radial-gradient(closest-side, rgb(37 99 235 / .35), transparent); filter: blur(30px) }
+.ph img { position: relative; width: 100%; height: auto; filter: drop-shadow(0 30px 50px rgb(2 6 23 / .9)) }
+.founder h3 { font: 700 clamp(30px, 3.6vw, 44px)/1.05 var(--f); margin: 16px 0 6px }
+.founder .role { color: var(--accent-hi); font: 700 12px var(--f); letter-spacing: .2em; text-transform: uppercase }
+.founder p { color: var(--muted); margin: 18px 0 0; max-width: 62ch }
+.founder p b { color: var(--soft); font-weight: 600 }
+
+/* audit form */
+.audit .wrap { display: grid; grid-template-columns: .9fr 1.1fr; gap: 56px; align-items: start }
+.audit ul { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 12px }
+.audit li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; color: var(--soft) }
+.audit li::before { content: "✓"; color: var(--good); font-weight: 700 }
+form { background: linear-gradient(180deg, var(--raised), var(--surface)); border: 1px solid var(--line); border-radius: 28px; padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px }
+form label { display: grid; gap: 7px }
+form label.full { grid-column: 1 / -1 }
+form input, form textarea { width: 100%; background: rgb(255 255 255 / .03); border: 1px solid var(--line); border-radius: 12px; padding: 13px 15px; font-size: 15px; outline: none; resize: vertical }
+form input:focus, form textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft) }
+form input::placeholder, form textarea::placeholder { color: var(--faint) }
+.consent { grid-column: 1 / -1; display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start; font-size: 13px; color: var(--muted) }
+.consent input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--accent) }
+.consent a { color: var(--accent-hi); text-decoration: underline }
+form .btn { grid-column: 1 / -1; padding: 19px }
+form .btn[disabled] { opacity: .6; cursor: wait }
+.ferr { grid-column: 1 / -1; color: var(--flag); font-size: 14px; min-height: 0 }
+.done { grid-column: 1 / -1; text-align: center; padding: 40px 10px; display: grid; gap: 12px; justify-items: center }
+.done i { font-style: normal; width: 60px; height: 60px; border-radius: 50%; background: rgb(52 211 153 / .14); color: var(--good); display: grid; place-items: center; font-size: 28px }
+.done h4 { margin: 0; font: 700 26px var(--f); letter-spacing: -.03em }
+.done p { margin: 0; color: var(--muted) }
+
+/* cta band + footer */
+.band { padding: 90px 0; text-align: center; background: radial-gradient(700px 300px at 50% 120%, rgb(37 99 235 / .25), transparent 70%) }
+.band h2 { margin: 0 auto 18px; max-width: 18ch }
+.band .lead { margin: 0 auto 32px }
+footer { border-top: 1px solid var(--line); padding: 44px 0 calc(44px + env(safe-area-inset-bottom, 0px)); background: var(--side) }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 24px 40px; align-items: center }
+footer .links { display: flex; flex-wrap: wrap; gap: 22px; margin-left: auto }
+footer a, footer small { font-size: 13px; color: var(--faint) }
+footer a:hover { color: var(--ink) }
+
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s, transform .7s }
+.reveal.in { opacity: 1; transform: none }
+
+@media (max-width: 1020px) {
+  .hero .wrap, .audit .wrap, .founder .wrap { grid-template-columns: 1fr }
+  .founder .wrap { gap: 32px } .ph { max-width: 320px }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .inds, .why, .steps, .models { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+  .nav nav { display: none }
+}
+@media (max-width: 680px) {
+  .wrap { padding: 0 16px }
+  section { padding: 76px 0 }
+  .hero { padding: 56px 0 70px }
+  .feat, .grid, .inds, .why, .steps, .models { grid-template-columns: 1fr }
+  .fp { padding: 24px }
+  .fp h3 { font-size: 26px }
+  form { grid-template-columns: 1fr; padding: 22px }
+  .nav .wrap { gap: 12px }
+  .nav .btn { display: none }
+  .brand { font-size: 20px }
+  .feed { min-height: 330px }
+  footer .links { margin-left: 0 }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important }
+  .reveal, .ev { opacity: 1; transform: none }
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a href="#top" class="brand" aria-label="Quick AI Setup">quick<b>ai</b>setup</a>
+    <nav>
+      <a href="#products" data-t="navProducts"></a>
+      <a href="#all" data-t="navAll"></a>
+      <a href="#how" data-t="navHow"></a>
+      <a href="#about" data-t="navAbout"></a>
+    </nav>
+    <span class="sp"></span>
+    <div class="seg" role="group" aria-label="Language">
+      <button data-lang="en" aria-pressed="true">EN</button>
+      <button data-lang="hu" aria-pressed="false">HU</button>
+    </div>
+    <a href="#audit" class="btn" data-t="ctaAudit"></a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow pill" data-t="heroPill"></span>
+        <h1 data-t="heroH" data-html></h1>
+        <p class="lead" data-t="heroP"></p>
+        <div class="hero-cta">
+          <a href="#audit" class="btn" data-t="ctaAudit2"></a>
+          <a href="#products" class="btn ghost" data-t="ctaSee"></a>
+        </div>
+        <div class="for" id="forList"></div>
+      </div>
+      <div class="live" aria-hidden="true">
+        <div class="live-top"><span class="dot"></span><b data-t="liveH"></b><span class="mono" id="liveClock">23:47</span></div>
+        <div class="feed" id="feed"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="products">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow" data-t="prodEy"></span>
+        <h2 data-t="prodH" data-html></h2>
+        <p class="lead" data-t="prodP"></p>
+      </div>
+      <div class="feat" id="feat"></div>
+    </div>
+  </section>
+
+  <section id="all" style="background:var(--side);border-block:1px solid var(--line)">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow" data-t="allEy"></span>
+        <h2 data-t="allH" data-html></h2>
+        <p class="lead" data-t="allP"></p>
+      </div>
+      <div class="cats" id="cats"></div>
+      <div class="grid" id="svcGrid"></div>
+    </div>
+  </section>
+
+  <section id="who">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow" data-t="whoEy"></span>
+        <h2 data-t="whoH" data-html></h2>
+      </div>
+      <div class="inds" id="inds"></div>
+    </div>
+  </section>
+
+  <section id="why" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow" data-t="whyEy"></span>
+        <h2 data-t="whyH" data-html></h2>
+      </div>
+      <div class="why reveal" id="whyGrid"></div>
+    </div>
+  </section>
+
+  <section id="how" style="background:var(--side);border-top:1px solid var(--line)">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow" data-t="howEy"></span>
+        <h2 data-t="howH" data-html></h2>
+      </div>
+      <div class="steps reveal" id="steps"></div>
+      <div class="models reveal" id="models"></div>
+    </div>
+  </section>
+
+  <section id="about" class="founder">
+    <div class="wrap">
+      <div class="ph reveal"><img src="/founder.png" alt="Sándor Bárány" loading="lazy" width="720" height="694"></div>
+      <div class="reveal">
+        <span class="eyebrow pill" data-t="fEy"></span>
+        <h3>Sándor Bárány</h3>
+        <div class="role" data-t="fRole"></div>
+        <p data-t="f1" data-html></p>
+        <p data-t="f2" data-html></p>
+        <p data-t="f3" data-html></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="audit" class="audit">
+    <div class="wrap">
+      <div class="reveal">
+        <span class="eyebrow pill" data-t="aEy"></span>
+        <h2 style="margin-top:20px" data-t="aH" data-html></h2>
+        <p class="lead" style="margin-top:18px" data-t="aP"></p>
+        <ul id="aList"></ul>
+      </div>
+      <form id="auditForm" class="reveal" novalidate>
+        <label><span class="eyebrow" data-t="fName"></span><input name="fullName" required autocomplete="name"></label>
+        <label><span class="eyebrow" data-t="fEmail"></span><input name="workEmail" type="email" required autocomplete="email"></label>
+        <label><span class="eyebrow" data-t="fBiz"></span><input name="businessName" required autocomplete="organization"></label>
+        <label><span class="eyebrow" data-t="fWeb"></span><input name="website" autocomplete="url" placeholder="www."></label>
+        <label class="full"><span class="eyebrow" data-t="fGoal"></span><textarea name="mainGoal" rows="3" required data-ph="fGoalPh"></textarea></label>
+        <label class="consent"><input type="checkbox" name="consent" required><span data-t="fConsent" data-html></span></label>
+        <div class="ferr" id="ferr" role="alert"></div>
+        <button class="btn" type="submit" data-t="fSend"></button>
+      </form>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap reveal">
+      <h2 data-t="bandH" data-html></h2>
+      <p class="lead" data-t="bandP"></p>
+      <a href="#audit" class="btn" data-t="ctaAudit2"></a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="brand">quick<b>ai</b>setup</span>
+    <small>© <span id="yr"></span> Quick AI Setup</small>
+    <div class="links">
+      <a href="https://my.quickaisetup.com/legal/privacy-policy" target="_blank" rel="noopener" data-t="lPriv"></a>
+      <a href="https://my.quickaisetup.com/legal/terms" target="_blank" rel="noopener" data-t="lTerms"></a>
+      <a href="https://d1yei2z3i6k35z.cloudfront.net/13085579/68d67fcd3986c_GDPRAdatkezeles-QuickAISetup.com.pdf" target="_blank" rel="noopener" data-t="lGdpr"></a>
+      <a href="#audit" data-t="lContact"></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const T = {
+  en: {
+    navProducts: 'Products', navAll: 'Everything', navHow: 'How we work', navAbout: 'About',
+    ctaAudit: 'Free audit', ctaAudit2: 'Get your free audit', ctaSee: 'See the products',
+    heroPill: 'AI systems for local businesses',
+    heroH: 'Your business,<span>answering 24/7.</span>',
+    heroP: 'We build and run the AI that answers your messages and phone, books appointments, collects Google reviews and gets you recommended by ChatGPT. You focus on your customers.',
+    liveH: 'Your business tonight',
+    prodEy: 'Products', prodH: 'Four things that <span>pay for themselves.</span>',
+    prodP: 'Start with one. Every product plugs into the same system, so the next one is quicker to add.',
+    allEy: 'The full menu', allH: 'Everything we offer, <span>explained simply.</span>',
+    allP: 'Every service we build, grouped by what it does for you. We pick the few that matter most for your business.',
+    allCat: 'All',
+    whoEy: 'Who we work with', whoH: 'Built for businesses <span>that live on bookings.</span>',
+    whyEy: 'Why it’s worth it', whyH: 'One system <span>instead of many.</span>',
+    howEy: 'How we work', howH: 'From first call to <span>running system.</span>',
+    fEy: 'Founder', fRole: 'Founder, Quick AI Setup',
+    f1: 'Before Quick AI Setup, Sándor spent years inside hospitality and customer-facing businesses, where <b>speed, customer experience, reputation and retention</b> decided revenue every single day.',
+    f2: 'He founded and ran <b>Pont Club</b>, voted Hungary’s #1 small club in 2017, and managed customer experience for leading venues in Budapest.',
+    f3: 'Today he builds AI systems for gyms, fight gyms, massage salons, cafés and hotels in <b>Hungary and Thailand</b>, so no message, call or review goes unanswered.',
+    aEy: 'Free business audit', aH: 'Where are you <span>losing customers?</span>',
+    aP: 'Tell us a little about your business. We look at your messages, calls, reviews and online visibility, and show you where we would start.',
+    aList: ['A short, clear plan for your business', 'Where inquiries and bookings slip away today', 'Which product to start with, and why', 'No obligation, no sales pressure'],
+    fName: 'Full name', fEmail: 'Email', fBiz: 'Business name', fWeb: 'Website', fGoal: 'What would you like to improve?',
+    fGoalPh: 'E.g. we miss calls at peak times, we want more Google reviews…',
+    fConsent: 'I agree to the <a href="https://my.quickaisetup.com/legal/privacy-policy" target="_blank" rel="noopener">privacy policy</a> and to being contacted about my request.',
+    fSend: 'Request my free audit', fSending: 'Sending…',
+    fErrReq: 'Please fill in your name, email, business and goal, and tick the consent box.', fErrMail: 'Please check your email address.', fErr: 'Something went wrong. Please try again, or email us.',
+    doneH: 'Thank you, we got it.', doneP: 'We’ll look at your business and get back to you within 1–2 working days.',
+    bandH: 'Ready to stop missing customers?', bandP: 'A free audit takes two minutes to request. We do the rest.',
+    lPriv: 'Privacy policy', lTerms: 'Terms', lGdpr: 'GDPR', lContact: 'Contact',
+  },
+  hu: {
+    navProducts: 'Termékek', navAll: 'Teljes kínálat', navHow: 'Hogyan dolgozunk', navAbout: 'Rólunk',
+    ctaAudit: 'Ingyenes felmérés', ctaAudit2: 'Kérem az ingyenes felmérést', ctaSee: 'Termékek',
+    heroPill: 'AI rendszerek helyi vállalkozásoknak',
+    heroH: 'A vállalkozásod,<span>ami éjjel‑nappal válaszol.</span>',
+    heroP: 'Felépítjük és üzemeltetjük az AI-t, ami válaszol az üzenetekre és a telefonra, időpontot foglal, Google-értékelést gyűjt, és elérjük, hogy a ChatGPT is titeket ajánljon. Ti a vendégekkel foglalkozhattok.',
+    liveH: 'A vállalkozásod ma este',
+    prodEy: 'Termékek', prodH: 'Négy dolog, ami <span>kitermeli az árát.</span>',
+    prodP: 'Kezdjétek egyvel. Minden termék ugyanabba a rendszerbe kapcsolódik, így a következő már gyorsabban jön.',
+    allEy: 'A teljes kínálat', allH: 'Minden szolgáltatás, <span>egyszerűen elmagyarázva.</span>',
+    allP: 'Minden, amit építünk, aszerint csoportosítva, mit old meg nálatok. Ebből kiválasztjuk azt a néhányat, ami nálatok a legtöbbet hozza.',
+    allCat: 'Mind',
+    whoEy: 'Kiknek dolgozunk', whoH: 'Olyan vállalkozásoknak, <span>amik a foglalásokból élnek.</span>',
+    whyEy: 'Miért éri meg', whyH: 'Egy rendszer <span>sok helyett.</span>',
+    howEy: 'Hogyan dolgozunk', howH: 'Az első beszélgetéstől <span>a működő rendszerig.</span>',
+    fEy: 'Alapító', fRole: 'Alapító, Quick AI Setup',
+    f1: 'A Quick AI Setup előtt Sándor éveket töltött a vendéglátásban és ügyfélközpontú vállalkozásokban, ahol a <b>gyorsaság, a vendégélmény, a hírnév és a visszatérő vendégek</b> minden nap a bevételről döntöttek.',
+    f2: 'Ő alapította és vezette a <b>Pont Clubot</b>, amit 2017-ben Magyarország legjobb kisklubjának választottak, és budapesti vezető helyek vendégélményéért felelt.',
+    f3: 'Ma AI rendszereket épít edzőtermeknek, küzdősport-termeknek, masszázsszalonoknak, kávézóknak és szállodáknak <b>Magyarországon és Thaiföldön</b>, hogy egy üzenet, hívás vagy értékelés se maradjon válasz nélkül.',
+    aEy: 'Ingyenes üzleti felmérés', aH: 'Hol vesztek el <span>vendégeket?</span>',
+    aP: 'Írjatok pár szót a vállalkozásról. Átnézzük az üzeneteket, hívásokat, értékeléseket és az online láthatóságot, és megmutatjuk, hol kezdenénk.',
+    aList: ['Rövid, érthető terv a vállalkozásotokra', 'Hol csúsznak el ma a megkeresések és foglalások', 'Melyik termékkel érdemes kezdeni, és miért', 'Kötelezettség és nyomulás nélkül'],
+    fName: 'Teljes név', fEmail: 'E-mail', fBiz: 'Cégnév', fWeb: 'Weboldal', fGoal: 'Min szeretnétek javítani?',
+    fGoalPh: 'Pl. csúcsidőben nem vesszük fel a telefont, több Google-értékelés kellene…',
+    fConsent: 'Elfogadom az <a href="https://my.quickaisetup.com/legal/privacy-policy" target="_blank" rel="noopener">adatkezelési tájékoztatót</a>, és hozzájárulok, hogy a kérésemmel kapcsolatban felvegyétek velem a kapcsolatot.',
+    fSend: 'Kérem az ingyenes felmérést', fSending: 'Küldés…',
+    fErrReq: 'Kérjük, add meg a neved, e-mail-címed, a cégnevet és a célt, és pipáld be a hozzájárulást.', fErrMail: 'Kérjük, ellenőrizd az e-mail-címet.', fErr: 'Valami hiba történt. Próbáld újra, vagy írj nekünk e-mailt.',
+    doneH: 'Köszönjük, megkaptuk.', doneP: 'Átnézzük a vállalkozásotokat, és 1–2 munkanapon belül jelentkezünk.',
+    bandH: 'Elég volt az elveszett vendégekből?', bandP: 'Az ingyenes felmérést két perc kérni. A többit mi intézzük.',
+    lPriv: 'Adatkezelés', lTerms: 'ÁSZF', lGdpr: 'GDPR', lContact: 'Kapcsolat',
+  },
+};
+
+const FOR = { en: ['Gyms', 'Fight gyms', 'Massage & wellness', 'Cafés & restaurants', 'Hotels & stays'], hu: ['Edzőtermek', 'Küzdősport-termek', 'Masszázs és wellness', 'Kávézók és éttermek', 'Szállások'] };
+
+const FEED = {
+  en: [
+    ['💬', 'Instagram · 23:41', '“Do you have a beginner class tomorrow?”'],
+    ['🤖', 'AI chatbot · 23:41', 'Replied in 6 seconds and <b>booked the 7:00 class</b>. <span class="ok">✓ Booked</span>'],
+    ['📞', 'Missed call · 23:44', 'AI receptionist picked up, answered prices, <b>sent a booking link</b>.'],
+    ['⭐', 'Google review · 23:45', 'New 5★ review. <b>Polite reply posted</b>. <span class="ok">✓ Replied</span>'],
+    ['✦', 'ChatGPT · 23:47', '“Best massage near me?” → <b>you were recommended</b>.'],
+  ],
+  hu: [
+    ['💬', 'Instagram · 23:41', '„Van holnap kezdő óra?”'],
+    ['🤖', 'AI chatbot · 23:41', '6 másodperc alatt válaszolt, és <b>lefoglalta a 7 órás órát</b>. <span class="ok">✓ Foglalva</span>'],
+    ['📞', 'Nem fogadott hívás · 23:44', 'Az AI recepciós felvette, elmondta az árakat, <b>foglalási linket küldött</b>.'],
+    ['⭐', 'Google-értékelés · 23:45', 'Új 5★ értékelés. <b>Udvarias válasz kiment</b>. <span class="ok">✓ Megválaszolva</span>'],
+    ['✦', 'ChatGPT · 23:47', '„Legjobb masszázs a közelben?” → <b>titeket ajánlott</b>.'],
+  ],
+};
+
+// featured products: [title, text, benefits[], visual id]
+const FEAT = {
+  en: [
+    ['AI chatbot + Google reviews', 'Our core package. AI answers every message on Instagram, Messenger, WhatsApp and your website, and takes bookings 24/7 in several languages. After each visit, customers get a one-tap review link, and every review gets a fast, polite reply.', ['Answers at night and on weekends', 'More fresh 5★ reviews from happy customers', 'Unhappy customers tell you first, not Google', 'Every message in one inbox'], 'chat'],
+    ['AI phone receptionist', 'An AI voice picks up the phone, answers questions, and books appointments or tables. If a call is still missed, the caller instantly gets a text with a booking link.', ['The line is never busy', 'No missed calls at peak times', 'A missed call is no longer a lost customer', 'Takes pressure off the front desk'], 'voice'],
+    ['GEO: get recommended by AI', 'People now ask ChatGPT, Gemini and Google’s AI where to go. We make those AI answers recommend you when someone looks for a place like yours.', ['You’re where customers search today', 'Your Google profile and website set up for AI', 'Monthly tracking of how often AI recommends you'], 'geo'],
+    ['Your own branded app', 'Booking tools, WhatsApp groups, spreadsheets and paper, replaced by one app with your name on it, for your members and your team, across all your locations.', ['Bookings, memberships and payments in one app', 'Members see their pass on their phone and get notifications', 'No third-party fees or limits: the data is yours', 'Built to grow: follow-ups, win-backs, AI agent'], 'app'],
+  ],
+  hu: [
+    ['AI chatbot + Google-értékelések', 'Az alapcsomagunk. Az AI minden üzenetre válaszol Instagramon, Messengeren, WhatsAppon és a weboldalon, és 0–24-ben foglal, több nyelven. Látogatás után a vendég egykattintásos értékelés-linket kap, és minden értékelésre gyors, udvarias válasz megy.', ['Éjjel és hétvégén is van válasz', 'Több friss 5★ értékelés az elégedett vendégektől', 'Az elégedetlen vendég előbb nálatok jelez, nem a Google-on', 'Minden üzenet egy helyen'], 'chat'],
+    ['AI telefonos recepciós', 'Egy AI hang felveszi a telefont, válaszol a kérdésekre, és időpontot vagy asztalt foglal. Ha egy hívás mégis elmarad, a hívó azonnal SMS-t kap egy foglalási linkkel.', ['Soha nem foglalt a vonal', 'Csúcsidőben sem marad le hívás', 'Egy elmaradt hívás sem lesz elveszett vendég', 'Tehermentesíti a recepciót'], 'voice'],
+    ['GEO: ajánljon titeket az AI', 'Ma már a ChatGPT-től, a Geminitől és a Google AI-tól kérdezik, hová menjenek. Elérjük, hogy ezek a válaszok titeket ajánljanak, ha valaki olyan helyet keres, mint a tiétek.', ['Ott vagytok, ahol a vendég ma már keres', 'AI-ra felkészített Google-profil és weboldal', 'Havonta mérjük, hányszor ajánl titeket az AI'], 'geo'],
+    ['Saját, márkás app', 'Foglalóprogramok, WhatsApp-csoportok, táblázatok és papír helyett egy app a ti nevetekkel, a tagoknak és a csapatnak, minden helyszínre.', ['Foglalás, bérlet és fizetés egy appban', 'A tag a telefonján látja a bérletét, és értesítést kap', 'Nincs külső díj és korlát: az adat a tiétek', 'Bővíthető: utánkövetés, win-back, AI-ügynök'], 'app'],
+  ],
+};
+const VIS = {
+  chat: L => L === 'hu'
+    ? `<div class="bub l"><small>Instagram</small>Szia! Van szabad időpont szombaton masszázsra?</div><div class="bub r"><small>AI · 6 mp</small>Szia! Szombaton 11:00 és 15:30 szabad. Melyik legyen? 🙂</div><div class="bub l"><small>Google</small><span class="stars">★★★★★</span> Fantasztikus volt!</div>`
+    : `<div class="bub l"><small>Instagram</small>Hi! Any free slot for a massage on Saturday?</div><div class="bub r"><small>AI · 6 sec</small>Hi! Saturday 11:00 and 15:30 are free. Which one works? 🙂</div><div class="bub l"><small>Google</small><span class="stars">★★★★★</span> Amazing experience!</div>`,
+  voice: L => `<div class="call"><div class="av">🤖</div><div><b>${L === 'hu' ? 'AI recepciós' : 'AI receptionist'}</b><span>${L === 'hu' ? 'Bejövő hívás · magyar' : 'Incoming call · English'}</span></div><span class="t">00:42</span></div><div class="wave">${'<s></s>'.repeat(28)}</div><div class="tline">${L === 'hu' ? '„Holnap 18:00-ra két főre foglaltam.” <em>✓ Foglalva · SMS kiment</em>' : '“You’re booked for two at 6 pm tomorrow.” <em>✓ Booked · text sent</em>'}</div>`,
+  geo: L => `<div class="engines"><span>ChatGPT</span><span>Gemini</span><span>Google AI</span><span>Perplexity</span></div><div class="ai-q">${L === 'hu' ? 'Hol van jó thai box edzés kezdőknek?' : 'Where’s a good Muay Thai gym for beginners?'}</div><div class="ai-a">${L === 'hu' ? 'A legjobb értékelésű lehetőség: <mark>A ti termetek</mark>, kezdő órák minden nap, 4,9★ több száz értékelés alapján…' : 'A top-rated option is <mark>Your gym</mark>, with beginner classes every day and 4.9★ from hundreds of reviews…'}</div>`,
+  app: L => `<div class="appv"><div class="phone"><b>YOUR APP</b><i>📅</i><i>🎟</i><i>💳</i><i>🔔</i><i>🔁</i><i>🤖</i></div><div class="repl">${(L === 'hu' ? ['Foglalóprogram', 'WhatsApp-csoportok', 'Táblázatok', 'Papír'] : ['Booking tools', 'WhatsApp groups', 'Spreadsheets', 'Paper']).map(x => `<s>${x}</s>`).join('')}<strong>${L === 'hu' ? '→ egy app, minden helyszín' : '→ one app, every location'}</strong></div></div>`,
+};
+
+// full catalogue (from the QAIS Radar service list, generalised)
+const CATS = {
+  ai:   { hu: 'AI segítők', en: 'AI helpers' },
+  rep:  { hu: 'Értékelések és hírnév', en: 'Reviews and reputation' },
+  mkt:  { hu: 'Új vendégek', en: 'Getting new customers' },
+  auto: { hu: 'Automatikus utánkövetés', en: 'Automatic follow-up' },
+  crm:  { hu: 'Foglalás és rendszer', en: 'Bookings and system' },
+  pay:  { hu: 'Fizetés', en: 'Payments' },
+  cont: { hu: 'Tartalom és közösség', en: 'Content and community' },
+  org:  { hu: 'Több helyszín', en: 'Many locations' },
+};
+const SVC = [
+  ['ai', ['AI chatbot: Instagram, Messenger, WhatsApp, weboldal', 'Az AI válaszol a vendégek kérdéseire és foglal, 0–24-ben, több nyelven.', ['Éjjel és hétvégén is van válasz', 'A csapat a vendégekkel foglalkozhat']], ['AI chatbot: Instagram, Messenger, WhatsApp, website', 'AI answers customers’ questions and takes bookings, 24/7, in several languages.', ['Answers at night and on weekends', 'Staff focus on customers, not messages']]],
+  ['ai', ['AI telefonos recepciós', 'Egy AI hang felveszi a telefont, válaszol a kérdésekre és foglal.', ['Soha nem foglalt a vonal', 'Csúcsidőben sem marad le hívás']], ['AI phone receptionist', 'An AI voice answers the phone, handles questions and takes bookings.', ['The line is never busy', 'No missed calls at peak times']]],
+  ['ai', ['AI-szűrés a megkeresésekhez', 'Az AI eldönti, melyik megkeresés komoly, és azonnal válaszol rá.', ['A csapat csak a komoly ügyekkel foglalkozik', 'Gyorsabb ajánlat a nagy csoportoknak']], ['AI screening of inquiries', 'AI spots which inquiries are serious and replies to them instantly.', ['The team only handles serious leads', 'Faster quotes for big groups']]],
+  ['ai', ['AI-os leadgenerálás', 'Céglistát és szervezőket keresünk, az AI személyre szabott üzenettel megkeresi őket, és az érdeklődők egyből a rendszerbe kerülnek.', ['Kiszámítható új céges megkeresések', 'Csak a komoly érdeklődőkkel kell beszélni']], ['AI lead generation', 'We find lists of companies and organisers, AI contacts them with personal messages, and interested leads land straight in the system.', ['Predictable new business inquiries every month', 'You only talk to serious prospects']]],
+  ['ai', ['AI concierge szállásoknak', 'A vendég chaten vagy WhatsAppon intéz mindent: programot, transzfert, masszázst, és bejelenti, ha valami nem működik.', ['Extra bevétel minden foglalás mellé', 'A hibabejelentés a karbantartóhoz megy, nem a Google-ba']], ['AI concierge for stays', 'Guests sort everything by chat or WhatsApp: activities, transfers, massages, and report when something is broken.', ['Extra revenue on every stay', 'Problem reports go to maintenance, not into a Google review']]],
+  ['ai', ['AI betanító bot a csapatnak', 'Egy AI, ami bármikor válaszol a kollégák kérdéseire, a saját anyagaitokból: folyamatok, szabályok, árak.', ['Az új kolléga hamarabb önálló', 'A vezetőnek nem kell ugyanazt százszor elmondania']], ['AI training bot for staff', 'An AI that answers staff questions any time, from your own material: processes, rules, prices.', ['New staff get up to speed faster', 'Managers stop repeating the same answers']]],
+  ['ai', ['AI-szövegírás', 'Posztok, hírlevelek és hirdetésszövegek AI segítségével, a márkátok hangján.', ['Rendszeres tartalom kevés munkával', 'Egységes, saját hang']], ['AI copywriting', 'Posts, newsletters and ad copy written with AI, in your brand’s voice.', ['Regular content with little effort', 'One consistent voice']]],
+
+  ['rep', ['Automatikus értékeléskérés', 'Látogatás után a vendég üzenetet kap egy egykattintásos Google-értékelés linkkel.', ['Több friss értékelés az elégedett vendégektől', 'Az elégedetlen vendég előbb nálatok jelez']], ['Automatic review requests', 'After the visit, customers get a message with a one-tap Google review link.', ['More fresh reviews from happy customers', 'Unhappy customers tell you first, not Google']]],
+  ['rep', ['Válasz minden értékelésre, AI-jal', 'Minden véleményre gyors, udvarias válasz megy, AI segítségével megírva.', ['A leendő vendégek látják, hogy figyeltek rájuk', 'Az elégedetlen vendég is látja, hogy foglalkoztok vele']], ['Reply to every review, with AI', 'Every review gets a fast, polite reply, drafted with AI.', ['Future customers see that you listen', 'Unhappy customers see you take it seriously']]],
+  ['rep', ['GEO: ajánljon titeket az AI', 'Elérjük, hogy a ChatGPT, a Gemini és a Google AI-válaszai titeket ajánljanak.', ['Ott vagytok, ahol a vendég ma már keres', 'Havonta mérjük, hányszor ajánl titeket az AI']], ['GEO: get recommended by AI', 'We make ChatGPT, Gemini and Google’s AI answers recommend you.', ['You’re where customers search today', 'Monthly tracking of AI recommendations']]],
+  ['rep', ['Google-profil karbantartása', 'Rendben tartjuk a nyitvatartást, a fotókat és a posztokat a Google-on.', ['Pontos, gondozott megjelenés a térképen', 'Nincs csalódás rossz nyitvatartás miatt']], ['Google profile upkeep', 'We keep opening hours, photos and posts up to date on Google.', ['An accurate, well-kept presence on the map', 'No disappointment from wrong opening hours']]],
+
+  ['mkt', ['Weboldal havidíjjal', 'Elkészítjük és üzemeltetjük a weboldalt, tárhellyel együtt, egy havi díjért.', ['Nem kell külön fejlesztő és tárhely', 'Mindig friss, gyors oldal']], ['Website on a monthly fee', 'We build and run your website, hosting included, for one monthly fee.', ['No separate developer or hosting', 'Always fresh and fast']]],
+  ['mkt', ['Foglalási és értékesítő oldal', 'Egy egyszerű oldal egyetlen céllal: hogy a látogatóból foglalás vagy vásárlás legyen.', ['Több foglalás ugyanannyi látogatóból', 'Foglaláskor eladható a kiegészítő is']], ['Booking and sales page', 'A simple page with one goal: turning a visitor into a booking or a purchase.', ['More bookings from the same visitors', 'Sell the add-on at booking time']]],
+  ['mkt', ['Hirdetés, ami egyből a rendszerbe visz', 'Facebook- és Google-hirdetés, ahol minden jelentkező azonnal bekerül a rendszerbe és választ kap.', ['Egy érdeklődő sem vész el', 'Látszik, melyik hirdetés hozott vendéget']], ['Ads that feed the system', 'Facebook and Google ads where every sign-up lands in the system and gets an instant reply.', ['No inquiry gets lost', 'You see which ad brought customers']]],
+  ['mkt', ['Csali ajánlat a vendéglistához', 'Kupon, próbaóra vagy nyereményjáték, cserébe a vendég elérhetőségéért.', ['Gyorsan nő a saját lista', 'Később ingyen elérhetitek őket']], ['Freebie to grow your list', 'A coupon, a free trial or a giveaway in exchange for contact details.', ['Your own list grows fast', 'Reach them again later for free']]],
+  ['mkt', ['Okos ajánlatkérő kérdőív', 'Pár kérdés (hány fő, mikor, mekkora keret), és a rendszer már tudja, mit ajánljon.', ['Ajánlat percek alatt', 'Nem mentek el felesleges megkeresésekre']], ['Smart quote request form', 'A few questions (how many, when, what budget) and the system knows what to offer.', ['Quotes in minutes', 'No time wasted on dead-end inquiries']]],
+  ['mkt', ['Blog és Google-keresés', 'Cikkek, amelyekkel a Google-on jobban megtalálnak.', ['Ingyenes látogatók hosszú távon', 'A turisták is rátalálnak']], ['Blog and search visibility', 'Articles that help people find you on Google.', ['Free visitors over time', 'Tourists find you too']]],
+
+  ['auto', ['Azonnali válasz minden érdeklődőnek', 'Aki érdeklődik, egy percen belül választ kap SMS-ben vagy e-mailben, akár éjjel is.', ['Nem megy át a konkurenciához', 'A leggyorsabb válasz nyeri a foglalást']], ['Instant reply to every inquiry', 'Anyone who asks gets a reply within a minute by text or email, even at night.', ['They don’t drift to a competitor', 'The fastest reply wins the booking']]],
+  ['auto', ['SMS a nem fogadott hívásra', 'Ha senki nem veszi fel, a hívó azonnal SMS-t kap egy foglalási linkkel.', ['Egy elmaradt hívás sem lesz elveszett vendég', 'Tehermentesíti a recepciót csúcsidőben']], ['Text back on missed calls', 'If nobody picks up, the caller instantly gets a text with a booking link.', ['A missed call is no longer a lost customer', 'Takes pressure off the front desk']]],
+  ['auto', ['Emlékeztető a foglalás előtt', 'SMS és e-mail emlékeztető a foglalás előtt, egykattintásos lemondással.', ['Kevesebb elmaradt időpont', 'A lemondott hely újra eladható']], ['Reminder before the booking', 'Text and email reminders before the booking, with one-tap cancel.', ['Fewer no-shows', 'Cancelled slots can be rebooked']]],
+  ['auto', ['Lead- és vendégreaktiválás', 'Jó ajánlattal újra megkeressük, aki régen érdeklődött, de nem foglalt, vagy rég nem járt nálatok.', ['Bevétel a meglévő listából, hirdetés nélkül', 'Gyorsan mérhető eredmény']], ['Lead and customer reactivation', 'We reach out again, with a good offer, to people who asked but never booked, or haven’t visited in a while.', ['Revenue from the list you already have', 'Results you can measure quickly']]],
+  ['auto', ['Automatikus üzenetsor', 'Az érdeklődő magától kap e-mailt és SMS-t a megfelelő időben, amíg dönt.', ['Senkinek nem kell emlékeznie a visszahívásra', 'Több érdeklődőből lesz vendég']], ['Automatic message sequence', 'Interested people get the right email or text at the right time while they decide.', ['Nobody has to remember to call back', 'More inquiries turn into customers']]],
+  ['auto', ['Megkeresések követése egy táblán', 'Minden megkeresés egy táblán látszik, és magától lép tovább: új, ajánlat kiment, lefoglalva.', ['Látszik, hol akad el egy ügy', 'A feladatok maguktól kiosztódnak']], ['Track every inquiry on one board', 'Every inquiry sits on one board and moves itself along: new, quote sent, booked.', ['See where a deal stalls', 'Tasks assign themselves']]],
+
+  ['crm', ['Minden üzenet egy helyen', 'E-mail, SMS, Facebook, Instagram, WhatsApp és Google-üzenet egyetlen felületen.', ['Nem kell öt appot figyelni', 'Egy üzenet sem marad megválaszolatlanul']], ['Every message in one inbox', 'Email, text, Facebook, Instagram, WhatsApp and Google messages in one place.', ['No more checking five apps', 'No message goes unanswered']]],
+  ['crm', ['Online foglalási naptár', 'A vendég online foglal, a rendszer kiosztja az időpontokat a kollégák vagy termek között.', ['Kevesebb telefon és üzenetváltás', 'Rendezett naptár']], ['Online booking calendar', 'Customers book online and the system allocates slots, staff or rooms.', ['Fewer calls and back-and-forth', 'A tidy calendar']]],
+  ['crm', ['Vendégnyilvántartás (CRM)', 'Minden vendég és megkeresés egy helyen, a teljes előzménnyel.', ['Tudjátok, ki a törzsvendég', 'Nem egy munkatárs fejében van minden']], ['Customer records (CRM)', 'Every customer and inquiry in one place, with full history.', ['Know who your regulars are', 'Knowledge doesn’t live in one person’s head']]],
+  ['crm', ['Saját, márkás app', 'Egy app a ti nevetekkel: foglalás, bérlet, fizetés és értesítések a tagoknak.', ['Nincs külső díj és korlát', 'Az adat a tiétek']], ['Your own branded app', 'One app with your name on it: bookings, memberships, payments and notifications.', ['No third-party fees or limits', 'Your data stays yours']]],
+  ['crm', ['Telefonrendszer', 'Számok, átirányítás, hívásrögzítés és hangmenü (pl. 1 = foglalás, 2 = bérlet).', ['A hívás a jó emberhez kerül', 'Visszahallgatható hívások']], ['Phone system', 'Numbers, forwarding, call recording and a menu (e.g. 1 = bookings, 2 = memberships).', ['Calls reach the right person', 'Calls can be replayed']]],
+  ['crm', ['Átköltözés a mostani programokból', 'Átvisszük az adatokat a jelenlegi rendszerekből, adatvesztés nélkül.', ['Nem kell elölről kezdeni', 'Kevesebb előfizetés']], ['Move over from current tools', 'We move your data from current systems without losing anything.', ['No starting from scratch', 'Fewer subscriptions']]],
+  ['crm', ['Rendrakás a meglévő rendszerekben', 'Átnézzük, ami már megvan, és kidobjuk a felesleget.', ['Kevesebb kézi munka és hiba', 'Kiderül, mit fizettek feleslegesen']], ['Clean-up of current systems', 'We review what you already use and remove what’s not needed.', ['Less manual work and fewer mistakes', 'Find out what you pay for needlessly']]],
+
+  ['pay', ['Online fizetés és előleg', 'Kártyás fizetés, előleg és számla a foglaláshoz kötve.', ['Az előleg érezhetően csökkenti a no-show-t', 'Kevesebb pénzügyi adminisztráció']], ['Online payment and deposits', 'Card payment, deposits and invoices linked to the booking.', ['Deposits noticeably cut no-shows', 'Less finance admin']]],
+  ['pay', ['Fizetési link SMS-ben', 'Egy SMS-ben küldött linkkel a vendég azonnal fizet.', ['Gyors előlegbekérés', 'Nincs utalgatás és egyeztetés']], ['Payment link by text', 'Customers pay instantly from a link sent by text.', ['Fast deposits', 'No bank-transfer back-and-forth']]],
+  ['pay', ['Ajánlat, szerződés, e-aláírás', 'Ajánlat és szerződés online, aláírással, percek alatt.', ['Gyorsabban lezárt ügy', 'Minden dokumentum egy helyen']], ['Quotes, contracts, e-signature', 'Quotes and contracts online, signed in minutes.', ['Deals closed faster', 'All documents in one place']]],
+
+  ['cont', ['Hírlevél és tömeges SMS', 'Egy üzenet egyszerre több ezer vendégnek, ajánlatokkal és programokkal.', ['Több vendég a gyengébb napokon', 'Saját, ingyenes elérés']], ['Newsletter and bulk text', 'One message to thousands of customers at once, with offers and events.', ['More customers on slower days', 'Your own free channel']]],
+  ['cont', ['Közösségi média ütemező', 'Posztok előre időzítve az összes oldalra, egy helyről.', ['Rendszeres jelenlét kevesebb munkával', 'Minden oldal egy naptárban']], ['Social media planner', 'Posts scheduled ahead for every page, from one place.', ['Regular posting with less effort', 'Every page in one calendar']]],
+  ['cont', ['Törzsvendég-klub és online kurzus', 'Zárt online közösség vagy kurzus a tagoknak, exkluzív tartalommal.', ['Hűséges vendégkör', 'Bevétel online is']], ['Members’ club and online courses', 'A private online community or course for members, with exclusive content.', ['A loyal customer base', 'Revenue online too']]],
+  ['cont', ['Online betanító felület a csapatnak', 'Zárt felület videókkal és anyagokkal az új dolgozóknak.', ['Gyorsabb betanítás', 'Egységes színvonal minden helyen']], ['Online training space for staff', 'A private space with videos and guides for new staff.', ['Faster onboarding', 'The same standard everywhere']]],
+
+  ['org', ['Kész rendszer minden helyre', 'Egyszer felépítjük, és pár nap alatt bármelyik helyszínre lemásoljuk.', ['Minden hely egységes rendszeren', 'Új nyitáskor azonnal működik']], ['Ready-made system for every location', 'Built once, copied to any location in a few days.', ['Every location on one system', 'Works from day one at a new opening']]],
+  ['org', ['Irányítópult a számokhoz', 'Egy képernyőn: honnan jött a vendég, hány foglalás lett, mennyi a bevétel.', ['Tudjátok, mi működik és mi nem', 'Helyszínek összehasonlítása egy pillantással']], ['Dashboard for the numbers', 'One screen: where customers came from, how many bookings, how much revenue.', ['Know what works and what doesn’t', 'Compare locations at a glance']]],
+];
+
+const INDS = {
+  en: [['🥊', 'Gyms & fight gyms', 'Trial-to-member follow-up, class bookings, win-back of cancelled members, camps and memberships.'], ['💆', 'Massage & wellness', 'Bookings by chat and phone, reminders, reviews after every treatment, filling empty slots.'], ['☕', 'Cafés & restaurants', 'Table bookings, event inquiries, reviews and a guest list you own.'], ['🏝', 'Hotels & stays', 'AI concierge, extras ordered by chat, problem reports before they become reviews.']],
+  hu: [['🥊', 'Edző- és küzdősport-termek', 'Próbaórából tag, órafoglalás, lemondott tagok visszahozása, campek és bérletek.'], ['💆', 'Masszázs és wellness', 'Foglalás chaten és telefonon, emlékeztetők, értékelés minden kezelés után, üres időpontok feltöltése.'], ['☕', 'Kávézók és éttermek', 'Asztalfoglalás, rendezvényes megkeresések, értékelések és saját vendéglista.'], ['🏝', 'Szállások', 'AI concierge, extrák rendelése chaten, hibabejelentés, mielőtt értékelés lenne belőle.']],
+};
+const WHY = {
+  en: [['One system instead of many', 'Replaces the booking tool, inbox, newsletter and chatbot.'], ['Fewer subscriptions', 'Fewer separate tools and integrations.'], ['No customer gets lost', 'Instant replies and automatic follow-up.'], ['Saves time', 'Reminders, follow-ups and review requests run themselves.'], ['Clear numbers', 'Where customers come from, bookings, revenue.'], ['Answers 24/7', 'AI takes bookings at night and on weekends.'], ['No tech skills needed', 'We build it and keep it running.'], ['Fast start', 'Ready templates get it running quickly.']],
+  hu: [['Egy rendszer sok helyett', 'Kiváltja a foglalót, az üzenetkezelőt, a hírlevelet és a chatbotot.'], ['Kevesebb előfizetés', 'Kevesebb külön program, kevesebb összekötögetés.'], ['Nem vész el vendég', 'Azonnali válasz és automatikus utánkövetés.'], ['Időt spórol', 'Emlékeztetőt, utánkövetést, értékeléskérést a rendszer intézi.'], ['Látszanak a számok', 'Honnan jön a vendég, hány foglalás, mennyi bevétel.'], ['0–24-ben válaszol', 'Az AI éjjel és hétvégén is foglal.'], ['Nem kell technikai tudás', 'Mi építjük és tartjuk karban.'], ['Gyors indulás', 'Kész sablonokkal hamar elindul.']],
+};
+const STEPS = {
+  en: [['Free audit', 'We look at your messages, calls, reviews and online visibility.'], ['A clear plan', 'You get a short plan: where you lose customers and what to start with.'], ['We build it', 'We set it up on your channels, in your voice, in your languages.'], ['We run and improve it', 'Monthly fine-tuning, reports, and new pieces when you’re ready.']],
+  hu: [['Ingyenes felmérés', 'Átnézzük az üzeneteket, hívásokat, értékeléseket és az online láthatóságot.'], ['Érthető terv', 'Rövid terv: hol vesztek vendéget, és mivel érdemes kezdeni.'], ['Felépítjük', 'Beállítjuk a ti csatornáitokon, a ti hangotokon, a ti nyelveiteken.'], ['Üzemeltetjük és fejlesztjük', 'Havi finomítás, riportok, és új elemek, amikor készen álltok.']],
+};
+const MODELS = {
+  en: [['We run it for you', 'We build and run it; you just see the results, for a monthly fee.'], ['Setup + monthly management', 'One-off setup, then continuous fine-tuning, not a one-time job.'], ['Pay for results', 'Pay per booking or per lead, so you can start with less risk.'], ['Training and support', 'We train your team and help in English or Hungarian.']],
+  hu: [['Mi csináljuk helyettetek', 'Felépítjük és üzemeltetjük, ti csak az eredményt látjátok, havi díjért.'], ['Beállítás + havi menedzsment', 'Egyszeri beállítás, utána folyamatos finomítás, nem csak egyszeri munka.'], ['Eredményalapú díjazás', 'Fizetés foglalás vagy érdeklődő után: kisebb kockázattal indulhattok.'], ['Betanítás és támogatás', 'Megtanítjuk a csapatnak, és magyarul vagy angolul segítünk.']],
+};
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+let lang = 'en', cat = 'all';
+try { const q = new URLSearchParams(location.search).get('lang'); lang = q || localStorage.getItem('qais-lang') || ((navigator.language || '').startsWith('hu') ? 'hu' : 'en'); } catch (e) {}
+if (!T[lang]) lang = 'en';
+
+function render() {
+  const t = T[lang], L = lang === 'hu' ? 0 : 1;
+  document.documentElement.lang = lang;
+  document.title = lang === 'hu' ? 'Quick AI Setup | AI rendszerek edzőtermeknek, szalonoknak, vendéglátásnak' : 'Quick AI Setup | AI systems for gyms, salons and hospitality';
+  document.querySelectorAll('[data-t]').forEach(el => { const v = t[el.dataset.t]; if (v == null) return; if (el.hasAttribute('data-html')) el.innerHTML = v; else el.textContent = v; });
+  document.querySelectorAll('[data-ph]').forEach(el => el.placeholder = t[el.dataset.ph]);
+  document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+  $('forList').innerHTML = FOR[lang].map(x => `<span>${esc(x)}</span>`).join('');
+  $('feat').innerHTML = FEAT[lang].map((p, i) => `<article class="fp reveal in"><span class="num">0${i + 1}</span><h3>${esc(p[0])}</h3><div class="vis" aria-hidden="true">${VIS[p[3]](lang)}</div><div style="display:grid;gap:16px;align-content:start"><p>${esc(p[1])}</p><ul>${p[2].map(b => `<li>${esc(b)}</li>`).join('')}</ul></div><a href="#audit" class="btn ghost">${esc(t.ctaAudit2)} →</a></article>`).join('');
+  $('cats').innerHTML = `<button data-cat="all" aria-pressed="${cat === 'all'}">${t.allCat} · ${SVC.length}</button>` + Object.keys(CATS).map(k => `<button data-cat="${k}" aria-pressed="${cat === k}">${esc(CATS[k][lang])}</button>`).join('');
+  $('svcGrid').innerHTML = SVC.map(s => { const d = s[1 + L]; return `<div class="svc${cat !== 'all' && cat !== s[0] ? ' hide' : ''}" data-c="${s[0]}"><span class="eyebrow">${esc(CATS[s[0]][lang])}</span><h4>${esc(d[0])}</h4><p>${esc(d[1])}</p><ul>${d[2].map(b => `<li>${esc(b)}</li>`).join('')}</ul></div>`; }).join('');
+  $('inds').innerHTML = INDS[lang].map(x => `<div class="ind reveal in"><i>${x[0]}</i><h4>${esc(x[1])}</h4><p>${esc(x[2])}</p></div>`).join('');
+  $('whyGrid').innerHTML = WHY[lang].map(x => `<div><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('');
+  $('steps').innerHTML = STEPS[lang].map(x => `<div class="step"><h4>${esc(x[0])}</h4><p>${esc(x[1])}</p></div>`).join('');
+  $('models').innerHTML = MODELS[lang].map(x => `<div class="model"><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('');
+  $('aList').innerHTML = t.aList.map(x => `<li>${esc(x)}</li>`).join('');
+  const done = document.querySelector('.done'); if (done) showDone();
+  playFeed();
+}
+
+let feedTimers = [];
+function playFeed() {
+  feedTimers.forEach(clearTimeout); feedTimers = [];
+  const f = $('feed'), items = FEED[lang];
+  f.innerHTML = items.map(e => `<div class="ev"><i>${e[0]}</i><div><small>${esc(e[1])}</small><p>${e[2]}</p></div></div>`).join('');
+  const evs = [...f.children], reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clocks = ['23:41', '23:41', '23:44', '23:45', '23:47'];
+  evs.forEach((el, i) => feedTimers.push(setTimeout(() => { el.classList.add('on'); $('liveClock').textContent = clocks[i]; }, reduce ? 0 : 500 + i * 1100)));
+  if (!reduce) feedTimers.push(setTimeout(() => { evs.forEach(e => e.classList.remove('on')); feedTimers.push(setTimeout(playFeed, 700)); }, 500 + items.length * 1100 + 5000));
+}
+
+document.addEventListener('click', e => {
+  const lb = e.target.closest('[data-lang]');
+  if (lb) { lang = lb.dataset.lang; try { localStorage.setItem('qais-lang', lang); const u = new URL(location.href); if (u.searchParams.has('lang')) { u.searchParams.set('lang', lang); history.replaceState(null, '', u); } } catch (err) {} render(); return; }
+  const cb = e.target.closest('[data-cat]');
+  if (cb) { cat = cb.dataset.cat; document.querySelectorAll('[data-cat]').forEach(b => b.setAttribute('aria-pressed', b.dataset.cat === cat)); document.querySelectorAll('.svc').forEach(s => s.classList.toggle('hide', cat !== 'all' && s.dataset.c !== cat)); }
+});
+
+// audit form → same Google Apps Script endpoint and payload keys as the previous site
+const GAS = 'https://script.google.com/macros/s/AKfycbzFvn6jZhTvPh9hrHAUTh_zI3_s-MeTufmi2P6fG5s8bvjqVyZ4coC0QrFC08_22XDEwA/exec';
+const form = $('auditForm');
+function showDone() { const t = T[lang]; form.innerHTML = `<div class="done"><i>✓</i><h4>${esc(t.doneH)}</h4><p>${esc(t.doneP)}</p></div>`; }
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const t = T[lang], fd = new FormData(form), err = $('ferr'), btn = form.querySelector('button[type=submit]');
+  const v = k => String(fd.get(k) || '').trim();
+  if (!v('fullName') || !v('workEmail') || !v('businessName') || !v('mainGoal') || !form.consent.checked) { err.textContent = t.fErrReq; return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('workEmail'))) { err.textContent = t.fErrMail; return; }
+  err.textContent = ''; btn.disabled = true; btn.textContent = t.fSending;
+  const payload = { fullName: v('fullName'), workEmail: v('workEmail'), businessName: v('businessName'), website: v('website'), mainGoal: v('mainGoal'), consentGiven: true, consentTimestamp: new Date().toISOString(), sourcePage: location.href, userAgent: navigator.userAgent };
+  try {
+    await fetch(GAS, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    showDone();
+  } catch (x) { err.textContent = t.fErr; btn.disabled = false; btn.textContent = t.fSend; }
+});
+
+const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { threshold: .12 }) : null;
+document.querySelectorAll('.reveal').forEach(el => io ? io.observe(el) : el.classList.add('in'));
+$('yr').textContent = new Date().getFullYear();
+render();
+</script>
+</body>
+</html>
