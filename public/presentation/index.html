@@ -129,6 +129,20 @@ h1.xl { font-size: clamp(44px, 7.4vw, 104px); max-width: 16ch }
 .end h1 { margin-inline: auto } .end .p { margin-inline: auto }
 .ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center }
 .hint { color: var(--faint); font-size: 13px }
+.gate { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center }
+.gform { border: 1px solid var(--line); border-radius: 26px; background: var(--surface); padding: 28px; display: grid; gap: 13px }
+.gform label { display: grid; gap: 6px; font-size: 14px; color: var(--soft) }
+.gform input, .gform select { width: 100%; background: var(--side); border: 1px solid var(--line2); border-radius: 12px; padding: 13px 14px; font: 16px var(--f); color: #fff; outline: none }
+.gform input:focus, .gform select:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgb(56 189 248 / .14) }
+.gform .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px }
+.gform .ck { display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start; font-size: 13px; color: var(--muted); line-height: 1.45 }
+.gform .ck input { width: 18px; height: 18px; margin: 1px 0 0; padding: 0; accent-color: var(--cyan) }
+.gform .ck a { color: var(--cyan); text-decoration: underline }
+.gform .btn { justify-content: center; width: 100%; padding: 18px; margin-top: 4px } .gform .btn[disabled] { opacity: .6; cursor: wait }
+.gform .err { color: #FB923C; font-size: 14px } .gform .err:empty { display: none }
+.gform .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden }
+.gform small { color: var(--faint); font-size: 12.5px; text-align: center }
+.sent { border: 1px solid rgb(52 211 153 / .4); background: rgb(52 211 153 / .08); color: var(--good); border-radius: 16px; padding: 16px 18px; font-weight: 600 }
 
 @media (max-width: 860px) {
   .stats, .team { grid-template-columns: 1fr } .role:not(:last-child)::after { display: none }
@@ -139,6 +153,7 @@ h1.xl { font-size: clamp(44px, 7.4vw, 104px); max-width: 16ch }
   .cr { grid-template-columns: 120px 1fr 40px }
   .top .tag { display: none } .xl-t { display: none } .xs-t { display: inline; font-size: 24px; line-height: 1; padding: 0 4px }
   .q { min-height: 44vh }
+  .gate { grid-template-columns: 1fr; gap: 26px } .gform { padding: 20px } .gform .two { grid-template-columns: 1fr }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01s !important; animation-delay: 0s !important; transition: none !important } .in { opacity: 1; transform: none } }
 </style>
@@ -173,6 +188,8 @@ const ico = (n, c = '') => `<svg class="${c}" viewBox="0 0 24 24" aria-hidden="t
 const TX = {
   en: {
     tag: 'Sample presentation · Bar', exit: 'Back to the website ×', next: 'Next →', start: 'Start →', yes: 'Yes', no: 'No', ill: 'Illustration', of: '/',
+    gate: { ey: 'Sample presentation', h: 'See what AI would do for your business.', p: 'A 3-minute interactive presentation, the same kind we make for our clients. Tell us who you are, and it starts right away.', pts: ['Live demos: messages, calls, deposits, reviews', 'A few yes/no questions, and a plan built from your answers', 'Then, if you want, we make one for your business'], name: 'Your name', email: 'Email', phone: 'Phone', site: 'Website or Instagram', type: 'Business type', types: { bar: 'Bar', restaurant: 'Restaurant', salon: 'Salon / spa', gym: 'Gym', hotel: 'Hotel / stay', other: 'Other service business' }, privacy: 'I accept the <a href="/privacy-policy/" target="_blank">Privacy Policy</a> and <a href="/terms/" target="_blank">Terms</a>, and agree that Quick AI Setup may contact me about my request.', marketing: 'Optional: I’d like to receive news and offers from Quick AI Setup by email and SMS. Message frequency varies, message and data rates may apply. Reply STOP to opt out, HELP for help.', go: 'Watch the presentation →', sending: 'Starting…', note: 'Free. No spam. We never share your number for marketing.', err: 'Please fill in every field and accept the Privacy Policy.', errMail: 'Please check your email address.', errNet: 'Something went wrong. Please try again.' },
+    own: 'We’ll be in touch within 1 working day ✓',
     cover: { ey: 'Sample presentation · A bar in Budapest', h: 'What if your bar never missed a guest again?', p: 'This is the kind of presentation we make for every business, with its own venues and numbers. This one is for a sample bar. It takes about 3 minutes, and you answer a few yes/no questions along the way.', hint: 'Use → and ← on your keyboard, or tap the buttons.' },
     s1: { ey: 'Why now?', h: 'Your guests already use AI. Most businesses don’t yet.', p: 'That is a huge edge right now, but it won’t last. Whoever moves now is years ahead of the rest.', stats: [['~900 million', 'people use ChatGPT every week: your guests are already there', 'OpenAI, early 2026'], ['20%', 'of EU companies use AI, no more', 'Eurostat, 2025 (companies with 10+ staff)'], ['~10%', 'of Hungarian businesses. The government target: 24% by 2030', 'KSH, 2025']] },
     s2: { ey: 'What is an AI agent?', h: 'It doesn’t just answer. It gets the job done.', cols: [['Chatbot', ['Answers questions', 'Follows fixed rules', 'Stuck means stuck']], ['AI agent', ['Understands what the guest wants', 'Books, messages, follows up, takes deposits', 'Talks to other systems and other AIs']]] },
@@ -206,6 +223,8 @@ const TX = {
   },
   hu: {
     tag: 'Minta-bemutató · Bár', exit: 'Vissza a weboldalra ×', next: 'Tovább →', start: 'Indítás →', yes: 'Igen', no: 'Nem', ill: 'Szemléltetés', of: '/',
+    gate: { ey: 'Minta-bemutató', h: 'Nézd meg, mit csinálna az AI a te vállalkozásodban.', p: '3 perces interaktív bemutató, ugyanolyan, mint amit az ügyfeleinknek készítünk. Add meg, ki vagy, és máris indul.', pts: ['Élő demók: üzenetek, hívások, előleg, értékelések', 'Néhány igen/nem kérdés, és a válaszaidból kész terv', 'Utána, ha szeretnéd, elkészítjük a saját vállalkozásodra'], name: 'Neved', email: 'E-mail', phone: 'Telefonszám', site: 'Weboldal vagy Instagram', type: 'Vállalkozás típusa', types: { bar: 'Bár', restaurant: 'Étterem', salon: 'Szalon / spa', gym: 'Edzőterem', hotel: 'Szálloda / szállás', other: 'Egyéb szolgáltatás' }, privacy: 'Elfogadom az <a href="/adatkezelesi-tajekoztato/" target="_blank">adatkezelési tájékoztatót</a> és a <a href="/terms/" target="_blank">feltételeket</a>, és hozzájárulok, hogy a Quick AI Setup a kérésemmel kapcsolatban felvegye velem a kapcsolatot.', marketing: 'Nem kötelező: szeretnék híreket és ajánlatokat kapni a Quick AI Setuptól e-mailben és SMS-ben. Az üzenetek gyakorisága változó, adatforgalmi díj felmerülhet. Leiratkozás: STOP, segítség: HELP.', go: 'Indulhat a bemutató →', sending: 'Indul…', note: 'Ingyenes. Nincs spam. A telefonszámodat soha nem adjuk ki marketingre.', err: 'Tölts ki minden mezőt, és fogadd el az adatkezelési tájékoztatót.', errMail: 'Ellenőrizd az e-mail-címet.', errNet: 'Valami hiba történt. Próbáld újra.' },
+    own: '1 munkanapon belül jelentkezünk ✓',
     cover: { ey: 'Minta-bemutató · Egy budapesti bár', h: 'Mi lenne, ha a bárod soha többé nem veszítene el vendéget?', p: 'Ilyen bemutatót készítünk minden vállalkozásnak, a saját helyeivel és számaival. Ez egy minta bárnak szól. Kb. 3 perc, és közben néhány igen/nem kérdésre válaszolsz.', hint: 'Használd a → és ← billentyűket, vagy a gombokat.' },
     s1: { ey: 'Miért most?', h: 'A vendégeitek már AI‑t használnak. A legtöbb cég még nem.', p: 'Ez most hatalmas versenyelőny, de nem marad az sokáig. Aki most lép, évekkel a többiek előtt jár.', stats: [['~900 millió', 'ember használja a ChatGPT-t hetente: a vendégeitek már ott vannak', 'OpenAI, 2026 eleje'], ['20%', 'az uniós cégek közül csak ennyi használ AI‑t', 'Eurostat, 2025 (10+ fős cégek)'], ['~10%', 'a magyar vállalkozásoknak csak ennyi. A kormány célja: 24% 2030-ra', 'KSH, 2025']] },
     s2: { ey: 'Mi az AI-ügynök?', h: 'Nem csak válaszol. Elvégzi a feladatot.', cols: [['Chatbot', ['Kérdésre válaszol', 'Szabályok szerint működik', 'Ha elakad, vége']], ['AI-ügynök', ['Megérti, mit akar a vendég', 'Foglal, üzen, utánkövet, előleget kér', 'Más rendszerekkel és más AI-okkal is beszél']]] },
@@ -243,13 +262,17 @@ const TOPICS = ['msg', 'phone', 'noshow', 'rev', 'list'];
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
-let lang = 'en', i = 0, ans = {}, timers = [];
+let lang = 'en', i = 0, ans = {}, timers = [], lead = null, formMs = Date.now();
+const TYPES = ['bar', 'restaurant', 'salon', 'gym', 'hotel', 'other'];
+let btype = 'bar';
+try { const t = new URLSearchParams(location.search).get('type'); if (TYPES.includes(t)) btype = t; lead = JSON.parse(localStorage.getItem('qais-lead') || 'null'); } catch (e) {}
 try { const q = new URLSearchParams(location.search).get('lang'); lang = q || localStorage.getItem('qais-lang') || ((navigator.language || '').startsWith('hu') ? 'hu' : 'en'); ans = JSON.parse(sessionStorage.getItem('qais-pres-ans') || '{}'); } catch (e) {}
 if (!TX[lang]) lang = 'en';
 const at = (ms, fn) => timers.push(setTimeout(fn, RM ? 0 : ms));
 const on = id => { const e = $(id); if (e) e.classList.add('on'); };
 
 function seq() {
+  if (!lead) return [{ k: 'gate' }];
   const s = [{ k: 'cover' }, { k: 's1' }, { k: 's2' }, { k: 'sT' }];
   TOPICS.forEach(t => { s.push({ k: 'q', t }); if (ans[t] === true) s.push({ k: 'sol', t }); });
   s.push({ k: 'sS' }, { k: 'geo' }, { k: 's4' }, { k: 'sum' }, { k: 'end' });
@@ -294,6 +317,18 @@ function render() {
   $('tag').textContent = X.tag; $('exit').innerHTML = `<span class="xl-t">${X.exit.replace(' ×', '')} ×</span><span class="xs-t" aria-label="${X.exit.replace(' ×', '')}">×</span>`;
   document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
   const D = k => `style="--d:${k}s"`;
+  if (cur.k === 'gate') { const g = X.gate; h = `<div class="gate"><div style="display:grid;gap:20px"><div class="ey in">${g.ey}</div><h1 class="in" ${D(.1)}>${g.h}</h1><p class="p in" ${D(.2)}>${g.p}</p><div class="steps">${g.pts.map((x, k) => `<div class="in" ${D(.3 + k * .12)}><i>✓</i><span>${x}</span></div>`).join('')}</div></div>
+    <form class="gform in" ${D(.2)} id="gform" novalidate>
+      <label>${g.name}<input name="name" autocomplete="name" required></label>
+      <div class="two"><label>${g.email}<input name="email" type="email" autocomplete="email" required></label><label>${g.phone}<input name="phone" type="tel" autocomplete="tel" required></label></div>
+      <div class="two"><label>${g.site}<input name="website" autocomplete="url" placeholder="www. / @" required></label><label>${g.type}<select name="type">${TYPES.map(t => `<option value="${t}"${t === btype ? ' selected' : ''}>${g.types[t]}</option>`).join('')}</select></label></div>
+      <label class="hp" aria-hidden="true">Company<input name="company" tabindex="-1" autocomplete="off"></label>
+      <label class="ck"><input type="checkbox" name="privacy" required><span>${g.privacy}</span></label>
+      <label class="ck"><input type="checkbox" name="marketing"><span>${g.marketing}</span></label>
+      <div class="err" id="gerr" role="alert"></div>
+      <button class="btn" type="submit">${g.go}</button>
+      <small>${g.note}</small>
+    </form></div>`; }
   if (cur.k === 'cover') { const c = X.cover; h = `<div class="ey in">${c.ey}</div><h1 class="xl in" ${D(.1)}>${c.h}</h1><p class="p in" ${D(.25)}>${c.p}</p><div class="in" ${D(.4)}><button class="btn" data-go="1">${X.start}</button></div><p class="hint in" ${D(.6)}>${c.hint}</p>`; }
   if (cur.k === 's1') { const c = X.s1; h = `<div class="ey in">${c.ey}</div><h1 class="in" ${D(.1)}>${c.h}</h1><p class="p in" ${D(.2)}>${c.p}</p><div class="stats">${c.stats.map((s, k) => `<div class="in" ${D(.35 + k * .2)}><b>${s[0]}</b><span>${s[1]}</span><small>${s[2]}</small></div>`).join('')}</div>`; }
   if (cur.k === 's2') { const c = X.s2; h = `<div class="ey in">${c.ey}</div><h1 class="in" ${D(.1)}>${c.h}</h1><div class="vs">${c.cols.map((col, k) => `<div class="in ${k ? 'hi' : ''}" ${D(.3 + k * .45)}><b>${col[0]}</b><ul>${col[1].map(x => `<li>${x}</li>`).join('')}</ul></div>`).join('<span class="ar in" style="--d:.55s">→</span>')}</div>`; }
@@ -304,12 +339,14 @@ function render() {
   if (cur.k === 'geo') { const g = X.geo; h = `<div class="sol"><div style="display:grid;gap:18px"><div class="ey in">${g.ey}</div><h1 class="in" ${D(.1)}>${g.h}</h1><p class="p in" ${D(.2)}>${g.p}</p><div class="steps">${g.steps.map((x, k) => `<div class="in" ${D(.35 + k * .15)}><i>0${k + 1}</i><span>${x}</span></div>`).join('')}</div></div><div class="demo in" ${D(.25)}><div class="eng" id="eng"><span>ChatGPT</span><span>Gemini</span><span>Google AI</span><span>Perplexity</span></div><div class="ask"><span id="qq"></span><span class="cur"></span></div><div class="ans" id="aa"></div><span class="ill">${X.ill}</span></div></div>`; }
   if (cur.k === 's4') { const c = X.s4; h = `<div class="ey in">${c.ey}</div><h1 class="in" ${D(.1)}>${c.h}</h1><div class="a2a in" ${D(.25)}><div class="who"><span>🤖 ${c.a}</span><span>${c.b} 🤖</span></div>${c.chat.map((m, k) => `<div class="b ${m[0] ? 'r' : 'l'} pop" id="aq${k}">${esc(m[1])}</div>`).join('')}<span class="ill">${c.foot}</span></div>`; }
   if (cur.k === 'sum') { const c = X.sum, picked = TOPICS.filter(t => ans[t] === true); h = `<div class="ey in">${c.ey}</div><h1 class="in" ${D(.1)}>${c.h}</h1>${picked.length ? `<div class="sumg">${picked.concat(['geo']).map((t, k) => `<div class="in" ${D(.3 + k * .15)}><i>${c.step} ${k + 1}</i><b>${t === 'geo' ? X.geo.h : X.sol[t][0]}</b><span>${t === 'geo' ? X.geo.p : X.sol[t][1]}</span></div>`).join('')}</div>` : `<p class="p in" ${D(.25)}>${c.none}</p>`}`; }
-  if (cur.k === 'end') { const c = X.end; h = `<div class="end" style="display:grid;gap:22px"><div class="ey in">${c.ey}</div><h1 class="in" ${D(.1)}>${c.h}</h1><p class="p in" ${D(.25)}>${c.p}</p><div class="ctas in" ${D(.4)}><a class="btn" href="/${lang === 'hu' ? '?lang=hu' : ''}#audit">${c.cta} →</a><a class="btn gh" href="/${lang === 'hu' ? '?lang=hu' : ''}">${c.back}</a></div></div>`; }
+  if (cur.k === 'end') { const c = X.end; h = `<div class="end" style="display:grid;gap:22px"><div class="ey in">${c.ey}</div><h1 class="in" ${D(.1)}>${c.h}</h1><p class="p in" ${D(.25)}>${c.p}</p><div class="ctas in" ${D(.4)} id="ctas">${sentOwn ? `<div class="sent">${X.own}</div>` : `<button class="btn" data-own="1">${c.cta} →</button>`}<a class="btn gh" href="/${lang === 'hu' ? '?lang=hu' : ''}">${c.back}</a></div></div>`; }
   $('stage').innerHTML = `<section class="slide">${h}</section>`; $('stage').scrollTop = 0;
   if (cur.k === 'sol') runDemo(cur.t, X.demo[cur.t]);
   if (cur.k === 'geo') { const g = X.geo, q = g.q; [...q].forEach((c, k) => at(400 + k * 36, () => { const e = $('qq'); if (e) e.textContent = q.slice(0, k + 1); })); const t0 = 600 + q.length * 36, plain = g.a.replace(/<[^>]+>/g, ''); let sh = 0; const st = () => { sh = Math.min(plain.length, sh + 3); let o = '', n = 0, tag = false; for (const ch of g.a) { if (ch === '<') tag = true; if (tag) { o += ch; if (ch === '>') tag = false; continue; } if (n < sh) o += ch; n++; } const e = $('aa'); if (!e) return; e.innerHTML = o; if (sh < plain.length) at(28, st); }; at(t0, st); document.querySelectorAll('#eng span').forEach((e, k) => at(t0 + 2000 + k * 300, () => e.classList.add('on'))); }
   if (cur.k === 's4') X.s4.chat.forEach((m, k) => at(500 + k * 1100, () => on('aq' + k)));
   const n = S.length; $('bar').style.width = ((i + 1) / n * 100) + '%'; $('cnt').textContent = `${i + 1} ${X.of} ${n}`;
+  document.querySelector('.bot').style.display = cur.k === 'gate' ? 'none' : '';
+  if (cur.k === 'sum') track(false); if (cur.k === 'end') track(true);
   $('prev').disabled = i === 0; const last = i === n - 1, isQ = cur.k === 'q';
   $('next').textContent = X.next; $('next').disabled = last || (isQ && ans[cur.t] === undefined);
   $('next').style.visibility = last ? 'hidden' : 'visible';
@@ -318,14 +355,43 @@ function go(d) { const n = seq().length; const ni = Math.max(0, Math.min(n - 1, 
 
 document.addEventListener('click', e => {
   const lb = e.target.closest('[data-lang]'); if (lb) { lang = lb.dataset.lang; try { localStorage.setItem('qais-lang', lang); } catch (x) {} render(); return; }
-  const a = e.target.closest('[data-ans]'); if (a) { const cur = seq()[i]; ans[cur.t] = a.dataset.ans === '1'; try { sessionStorage.setItem('qais-pres-ans', JSON.stringify(ans)); } catch (x) {} i++; render(); return; }
+  const a = e.target.closest('[data-ans]'); if (a) { const cur = seq()[i]; ans[cur.t] = a.dataset.ans === '1'; try { sessionStorage.setItem('qais-pres-ans', JSON.stringify(ans)); } catch (x) {} i++; render(); track(false); return; }
+  if (e.target.closest('[data-own]')) { sentOwn = true; track(true, true); render(); return; }
   if (e.target.closest('[data-go]')) { go(1); return; }
   if (e.target.closest('#next')) go(1); else if (e.target.closest('#prev')) go(-1);
 });
 document.addEventListener('keydown', e => {
+  if (e.target.closest && e.target.closest('input, select, textarea')) return;
   if (e.key === 'ArrowRight' || e.key === 'PageDown' || (e.key === ' ' && e.target === document.body)) { e.preventDefault(); go(1); }
   if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
   const cur = seq()[i]; if (cur.k === 'q' && (e.key === 'y' || e.key === 'i' || e.key === 'n')) { ans[cur.t] = e.key !== 'n'; i++; render(); }
+});
+let sentOwn = false;
+let doneSent = false;
+function track(completed, own) {
+  if (!lead || !lead.cid) return;
+  if (completed && !own) { if (doneSent) return; doneSent = true; }
+  const S = seq();
+  const body = JSON.stringify({ action: 'progress', cid: lead.cid, sig: lead.sig, answers: ans, slide: i + 1, total: S.length, completed: !!completed, own: !!own });
+  try { fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, keepalive: true }); } catch (e) {}
+}
+document.addEventListener('submit', async e => {
+  if (e.target.id !== 'gform') return;
+  e.preventDefault();
+  const f = e.target, g = TX[lang].gate, fd = new FormData(f), v = k => String(fd.get(k) || '').trim(), err = $('gerr'), btn = f.querySelector('button[type=submit]');
+  if (!v('name') || !v('email') || !v('phone') || !v('website') || !f.privacy.checked) { err.textContent = g.err; return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('email'))) { err.textContent = g.errMail; return; }
+  err.textContent = ''; btn.disabled = true; btn.textContent = g.sending;
+  const tmp = document.createElement('div');
+  const txt = html => { tmp.innerHTML = html; return tmp.textContent; };
+  try {
+    const r = await fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'submit', name: v('name'), email: v('email'), phone: v('phone'), website: v('website'), type: v('type'), privacy: true, marketing: f.marketing.checked, privacyText: txt(g.privacy), marketingText: txt(g.marketing), lang, page: location.href, hp: v('company'), ms: Date.now() - formMs }) });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !d.ok) throw new Error('bad');
+    lead = { cid: d.cid || null, sig: d.sig || null, at: Date.now() }; btype = v('type');
+    try { localStorage.setItem('qais-lead', JSON.stringify(lead)); } catch (x) {}
+    i = 0; render();
+  } catch (x) { err.textContent = g.errNet; btn.disabled = false; btn.textContent = g.go; }
 });
 let tx = null; document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
 document.addEventListener('touchend', e => { if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 60) go(dx < 0 ? 1 : -1); tx = null; }, { passive: true });

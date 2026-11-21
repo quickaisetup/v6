@@ -239,7 +239,7 @@ footer .links a { font-size: 14px; color: var(--muted) } footer .links a:hover {
   .nav .wrap { height: 64px } .brand img { height: 26px }
   .story .wrap { padding-top: 76px; gap: 18px }
   .story .sub-hide { display: none }
-  .story .cta .ghost { display: none }
+  .story .cta .btn { padding: 15px 20px; font-size: 14px }
   .beats { margin-top: 14px } .beat-line { font-size: 17px; min-height: 2.6em }
   .phone { justify-self: center; transform-origin: top center }
   .bento { grid-template-columns: 1fr } .bento .card, .bento .card.w { grid-column: auto; padding: 24px }
@@ -286,7 +286,7 @@ footer .links a { font-size: 14px; color: var(--muted) } footer .links a:hover {
           <p class="lead sub-hide" data-t="heroP"></p>
           <div class="cta">
             <a href="#audit" class="btn"><span data-t="cta2"></span><span class="arr">→</span></a>
-            <a href="#products" class="btn ghost" data-t="ctaSee"></a>
+            <a href="/presentation/" class="btn ghost" id="presLink" data-t="ctaSee"></a>
           </div>
           <div class="beats" aria-live="polite">
             <div class="ticks" id="ticks"><i></i><i></i><i></i><i></i></div>
@@ -434,7 +434,7 @@ const svg = (n, cls = 'ic') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hid
 
 const T = {
   en: {
-    nP: 'Products', nC: 'Clients', nH: 'How it works', nF: 'FAQ', cta: 'Free audit', cta2: 'Get your free audit', ctaSee: 'See how it works', scroll: 'Scroll',
+    nP: 'Products', nC: 'Clients', nH: 'How it works', nF: 'FAQ', cta: 'Free audit', cta2: 'Get your free audit', ctaSee: 'Watch the presentation', scroll: 'Scroll',
     heroEy: 'AI for gyms, salons and cafés', heroH: 'Your business never misses a customer <em>again.</em>',
     heroP: 'AI that answers your messages and calls, books customers and collects Google reviews. Day and night.',
     beats: [['23:41', 'A new message comes in.'], ['23:41', 'Answered in 6 seconds.'], ['23:42', 'Booked. Nobody had to wake up.'], ['08:12', '5★ review by morning.']],
@@ -460,7 +460,7 @@ const T = {
     lSvc: 'All services', lPriv: 'Privacy', lTerms: 'Terms',
   },
   hu: {
-    nP: 'Termékek', nC: 'Ügyfelek', nH: 'Így működik', nF: 'GYIK', cta: 'Ingyenes felmérés', cta2: 'Kérem az ingyenes felmérést', ctaSee: 'Nézd meg, hogyan működik', scroll: 'Görgess',
+    nP: 'Termékek', nC: 'Ügyfelek', nH: 'Így működik', nF: 'GYIK', cta: 'Ingyenes felmérés', cta2: 'Kérem az ingyenes felmérést', ctaSee: 'Nézd meg a bemutatót', scroll: 'Görgess',
     heroEy: 'AI edzőtermeknek, szalonoknak, kávézóknak', heroH: 'A vállalkozásod soha többé nem veszít el <em>vendéget.</em>',
     heroP: 'AI, ami válaszol az üzenetekre és hívásokra, foglal, és Google-értékelést gyűjt. Éjjel-nappal.',
     beats: [['23:41', 'Új üzenet érkezik.'], ['23:41', '6 másodperc alatt megválaszolva.'], ['23:42', 'Lefoglalva. Senkinek nem kellett felkelnie.'], ['08:12', 'Reggelre 5★ értékelés.']],
@@ -591,6 +591,7 @@ function render() {
   document.querySelectorAll('[data-ph]').forEach(el => el.placeholder = t[el.dataset.ph]);
   document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
   $('lnkPriv').href = hu ? '/adatkezelesi-tajekoztato/' : '/privacy-policy/';
+  $('presLink').href = '/presentation/' + (hu ? '?lang=hu' : '');
   ['svcLink', 'svcLink2'].forEach(id => $(id).href = '/services/' + (hu ? '?lang=hu' : ''));
   $('igIcon').innerHTML = svg('instagram', '');
   $('gHead').innerHTML = svg('google', '') + 'Google · Anna K.';
