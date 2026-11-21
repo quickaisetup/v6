@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>All services | Quick AI Setup</title>
+<meta name="description" content="Every AI and automation service Quick AI Setup builds for local businesses, explained simply.">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Space+Grotesk:wght@600;700&display=swap">
+<style>
+:root { color-scheme: dark; --bg: #0B1221; --side: #080E1B; --surface: #0F172A; --line: #1C2741; --line2: #24314F; --muted: #94A3B8; --faint: #64748B; --soft: #CBD5E1; --cyan: #38BDF8; --f: "Inter", system-ui, sans-serif; --fh: "Space Grotesk", "Inter", sans-serif }
+* { box-sizing: border-box }
+body { margin: 0; background: var(--bg); color: #fff; font: 16px/1.6 var(--f); -webkit-font-smoothing: antialiased }
+a { color: inherit; text-decoration: none }
+button { font: inherit; color: inherit; cursor: pointer }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px }
+header { position: sticky; top: 0; z-index: 5; background: rgb(8 14 27 / .85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line) }
+header .wrap { height: 68px; display: flex; align-items: center; gap: 18px }
+header img { height: 28px; width: auto } header .sp { flex: 1 }
+.seg { display: inline-flex; border: 1px solid var(--line2); border-radius: 9px; overflow: hidden }
+.seg button { border: 0; background: none; padding: 7px 11px; font: 700 11px ui-monospace, monospace; color: var(--muted) }
+.seg button[aria-pressed="true"] { background: var(--cyan); color: var(--bg) }
+.btn { display: inline-flex; align-items: center; border-radius: 999px; background: var(--cyan); color: var(--bg); padding: 12px 20px; font: 700 14px/1 var(--f); white-space: nowrap }
+h1 { font: 700 clamp(38px, 5.4vw, 64px)/1.02 var(--fh); letter-spacing: -.035em; margin: 90px 0 16px; text-wrap: balance }
+.lead { color: var(--muted); font-size: 19px; max-width: 52ch; margin: 0 0 40px }
+.cats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px }
+.cats button { border: 1px solid var(--line2); background: transparent; color: var(--muted); border-radius: 999px; padding: 9px 16px; font-weight: 600; font-size: 14px }
+.cats button[aria-pressed="true"] { background: var(--cyan); border-color: var(--cyan); color: var(--bg) }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding-bottom: 100px }
+.svc { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px; display: grid; gap: 10px; align-content: start }
+.svc .c { font: 600 11px var(--f); letter-spacing: .16em; text-transform: uppercase; color: var(--cyan) }
+.svc h2 { margin: 0; font: 700 19px/1.25 var(--fh); letter-spacing: -.02em }
+.svc p { margin: 0; color: var(--muted); font-size: 15px }
+.svc ul { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 5px }
+.svc li { font-size: 14px; color: var(--soft); padding-left: 16px; position: relative }
+.svc li::before { content: ""; position: absolute; left: 0; top: .6em; width: 6px; height: 6px; border-radius: 50%; background: var(--cyan) }
+.svc.hide { display: none }
+.end { text-align: center; padding: 70px 0 100px; border-top: 1px solid var(--line) }
+.end h2 { font: 700 clamp(28px, 3.6vw, 42px)/1.1 var(--fh); letter-spacing: -.03em; margin: 0 0 22px }
+footer { border-top: 1px solid var(--line); padding: 30px 0; text-align: center; font-size: 13px; color: var(--faint) }
+footer a { margin: 0 10px; color: var(--muted) }
+@media (max-width: 1020px) { .grid { grid-template-columns: 1fr 1fr } }
+@media (max-width: 680px) { .wrap { padding: 0 16px } .grid { grid-template-columns: 1fr } header .btn { display: none } h1 { margin-top: 56px } }
+</style>
+</head>
+<body>
+<header><div class="wrap"><a href="/" aria-label="Quick AI Setup home"><img src="/brand/logo-for-dark-bg.svg" alt="quickaisetup" width="178" height="28"></a><span class="sp"></span><div class="seg" role="group" aria-label="Language"><button data-lang="en">EN</button><button data-lang="hu">HU</button></div><a class="btn" href="/#audit" id="cta"></a></div></header>
+<main class="wrap">
+  <h1 id="h1"></h1>
+  <p class="lead" id="lead"></p>
+  <div class="cats" id="cats"></div>
+  <div class="grid" id="grid"></div>
+</main>
+<section class="end"><div class="wrap"><h2 id="endH"></h2><a class="btn" href="/#audit" id="cta2"></a></div></section>
+<footer><a href="/">quickaisetup.com</a><a href="/privacy-policy/">Privacy</a><a href="/terms/">Terms</a><a href="/adatkezelesi-tajekoztato/">GDPR</a></footer>
+<script>
+const CATS = {
+  ai:   { hu: 'AI segítők', en: 'AI helpers' },
+  rep:  { hu: 'Értékelések és hírnév', en: 'Reviews and reputation' },
+  mkt:  { hu: 'Új vendégek', en: 'Getting new customers' },
+  auto: { hu: 'Automatikus utánkövetés', en: 'Automatic follow-up' },
+  crm:  { hu: 'Foglalás és rendszer', en: 'Bookings and system' },
+  pay:  { hu: 'Fizetés', en: 'Payments' },
+  cont: { hu: 'Tartalom és közösség', en: 'Content and community' },
+  org:  { hu: 'Több helyszín', en: 'Many locations' },
+};
+const SVC = [
+  ['ai', ['AI chatbot: Instagram, Messenger, WhatsApp, weboldal', 'Az AI válaszol a vendégek kérdéseire és foglal, 0–24-ben, több nyelven.', ['Éjjel és hétvégén is van válasz', 'A csapat a vendégekkel foglalkozhat']], ['AI chatbot: Instagram, Messenger, WhatsApp, website', 'AI answers customers’ questions and takes bookings, 24/7, in several languages.', ['Answers at night and on weekends', 'Staff focus on customers, not messages']]],
+  ['ai', ['AI telefonos recepciós', 'Egy AI hang felveszi a telefont, válaszol a kérdésekre és foglal.', ['Soha nem foglalt a vonal', 'Csúcsidőben sem marad le hívás']], ['AI phone receptionist', 'An AI voice answers the phone, handles questions and takes bookings.', ['The line is never busy', 'No missed calls at peak times']]],
+  ['ai', ['AI-szűrés a megkeresésekhez', 'Az AI eldönti, melyik megkeresés komoly, és azonnal válaszol rá.', ['A csapat csak a komoly ügyekkel foglalkozik', 'Gyorsabb ajánlat a nagy csoportoknak']], ['AI screening of inquiries', 'AI spots which inquiries are serious and replies to them instantly.', ['The team only handles serious leads', 'Faster quotes for big groups']]],
+  ['ai', ['AI-os leadgenerálás', 'Céglistát és szervezőket keresünk, az AI személyre szabott üzenettel megkeresi őket, és az érdeklődők egyből a rendszerbe kerülnek.', ['Kiszámítható új céges megkeresések', 'Csak a komoly érdeklődőkkel kell beszélni']], ['AI lead generation', 'We find lists of companies and organisers, AI contacts them with personal messages, and interested leads land straight in the system.', ['Predictable new business inquiries every month', 'You only talk to serious prospects']]],
+  ['ai', ['AI concierge szállásoknak', 'A vendég chaten vagy WhatsAppon intéz mindent: programot, transzfert, masszázst, és bejelenti, ha valami nem működik.', ['Extra bevétel minden foglalás mellé', 'A hibabejelentés a karbantartóhoz megy, nem a Google-ba']], ['AI concierge for stays', 'Guests sort everything by chat or WhatsApp: activities, transfers, massages, and report when something is broken.', ['Extra revenue on every stay', 'Problem reports go to maintenance, not into a Google review']]],
+  ['ai', ['AI betanító bot a csapatnak', 'Egy AI, ami bármikor válaszol a kollégák kérdéseire, a saját anyagaitokból: folyamatok, szabályok, árak.', ['Az új kolléga hamarabb önálló', 'A vezetőnek nem kell ugyanazt százszor elmondania']], ['AI training bot for staff', 'An AI that answers staff questions any time, from your own material: processes, rules, prices.', ['New staff get up to speed faster', 'Managers stop repeating the same answers']]],
+  ['ai', ['AI-szövegírás', 'Posztok, hírlevelek és hirdetésszövegek AI segítségével, a márkátok hangján.', ['Rendszeres tartalom kevés munkával', 'Egységes, saját hang']], ['AI copywriting', 'Posts, newsletters and ad copy written with AI, in your brand’s voice.', ['Regular content with little effort', 'One consistent voice']]],
+
+  ['rep', ['Automatikus értékeléskérés', 'Látogatás után a vendég üzenetet kap egy egykattintásos Google-értékelés linkkel.', ['Több friss értékelés az elégedett vendégektől', 'Az elégedetlen vendég előbb nálatok jelez']], ['Automatic review requests', 'After the visit, customers get a message with a one-tap Google review link.', ['More fresh reviews from happy customers', 'Unhappy customers tell you first, not Google']]],
+  ['rep', ['Válasz minden értékelésre, AI-jal', 'Minden véleményre gyors, udvarias válasz megy, AI segítségével megírva.', ['A leendő vendégek látják, hogy figyeltek rájuk', 'Az elégedetlen vendég is látja, hogy foglalkoztok vele']], ['Reply to every review, with AI', 'Every review gets a fast, polite reply, drafted with AI.', ['Future customers see that you listen', 'Unhappy customers see you take it seriously']]],
+  ['rep', ['GEO: ajánljon titeket az AI', 'Elérjük, hogy a ChatGPT, a Gemini és a Google AI-válaszai titeket ajánljanak.', ['Ott vagytok, ahol a vendég ma már keres', 'Havonta mérjük, hányszor ajánl titeket az AI']], ['GEO: get recommended by AI', 'We make ChatGPT, Gemini and Google’s AI answers recommend you.', ['You’re where customers search today', 'Monthly tracking of AI recommendations']]],
+  ['rep', ['Google-profil karbantartása', 'Rendben tartjuk a nyitvatartást, a fotókat és a posztokat a Google-on.', ['Pontos, gondozott megjelenés a térképen', 'Nincs csalódás rossz nyitvatartás miatt']], ['Google profile upkeep', 'We keep opening hours, photos and posts up to date on Google.', ['An accurate, well-kept presence on the map', 'No disappointment from wrong opening hours']]],
+
+  ['mkt', ['Weboldal havidíjjal', 'Elkészítjük és üzemeltetjük a weboldalt, tárhellyel együtt, egy havi díjért.', ['Nem kell külön fejlesztő és tárhely', 'Mindig friss, gyors oldal']], ['Website on a monthly fee', 'We build and run your website, hosting included, for one monthly fee.', ['No separate developer or hosting', 'Always fresh and fast']]],
+  ['mkt', ['Foglalási és értékesítő oldal', 'Egy egyszerű oldal egyetlen céllal: hogy a látogatóból foglalás vagy vásárlás legyen.', ['Több foglalás ugyanannyi látogatóból', 'Foglaláskor eladható a kiegészítő is']], ['Booking and sales page', 'A simple page with one goal: turning a visitor into a booking or a purchase.', ['More bookings from the same visitors', 'Sell the add-on at booking time']]],
+  ['mkt', ['Hirdetés, ami egyből a rendszerbe visz', 'Facebook- és Google-hirdetés, ahol minden jelentkező azonnal bekerül a rendszerbe és választ kap.', ['Egy érdeklődő sem vész el', 'Látszik, melyik hirdetés hozott vendéget']], ['Ads that feed the system', 'Facebook and Google ads where every sign-up lands in the system and gets an instant reply.', ['No inquiry gets lost', 'You see which ad brought customers']]],
+  ['mkt', ['Csali ajánlat a vendéglistához', 'Kupon, próbaóra vagy nyereményjáték, cserébe a vendég elérhetőségéért.', ['Gyorsan nő a saját lista', 'Később ingyen elérhetitek őket']], ['Freebie to grow your list', 'A coupon, a free trial or a giveaway in exchange for contact details.', ['Your own list grows fast', 'Reach them again later for free']]],
+  ['mkt', ['Okos ajánlatkérő kérdőív', 'Pár kérdés (hány fő, mikor, mekkora keret), és a rendszer már tudja, mit ajánljon.', ['Ajánlat percek alatt', 'Nem mentek el felesleges megkeresésekre']], ['Smart quote request form', 'A few questions (how many, when, what budget) and the system knows what to offer.', ['Quotes in minutes', 'No time wasted on dead-end inquiries']]],
+  ['mkt', ['Blog és Google-keresés', 'Cikkek, amelyekkel a Google-on jobban megtalálnak.', ['Ingyenes látogatók hosszú távon', 'A turisták is rátalálnak']], ['Blog and search visibility', 'Articles that help people find you on Google.', ['Free visitors over time', 'Tourists find you too']]],
+
+  ['auto', ['Azonnali válasz minden érdeklődőnek', 'Aki érdeklődik, egy percen belül választ kap SMS-ben vagy e-mailben, akár éjjel is.', ['Nem megy át a konkurenciához', 'A leggyorsabb válasz nyeri a foglalást']], ['Instant reply to every inquiry', 'Anyone who asks gets a reply within a minute by text or email, even at night.', ['They don’t drift to a competitor', 'The fastest reply wins the booking']]],
+  ['auto', ['SMS a nem fogadott hívásra', 'Ha senki nem veszi fel, a hívó azonnal SMS-t kap egy foglalási linkkel.', ['Egy elmaradt hívás sem lesz elveszett vendég', 'Tehermentesíti a recepciót csúcsidőben']], ['Text back on missed calls', 'If nobody picks up, the caller instantly gets a text with a booking link.', ['A missed call is no longer a lost customer', 'Takes pressure off the front desk']]],
+  ['auto', ['Emlékeztető a foglalás előtt', 'SMS és e-mail emlékeztető a foglalás előtt, egykattintásos lemondással.', ['Kevesebb elmaradt időpont', 'A lemondott hely újra eladható']], ['Reminder before the booking', 'Text and email reminders before the booking, with one-tap cancel.', ['Fewer no-shows', 'Cancelled slots can be rebooked']]],
+  ['auto', ['Lead- és vendégreaktiválás', 'Jó ajánlattal újra megkeressük, aki régen érdeklődött, de nem foglalt, vagy rég nem járt nálatok.', ['Bevétel a meglévő listából, hirdetés nélkül', 'Gyorsan mérhető eredmény']], ['Lead and customer reactivation', 'We reach out again, with a good offer, to people who asked but never booked, or haven’t visited in a while.', ['Revenue from the list you already have', 'Results you can measure quickly']]],
+  ['auto', ['Automatikus üzenetsor', 'Az érdeklődő magától kap e-mailt és SMS-t a megfelelő időben, amíg dönt.', ['Senkinek nem kell emlékeznie a visszahívásra', 'Több érdeklődőből lesz vendég']], ['Automatic message sequence', 'Interested people get the right email or text at the right time while they decide.', ['Nobody has to remember to call back', 'More inquiries turn into customers']]],
+  ['auto', ['Megkeresések követése egy táblán', 'Minden megkeresés egy táblán látszik, és magától lép tovább: új, ajánlat kiment, lefoglalva.', ['Látszik, hol akad el egy ügy', 'A feladatok maguktól kiosztódnak']], ['Track every inquiry on one board', 'Every inquiry sits on one board and moves itself along: new, quote sent, booked.', ['See where a deal stalls', 'Tasks assign themselves']]],
+
+  ['crm', ['Minden üzenet egy helyen', 'E-mail, SMS, Facebook, Instagram, WhatsApp és Google-üzenet egyetlen felületen.', ['Nem kell öt appot figyelni', 'Egy üzenet sem marad megválaszolatlanul']], ['Every message in one inbox', 'Email, text, Facebook, Instagram, WhatsApp and Google messages in one place.', ['No more checking five apps', 'No message goes unanswered']]],
+  ['crm', ['Online foglalási naptár', 'A vendég online foglal, a rendszer kiosztja az időpontokat a kollégák vagy termek között.', ['Kevesebb telefon és üzenetváltás', 'Rendezett naptár']], ['Online booking calendar', 'Customers book online and the system allocates slots, staff or rooms.', ['Fewer calls and back-and-forth', 'A tidy calendar']]],
+  ['crm', ['Vendégnyilvántartás (CRM)', 'Minden vendég és megkeresés egy helyen, a teljes előzménnyel.', ['Tudjátok, ki a törzsvendég', 'Nem egy munkatárs fejében van minden']], ['Customer records (CRM)', 'Every customer and inquiry in one place, with full history.', ['Know who your regulars are', 'Knowledge doesn’t live in one person’s head']]],
+  ['crm', ['Saját, márkás app', 'Egy app a ti nevetekkel: foglalás, bérlet, fizetés és értesítések a tagoknak.', ['Nincs külső díj és korlát', 'Az adat a tiétek']], ['Your own branded app', 'One app with your name on it: bookings, memberships, payments and notifications.', ['No third-party fees or limits', 'Your data stays yours']]],
+  ['crm', ['Telefonrendszer', 'Számok, átirányítás, hívásrögzítés és hangmenü (pl. 1 = foglalás, 2 = bérlet).', ['A hívás a jó emberhez kerül', 'Visszahallgatható hívások']], ['Phone system', 'Numbers, forwarding, call recording and a menu (e.g. 1 = bookings, 2 = memberships).', ['Calls reach the right person', 'Calls can be replayed']]],
+  ['crm', ['Átköltözés a mostani programokból', 'Átvisszük az adatokat a jelenlegi rendszerekből, adatvesztés nélkül.', ['Nem kell elölről kezdeni', 'Kevesebb előfizetés']], ['Move over from current tools', 'We move your data from current systems without losing anything.', ['No starting from scratch', 'Fewer subscriptions']]],
+  ['crm', ['Rendrakás a meglévő rendszerekben', 'Átnézzük, ami már megvan, és kidobjuk a felesleget.', ['Kevesebb kézi munka és hiba', 'Kiderül, mit fizettek feleslegesen']], ['Clean-up of current systems', 'We review what you already use and remove what’s not needed.', ['Less manual work and fewer mistakes', 'Find out what you pay for needlessly']]],
+
+  ['pay', ['Online fizetés és előleg', 'Kártyás fizetés, előleg és számla a foglaláshoz kötve.', ['Az előleg érezhetően csökkenti a no-show-t', 'Kevesebb pénzügyi adminisztráció']], ['Online payment and deposits', 'Card payment, deposits and invoices linked to the booking.', ['Deposits noticeably cut no-shows', 'Less finance admin']]],
+  ['pay', ['Fizetési link SMS-ben', 'Egy SMS-ben küldött linkkel a vendég azonnal fizet.', ['Gyors előlegbekérés', 'Nincs utalgatás és egyeztetés']], ['Payment link by text', 'Customers pay instantly from a link sent by text.', ['Fast deposits', 'No bank-transfer back-and-forth']]],
+  ['pay', ['Ajánlat, szerződés, e-aláírás', 'Ajánlat és szerződés online, aláírással, percek alatt.', ['Gyorsabban lezárt ügy', 'Minden dokumentum egy helyen']], ['Quotes, contracts, e-signature', 'Quotes and contracts online, signed in minutes.', ['Deals closed faster', 'All documents in one place']]],
+
+  ['cont', ['Hírlevél és tömeges SMS', 'Egy üzenet egyszerre több ezer vendégnek, ajánlatokkal és programokkal.', ['Több vendég a gyengébb napokon', 'Saját, ingyenes elérés']], ['Newsletter and bulk text', 'One message to thousands of customers at once, with offers and events.', ['More customers on slower days', 'Your own free channel']]],
+  ['cont', ['Közösségi média ütemező', 'Posztok előre időzítve az összes oldalra, egy helyről.', ['Rendszeres jelenlét kevesebb munkával', 'Minden oldal egy naptárban']], ['Social media planner', 'Posts scheduled ahead for every page, from one place.', ['Regular posting with less effort', 'Every page in one calendar']]],
+  ['cont', ['Törzsvendég-klub és online kurzus', 'Zárt online közösség vagy kurzus a tagoknak, exkluzív tartalommal.', ['Hűséges vendégkör', 'Bevétel online is']], ['Members’ club and online courses', 'A private online community or course for members, with exclusive content.', ['A loyal customer base', 'Revenue online too']]],
+  ['cont', ['Online betanító felület a csapatnak', 'Zárt felület videókkal és anyagokkal az új dolgozóknak.', ['Gyorsabb betanítás', 'Egységes színvonal minden helyen']], ['Online training space for staff', 'A private space with videos and guides for new staff.', ['Faster onboarding', 'The same standard everywhere']]],
+
+  ['org', ['Kész rendszer minden helyre', 'Egyszer felépítjük, és pár nap alatt bármelyik helyszínre lemásoljuk.', ['Minden hely egységes rendszeren', 'Új nyitáskor azonnal működik']], ['Ready-made system for every location', 'Built once, copied to any location in a few days.', ['Every location on one system', 'Works from day one at a new opening']]],
+  ['org', ['Irányítópult a számokhoz', 'Egy képernyőn: honnan jött a vendég, hány foglalás lett, mennyi a bevétel.', ['Tudjátok, mi működik és mi nem', 'Helyszínek összehasonlítása egy pillantással']], ['Dashboard for the numbers', 'One screen: where customers came from, how many bookings, how much revenue.', ['Know what works and what doesn’t', 'Compare locations at a glance']]],
+];
+
+
+const TX = {
+  en: { h1: 'Every service, explained simply.', lead: 'Everything we build, grouped by what it does for you. In the free audit we pick the few that matter most for your business.', all: 'All', cta: 'Free audit', endH: 'Not sure where to start?', cta2: 'Get your free audit →' },
+  hu: { h1: 'Minden szolgáltatás, egyszerűen elmagyarázva.', lead: 'Minden, amit építünk, aszerint csoportosítva, mit old meg nálatok. Az ingyenes felmérésben kiválasztjuk azt a néhányat, ami nálatok a legtöbbet hozza.', all: 'Mind', cta: 'Ingyenes felmérés', endH: 'Nem tudod, hol kezdjétek?', cta2: 'Kérem az ingyenes felmérést →' },
+};
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+let lang = 'en', cat = 'all';
+try { const q = new URLSearchParams(location.search).get('lang'); lang = q || localStorage.getItem('qais-lang') || ((navigator.language || '').startsWith('hu') ? 'hu' : 'en'); } catch (e) {}
+if (!TX[lang]) lang = 'en';
+function render() {
+  const t = TX[lang], L = lang === 'hu' ? 0 : 1;
+  document.documentElement.lang = lang;
+  document.title = (lang === 'hu' ? 'Szolgáltatások' : 'All services') + ' | Quick AI Setup';
+  ['h1', 'lead', 'cta', 'endH', 'cta2'].forEach(k => $(k).textContent = t[k]);
+  document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+  $('cats').innerHTML = `<button data-cat="all" aria-pressed="${cat === 'all'}">${t.all} · ${SVC.length}</button>` + Object.keys(CATS).map(k => `<button data-cat="${k}" aria-pressed="${cat === k}">${esc(CATS[k][lang])}</button>`).join('');
+  $('grid').innerHTML = SVC.map(s => { const d = s[1 + L]; return `<article class="svc${cat !== 'all' && cat !== s[0] ? ' hide' : ''}" data-c="${s[0]}"><span class="c">${esc(CATS[s[0]][lang])}</span><h2>${esc(d[0])}</h2><p>${esc(d[1])}</p><ul>${d[2].map(b => `<li>${esc(b)}</li>`).join('')}</ul></article>`; }).join('');
+}
+document.addEventListener('click', e => {
+  const lb = e.target.closest('[data-lang]');
+  if (lb) { lang = lb.dataset.lang; try { localStorage.setItem('qais-lang', lang); } catch (x) {} render(); return; }
+  const cb = e.target.closest('[data-cat]');
+  if (cb) { cat = cb.dataset.cat; render(); }
+});
+render();
+</script>
+</body>
+</html>
