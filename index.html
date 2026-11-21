@@ -329,6 +329,8 @@ html.qas-loading .story .phone{opacity:0;translate:0 40px;scale:.96}
 (function(){
   var SOUND="/intro/qas-intro-sound.mp3";
   var root=document.documentElement, first=document.getElementById('qas-preloader'); if(!first) return;
+  // once per visit: skip the intro if it already played in this browser tab session
+  try{ if(sessionStorage.getItem('qas-intro-seen')){ first.remove(); return; } sessionStorage.setItem('qas-intro-seen','1'); }catch(e){}
   var template=first.outerHTML, timers=[];
   var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   function playSound(){ if(reduce) return; try{ var a=new Audio(SOUND); a.volume=0.8; var p=a.play(); if(p&&p.catch) p.catch(function(){}); }catch(e){} }
