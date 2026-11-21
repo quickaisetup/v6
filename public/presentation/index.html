@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Sample presentation | Quick AI Setup</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+:root { color-scheme: dark; --bg: #0B1221; --side: #080E1B; --surface: #0F172A; --raised: #131D33; --line: #1C2741; --line2: #24314F; --muted: #94A3B8; --faint: #64748B; --soft: #CBD5E1; --cyan: #38BDF8; --deep: #0284C7; --good: #34D399; --red: #F87171; --f: "Inter", system-ui, sans-serif; --fh: "Space Grotesk", "Inter", sans-serif; --mono: ui-monospace, SFMono-Regular, Menlo, monospace }
+* { box-sizing: border-box }
+html, body { height: 100% }
+body { margin: 0; background: var(--bg); color: #fff; font: 17px/1.55 var(--f); -webkit-font-smoothing: antialiased; overflow: hidden }
+button { font: inherit; color: inherit; cursor: pointer }
+a { color: inherit; text-decoration: none }
+.app { height: 100%; display: grid; grid-template-rows: auto 1fr auto; background: radial-gradient(1000px 600px at 85% -10%, rgb(56 189 248 / .12), transparent 65%), var(--bg) }
+.top { display: flex; align-items: center; gap: 14px; padding: 14px max(20px, env(safe-area-inset-left)) 14px max(20px, env(safe-area-inset-right)); border-bottom: 1px solid var(--line) }
+.top img { height: 24px } .top .sp { flex: 1 }
+.tag { font: 600 11px var(--f); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line2); border-radius: 999px; padding: 6px 12px }
+.seg { display: inline-flex; border: 1px solid var(--line2); border-radius: 9px; overflow: hidden }
+.seg button { border: 0; background: none; padding: 6px 10px; font: 700 11px var(--mono); color: var(--muted) }
+.seg button[aria-pressed="true"] { background: var(--cyan); color: var(--bg) }
+.x { font-size: 14px; color: var(--muted); white-space: nowrap } .x:hover { color: #fff } .xs-t { display: none }
+.stage { overflow-y: auto; display: grid; padding: 28px max(20px, env(safe-area-inset-left)) }
+.slide { width: 100%; max-width: 1120px; margin: auto; display: grid; gap: 22px; padding: 20px 0 }
+.bot { display: flex; align-items: center; gap: 14px; padding: 12px max(20px, env(safe-area-inset-left)) calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line) }
+.prog { flex: 1; height: 3px; border-radius: 3px; background: var(--line2); overflow: hidden } .prog i { display: block; height: 100%; background: var(--cyan); transition: width .5s }
+.nb { border: 1px solid var(--line2); background: transparent; border-radius: 999px; padding: 10px 18px; font-weight: 600; font-size: 14px }
+.nb.go { background: var(--cyan); color: var(--bg); border-color: var(--cyan) }
+.nb[disabled] { opacity: .35; cursor: default }
+.cnt { font: 600 12px var(--mono); color: var(--faint) }
+
+/* type */
+.ey { font: 600 12px var(--f); letter-spacing: .2em; text-transform: uppercase; color: var(--cyan) }
+h1 { font: 700 clamp(34px, 5vw, 64px)/1.03 var(--fh); letter-spacing: -.035em; margin: 0; max-width: 20ch; text-wrap: balance }
+h1.xl { font-size: clamp(44px, 7.4vw, 104px); max-width: 16ch }
+.p { margin: 0; color: var(--muted); font-size: clamp(17px, 1.6vw, 20px); max-width: 60ch }
+.src { color: var(--faint); font-size: 12.5px } .ill { font: 600 10.5px var(--f); letter-spacing: .16em; text-transform: uppercase; color: var(--faint) }
+.in { opacity: 0; transform: translateY(18px); animation: up .7s cubic-bezier(.2, .7, .2, 1) forwards; animation-delay: var(--d, 0s) }
+@keyframes up { to { opacity: 1; transform: none } }
+.btn { display: inline-flex; align-items: center; gap: 10px; border: 0; border-radius: 999px; background: var(--cyan); color: var(--bg); padding: 17px 28px; font: 700 16px/1 var(--f) }
+.btn.gh { background: transparent; color: #fff; border: 1px solid var(--line2) }
+
+/* stats */
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px }
+.stats > div { border: 1px solid var(--line); border-radius: 22px; padding: 24px; background: var(--surface); display: grid; gap: 8px; align-content: start }
+.stats b { font: 700 clamp(34px, 4vw, 52px)/1 var(--fh); letter-spacing: -.04em; color: var(--cyan) }
+.stats span { color: var(--soft) } .stats small { color: var(--faint); font-size: 12.5px }
+.clk { border: 1px solid var(--line); border-radius: 22px; padding: 22px; background: var(--surface); display: grid; gap: 12px; max-width: 620px }
+.cr { display: grid; grid-template-columns: 170px 1fr 48px; gap: 12px; align-items: center; font-size: 14.5px; color: var(--soft) }
+.cr div { height: 12px; border-radius: 6px; background: var(--line2); overflow: hidden } .cr i { display: block; height: 100%; width: 0; background: var(--faint); border-radius: 6px; animation: grow 1.2s cubic-bezier(.2, .7, .2, 1) forwards; animation-delay: var(--gd) }
+.cr.ai i { background: var(--red) } .cr b { font-family: var(--mono) }
+@keyframes grow { to { width: var(--w) } }
+.punch { font: 600 clamp(20px, 2.2vw, 28px)/1.3 var(--fh); letter-spacing: -.02em; max-width: 34ch; margin: 0 }
+
+/* vs + team */
+.vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: stretch; max-width: 880px }
+.vs > div { border: 1px solid var(--line); border-radius: 22px; padding: 26px; background: var(--surface) }
+.vs > div.hi { border-color: var(--cyan); background: linear-gradient(180deg, rgb(56 189 248 / .12), var(--surface)) }
+.vs b { font: 700 24px var(--fh) } .vs ul { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; color: var(--soft) }
+.vs li::before { content: "– "; color: var(--faint) } .vs .hi li::before { content: "✓ "; color: var(--good) }
+.vs .ar { align-self: center; font-size: 28px; color: var(--faint) }
+.team { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px }
+.role { border: 1px solid var(--line); border-radius: 22px; padding: 22px; background: var(--surface); display: grid; gap: 10px; align-content: start; position: relative }
+.role .av { width: 46px; height: 46px; border-radius: 14px; background: rgb(56 189 248 / .14); display: grid; place-items: center; font-size: 22px }
+.role b { font: 700 20px var(--fh) } .role p { margin: 0; color: var(--muted); font-size: 15px }
+.role:not(:last-child)::after { content: "→"; position: absolute; right: -13px; top: 34px; color: var(--cyan); font-size: 18px; z-index: 2 }
+
+/* question */
+.q { min-height: 52vh; display: grid; align-content: center; gap: 22px }
+.q h1 { font-size: clamp(38px, 6vw, 84px); max-width: 18ch }
+.yn { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px }
+.yn button { min-width: 140px; border-radius: 999px; padding: 18px 30px; font: 700 18px var(--f); border: 1px solid var(--line2); background: transparent }
+.yn .y { background: var(--cyan); border-color: var(--cyan); color: var(--bg) }
+.yn button[aria-pressed="true"] { outline: 3px solid rgb(56 189 248 / .45); outline-offset: 3px }
+
+/* solution */
+.sol { display: grid; grid-template-columns: 1fr 1.05fr; gap: 40px; align-items: center }
+.sol h1 { font-size: clamp(32px, 4.2vw, 56px) }
+.steps { display: grid; gap: 10px; margin-top: 6px }
+.steps div { display: grid; grid-template-columns: 30px 1fr; gap: 12px; color: var(--soft) }
+.steps i { font-style: normal; font: 600 13px var(--mono); color: var(--cyan); padding-top: 2px }
+.demo { border: 1px solid var(--line); border-radius: 26px; background: linear-gradient(180deg, var(--raised), var(--side)); padding: 22px; display: grid; gap: 12px; min-height: 380px; align-content: start; position: relative }
+.demo .hd { display: flex; justify-content: space-between; align-items: center; font: 600 14px var(--f) }
+.live { display: inline-flex; gap: 6px; align-items: center; font: 600 11px var(--f); letter-spacing: .14em; text-transform: uppercase; color: var(--good) }
+.live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--good); animation: bl 1.6s infinite }
+@keyframes bl { 50% { opacity: .3 } }
+.pop { opacity: 0; transform: translateY(10px) scale(.98); transition: opacity .45s, transform .45s }
+.pop.on { opacity: 1; transform: none }
+.b { max-width: 86%; padding: 10px 14px; border-radius: 16px; font-size: 14.5px; line-height: 1.4 }
+.b.l { justify-self: start; background: #1E293B; border-bottom-left-radius: 5px } .b.r { justify-self: end; background: var(--deep); border-bottom-right-radius: 5px }
+.b small { display: block; font-size: 11px; opacity: .65; margin-bottom: 2px }
+.ok { justify-self: center; color: var(--good); background: rgb(52 211 153 / .1); border: 1px solid rgb(52 211 153 / .35); border-radius: 999px; padding: 8px 15px; font: 700 13.5px var(--f) }
+.chs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px }
+.ch { border: 1px solid var(--line2); border-radius: 14px; padding: 10px 6px; display: grid; justify-items: center; gap: 4px; font-size: 11.5px; color: var(--muted); transition: border-color .3s }
+.ch svg { width: 20px; height: 20px; fill: var(--soft) } .ch b { font: 700 18px var(--fh); color: #fff } .ch.hot { border-color: var(--cyan) }
+.call { display: grid; grid-template-columns: 52px 1fr auto; gap: 14px; align-items: center }
+.call .av { width: 52px; height: 52px; border-radius: 50%; background: var(--deep); display: grid; place-items: center; font-size: 22px; position: relative }
+.call .av::after { content: ""; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--cyan); animation: rip 2s infinite }
+@keyframes rip { to { transform: scale(1.7); opacity: 0 } }
+.call .t { font: 600 14px var(--mono); color: var(--good) } .call small { display: block; color: var(--faint); font-size: 12.5px }
+.wave { display: flex; align-items: center; gap: 3px; height: 40px } .wave s { flex: 1; border-radius: 3px; background: var(--cyan); animation: wv 1.1s ease-in-out infinite }
+.wave s:nth-child(3n) { animation-delay: -.3s } .wave s:nth-child(3n+1) { animation-delay: -.7s }
+@keyframes wv { 0%, 100% { height: 18% } 50% { height: 100% } }
+.tr { font-size: 14.5px; color: var(--soft) } .tr em { font-style: normal; display: block; font: 600 10.5px var(--f); letter-spacing: .14em; text-transform: uppercase; color: var(--faint) }
+.sms { border: 1px dashed var(--line2); border-radius: 14px; padding: 12px 14px; font-size: 14px; color: var(--soft) } .sms b { color: var(--cyan) }
+.bk { border: 1px solid var(--line2); border-radius: 16px; padding: 14px 16px; display: grid; gap: 4px } .bk b { font: 700 18px var(--fh) } .bk span { color: var(--muted); font-size: 14px }
+.tl { display: grid; gap: 8px } .tl div { display: grid; grid-template-columns: 54px 1fr; gap: 10px; font-size: 14px; color: var(--soft) } .tl i { font-style: normal; font: 600 12px var(--mono); color: var(--faint); padding-top: 2px }
+.rv { background: #fff; color: #1F2937; border-radius: 16px; padding: 14px; display: grid; gap: 6px; font-size: 14px }
+.rv .g { display: flex; gap: 8px; align-items: center; font-weight: 600 } .rv .g svg { width: 16px; height: 16px; fill: #4285F4 }
+.rv .st { color: #F59E0B; letter-spacing: 3px; font-size: 17px } .rv .rp { border-top: 1px solid #E5E7EB; padding-top: 8px; color: #4B5563 } .rv .rp b { color: var(--deep) }
+.ctr { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px }
+.ctr div { border: 1px solid var(--line2); border-radius: 16px; padding: 14px; display: grid; gap: 4px } .ctr b { font: 700 28px var(--fh); letter-spacing: -.03em } .ctr span { color: var(--muted); font-size: 13px }
+.ctr .g b { color: var(--good) }
+.ask { display: flex; gap: 10px; align-items: center; border: 1px solid var(--line2); border-radius: 999px; padding: 12px 18px; font-size: 15px; min-height: 48px } .ask::before { content: "✦"; color: var(--cyan) }
+.ask .cur { display: inline-block; width: 2px; height: 1.1em; background: var(--cyan); vertical-align: middle; animation: bl 1s infinite }
+.ans { font-size: 15px; color: var(--soft); line-height: 1.6; min-height: 90px } .ans mark { background: rgb(52 211 153 / .16); color: var(--good); border-radius: 6px; padding: 1px 7px; font-weight: 700 }
+.eng { display: flex; gap: 6px; flex-wrap: wrap } .eng span { font: 600 11.5px var(--mono); color: var(--muted); border: 1px solid var(--line2); border-radius: 999px; padding: 4px 10px; transition: all .4s } .eng span.on { color: var(--good); border-color: rgb(52 211 153 / .45) } .eng span.on::before { content: "✓ " }
+
+/* a2a + summary + end */
+.a2a { border: 1px solid var(--line); border-radius: 26px; padding: 22px; background: var(--surface); display: grid; gap: 10px; max-width: 820px; width: 100% }
+.a2a .who { display: flex; justify-content: space-between; font: 600 13px var(--f); color: var(--muted) }
+.sumg { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px }
+.sumg > div { border: 1px solid var(--line); border-radius: 20px; padding: 20px; background: var(--surface); display: grid; gap: 6px }
+.sumg b { font: 700 19px var(--fh) } .sumg span { color: var(--muted); font-size: 14.5px } .sumg i { font-style: normal; font: 600 12px var(--mono); color: var(--cyan) }
+.end { text-align: center; justify-items: center }
+.end h1 { margin-inline: auto } .end .p { margin-inline: auto }
+.ctas { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center }
+.hint { color: var(--faint); font-size: 13px }
+
+@media (max-width: 860px) {
+  .stats, .team { grid-template-columns: 1fr } .role:not(:last-child)::after { display: none }
+  .vs { grid-template-columns: 1fr } .vs .ar { display: none }
+  .sol { grid-template-columns: 1fr; gap: 24px }
+  .demo { min-height: 0 }
+  .chs { grid-template-columns: repeat(5, minmax(0, 1fr)) } .ch { font-size: 10px } .ch b { font-size: 15px }
+  .cr { grid-template-columns: 120px 1fr 40px }
+  .top .tag { display: none } .xl-t { display: none } .xs-t { display: inline; font-size: 24px; line-height: 1; padding: 0 4px }
+  .q { min-height: 44vh }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01s !important; animation-delay: 0s !important; transition: none !important } .in { opacity: 1; transform: none } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <a href="/" aria-label="Quick AI Setup"><img src="/brand/logo-for-dark-bg.svg" alt="quickaisetup" width="152" height="24"></a>
+    <span class="tag" id="tag"></span>
+    <span class="sp"></span>
+    <div class="seg" role="group" aria-label="Language"><button data-lang="en">EN</button><button data-lang="hu">HU</button></div>
+    <a class="x" href="/" id="exit"></a>
+  </header>
+  <main class="stage" id="stage" aria-live="polite"></main>
+  <footer class="bot">
+    <button class="nb" id="prev" aria-label="Previous">←</button>
+    <div class="prog"><i id="bar"></i></div>
+    <span class="cnt" id="cnt"></span>
+    <button class="nb go" id="next"></button>
+  </footer>
+</div>
+<script>
+const IC = {
+  instagram: 'M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077',
+  messenger: 'M.001 11.639C.001 4.949 5.241 0 12.001 0S24 4.95 24 11.639c0 6.689-5.24 11.638-12 11.638-1.21 0-2.38-.16-3.47-.46a.96.96 0 00-.64.05l-2.39 1.05a.96.96 0 01-1.35-.85l-.07-2.14a.97.97 0 00-.32-.68A11.39 11.389 0 01.002 11.64zm8.32-2.19l-3.52 5.6c-.35.53.32 1.139.82.75l3.79-2.87c.26-.2.6-.2.87 0l2.8 2.1c.84.63 2.04.4 2.6-.48l3.52-5.6c.35-.53-.32-1.13-.82-.75l-3.79 2.87c-.25.2-.6.2-.86 0l-2.8-2.1a1.8 1.8 0 00-2.61.48z',
+  whatsapp: 'M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z',
+  google: 'M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z',
+  web: 'M12 0a12 12 0 100 24 12 12 0 000-24zm7.93 7h-3.04a17.6 17.6 0 00-1.36-4.84A10.04 10.04 0 0119.93 7zM12 2.04c.85 1.2 1.82 3.13 2.32 4.96H9.68C10.18 5.17 11.15 3.24 12 2.04zM2.26 14a9.9 9.9 0 010-4h3.4a16.4 16.4 0 000 4h-3.4zm.81 3h3.04c.33 1.73.79 3.36 1.36 4.84A10.04 10.04 0 013.07 17zm3.04-10H3.07a10.04 10.04 0 014.4-4.84A17.6 17.6 0 006.11 7zM12 21.96c-.85-1.2-1.82-3.13-2.32-4.96h4.64c-.5 1.83-1.47 3.76-2.32 4.96zM14.6 14H9.4a14.6 14.6 0 010-4h5.2a14.6 14.6 0 010 4zm.93 7.84c.57-1.48 1.03-3.11 1.36-4.84h3.04a10.04 10.04 0 01-4.4 4.84zM18.34 14a16.4 16.4 0 000-4h3.4a9.9 9.9 0 010 4h-3.4z',
+};
+const ico = (n, c = '') => `<svg class="${c}" viewBox="0 0 24 24" aria-hidden="true"><path d="${IC[n]}"/></svg>`;
+
+const TX = {
+  en: {
+    tag: 'Sample presentation · Bar', exit: 'Back to the website ×', next: 'Next →', start: 'Start →', yes: 'Yes', no: 'No', ill: 'Illustration', of: '/',
+    cover: { ey: 'Sample presentation · A bar in Budapest', h: 'What if your bar never missed a guest again?', p: 'This is the kind of presentation we make for every business, with its own venues and numbers. This one is for a sample bar. It takes about 3 minutes, and you answer a few yes/no questions along the way.', hint: 'Use → and ← on your keyboard, or tap the buttons.' },
+    s1: { ey: 'Why now?', h: 'Your guests already use AI. Most businesses don’t yet.', p: 'That is a huge edge right now, but it won’t last. Whoever moves now is years ahead of the rest.', stats: [['~900 million', 'people use ChatGPT every week: your guests are already there', 'OpenAI, early 2026'], ['20%', 'of EU companies use AI, no more', 'Eurostat, 2025 (companies with 10+ staff)'], ['~10%', 'of Hungarian businesses. The government target: 24% by 2030', 'KSH, 2025']] },
+    s2: { ey: 'What is an AI agent?', h: 'It doesn’t just answer. It gets the job done.', cols: [['Chatbot', ['Answers questions', 'Follows fixed rules', 'Stuck means stuck']], ['AI agent', ['Understands what the guest wants', 'Books, messages, follows up, takes deposits', 'Talks to other systems and other AIs']]] },
+    sT: { ey: 'Your AI team', h: 'We build roles, and the agents hand guests to each other.', p: 'Like a real team: everyone has a job, and when it’s done, they pass it on.', roles: [['🛎', 'Receptionist', 'Takes every message and call, 24/7, in many languages'], ['🥂', 'Sales', 'Sends offers, sells events and VIP tables'], ['🔁', 'Follow-up', 'Reminds, collects deposits, brings back those who didn’t book'], ['📊', 'Analyst', 'Watches the numbers and flags what isn’t working']] },
+    qs: {
+      msg: ['Do lots of messages come in, in lots of places?', 'Instagram, Facebook, WhatsApp, email, Google'],
+      phone: ['Do calls get missed on busy nights?', 'Friday nights, during matches, during events'],
+      noshow: ['Are no-shows or empty tables a problem?', 'Big groups that don’t turn up, cancellations at the last minute'],
+      rev: ['Do Google reviews matter to you?', 'Tourists and new guests choose based on them'],
+      list: ['Do you have a list of old guests or inquiries?', 'Past bookings, event inquiries, newsletter sign-ups'],
+    },
+    sol: {
+      msg: ['AI agent everywhere + one inbox', 'One AI replies on every channel, day and night, in many languages, and takes bookings. Every message in one place.', ['We teach it your info: hours, menu, prices, booking rules', 'Instagram, Facebook, WhatsApp, website, Google: it replies first everywhere', 'Anything complex goes to a colleague in the shared inbox']],
+      phone: ['AI phone receptionist', 'It answers when the team is busy. If a call is still missed, the caller instantly gets a text with a booking link.', ['The AI voice answers and handles questions', 'It books a table or transfers to the right person', 'Missed call: instant text with a booking link']],
+      noshow: ['Bookings, reminders, deposits', 'Guests book online, the system reminds them and asks for a deposit where needed. Cancelled tables can be resold.', ['Online booking straight into the system', 'Automatic text and email reminders with one-tap cancel', 'Deposits for big tables and events']],
+      rev: ['Google reviews on autopilot', 'After the visit, guests can review with one tap, and every review gets a fast, polite reply.', ['Automatic message with a review link after the visit', 'Unhappy guests can tell you first, not Google', 'An AI-drafted reply to every review']],
+      list: ['Wake up your old guest list', 'Anyone who ever asked or visited gets a good offer again, on every channel. Whoever replies chats with the AI, which takes them to a booking.', ['We gather old contacts: bookings, event inquiries, guest list', 'One good offer by text, email, WhatsApp and Messenger, only with consent', 'Replies go to the AI and end in a booking']],
+    },
+    demo: {
+      msg: { h: 'Friday night · all channels', ch: ['Instagram', 'Messenger', 'WhatsApp', 'Google', 'Website'], m1: 'Hi! Table for 8 tonight around 22:00? 🍸', m2: 'Hi! 22:00 for 8 is free by the bar. Shall I book it under your name?', t: 'AI · 5 sec', m3: 'Yes please, Dani 🙌', ok: '✓ Booked · Fri 22:00 · 8 people' },
+      phone: { h: 'Incoming call · Friday 21:47', who: 'AI receptionist', sub: 'Answering for the bar', l1: ['Caller', '“Is there room for six tonight? And do you have a happy hour?”'], l2: ['AI', '“Yes, 22:30 for six is free. Happy hour runs until 20:00 on weekdays. Shall I book it?”'], sms: '📱 Missed call at 23:12 → instant text: <b>“Sorry we missed you! Book your table here: link”</b>' },
+      noshow: { h: 'A VIP table, start to finish', bk: ['VIP table · 10 people', 'Saturday 22:00 · Birthday · Anna K.'], tl: [['Mon', 'Booked online, straight into the system'], ['Mon', '20% deposit requested by text, paid in 2 minutes ✓'], ['Fri', 'Reminder sent, one tap to confirm or cancel'], ['Sat', 'Guest confirmed. The table was never empty.']], ok: '✓ Deposit paid · no-show risk gone' },
+      rev: { h: 'The morning after', ask: '📱 “Thanks for coming last night! How was it? Leave us a review in one tap ⭐”', name: 'Google · Márk T.', text: '“Best cocktails in the district, super friendly staff!”', owner: 'Owner', reply: 'Thank you Márk, see you at the bar soon! 🍸', ok: '★ New 5★ review · replied in minutes' },
+      list: { h: 'One campaign to your old guest list', c: [['Old guests reached', 1240], ['Replied', 186], ['Booked', 41]], m: '“Hi Kata! It’s been a while 🍸 This Thursday your first round is on us. Want a table?”' },
+    },
+    sS: { ey: 'Search is moving to AI', h: 'This many people already search with AI.', big: [['2.5 billion', 'people see Google’s AI answers above the results every month', 'Google, May 2026'], ['1 billion+', 'monthly users of Google AI Mode within a year', 'Google I/O, May 2026'], ['~900 million', 'people use ChatGPT every week', 'OpenAI, early 2026']], clickH: 'How many click through to a link?', clicks: [['Without an AI answer', 15], ['With an AI answer', 8]], clickSrc: 'Pew Research, 68,879 Google searches, 2025', punch: 'If AI doesn’t mention you, guests often don’t click any further.' },
+    geo: { ey: 'GEO', h: 'So the AI recommends you.', p: 'GEO means making sure you appear when someone asks ChatGPT, Gemini or Google’s AI where to go.', steps: ['We check what the AIs answer today for your topics', 'We fix what AI learns from: website, Google profile, reviews, menus', 'Every month we measure how often AI recommends you'], q: 'Best cocktail bar in Budapest tonight?', a: 'A great pick tonight is <mark>Your bar</mark>, with signature cocktails, a lively crowd after 22:00 and a 4.8★ rating from over a thousand reviews.' },
+    s4: { ey: 'Coming next', h: 'Soon the guest’s AI will book with your AI.', a: 'The guest’s AI agent', b: 'The bar’s AI agent', foot: 'No human involved, in under a minute.', chat: [[0, 'Hi! I’m looking for a table for 12 this Friday at 21:00, for a birthday.'], [1, 'Hi! Friday 21:00 for 12 is free in the lounge. Shall I send the party package?'], [0, 'Yes, around HUF 8,000 per person with drinks.'], [1, 'There’s one at HUF 7,900 per person with a welcome shot. Shall I book it with a 20% deposit?'], [0, 'Yes, I’ll pay via the link.'], [1, 'Done ✓ Booking confirmed, confirmation and reminder sent.']] },
+    sum: { ey: 'Your answers', h: 'Here’s where we’d start.', none: 'You said no to everything, which is rare. Let’s talk about what matters most to you.', step: 'Step' },
+    end: { ey: 'Your turn', h: 'Want this for your business, with your own numbers?', p: 'We make a personal version for your business: your venues, your channels, your numbers, and what we’d do first.', cta: 'Get my own presentation', back: 'Back to the website' },
+  },
+  hu: {
+    tag: 'Minta-bemutató · Bár', exit: 'Vissza a weboldalra ×', next: 'Tovább →', start: 'Indítás →', yes: 'Igen', no: 'Nem', ill: 'Szemléltetés', of: '/',
+    cover: { ey: 'Minta-bemutató · Egy budapesti bár', h: 'Mi lenne, ha a bárod soha többé nem veszítene el vendéget?', p: 'Ilyen bemutatót készítünk minden vállalkozásnak, a saját helyeivel és számaival. Ez egy minta bárnak szól. Kb. 3 perc, és közben néhány igen/nem kérdésre válaszolsz.', hint: 'Használd a → és ← billentyűket, vagy a gombokat.' },
+    s1: { ey: 'Miért most?', h: 'A vendégeitek már AI‑t használnak. A legtöbb cég még nem.', p: 'Ez most hatalmas versenyelőny, de nem marad az sokáig. Aki most lép, évekkel a többiek előtt jár.', stats: [['~900 millió', 'ember használja a ChatGPT-t hetente: a vendégeitek már ott vannak', 'OpenAI, 2026 eleje'], ['20%', 'az uniós cégek közül csak ennyi használ AI‑t', 'Eurostat, 2025 (10+ fős cégek)'], ['~10%', 'a magyar vállalkozásoknak csak ennyi. A kormány célja: 24% 2030-ra', 'KSH, 2025']] },
+    s2: { ey: 'Mi az AI-ügynök?', h: 'Nem csak válaszol. Elvégzi a feladatot.', cols: [['Chatbot', ['Kérdésre válaszol', 'Szabályok szerint működik', 'Ha elakad, vége']], ['AI-ügynök', ['Megérti, mit akar a vendég', 'Foglal, üzen, utánkövet, előleget kér', 'Más rendszerekkel és más AI-okkal is beszél']]] },
+    sT: { ey: 'A ti AI-csapatotok', h: 'Szerepeket építünk, és az ügynökök átadják egymásnak a vendéget.', p: 'Mint egy igazi csapat: mindenkinek megvan a feladata, és ha végzett, továbbadja.', roles: [['🛎', 'Recepciós', 'Fogad minden üzenetet és hívást, 0–24-ben, több nyelven'], ['🥂', 'Értékesítő', 'Ajánlatot ad, rendezvényt és VIP asztalt értékesít'], ['🔁', 'Utánkövető', 'Emlékeztet, előleget kér, visszahozza, aki nem foglalt'], ['📊', 'Elemző', 'Figyeli a számokat, és szól, ha valami nem működik']] },
+    qs: {
+      msg: ['Sok üzenet jön, sok helyen?', 'Instagram, Facebook, WhatsApp, e-mail, Google'],
+      phone: ['Marad le telefonhívás a forgalmas estéken?', 'Péntek este, meccs közben, rendezvény alatt'],
+      noshow: ['Okoz gondot a no-show vagy az üres asztal?', 'Nagy társaságok, akik nem jönnek el, utolsó pillanatos lemondások'],
+      rev: ['Fontosak nektek a Google-értékelések?', 'Turisták és új vendégek ez alapján választanak'],
+      list: ['Van listátok régi vendégekről vagy érdeklődőkről?', 'Korábbi foglalások, rendezvényes megkeresések, hírlevél-feliratkozók'],
+    },
+    sol: {
+      msg: ['AI-ügynök mindenhol + egységes inbox', 'Egy AI válaszol minden csatornán, éjjel-nappal, több nyelven, és foglal is. Minden üzenet egy helyen látszik.', ['Megtanítjuk az infóitokra: nyitvatartás, menü, árak, foglalási szabályok', 'Instagram, Facebook, WhatsApp, weboldal, Google: mindenhol ő válaszol elsőként', 'Ami bonyolult, átadja a kollégának az egységes inboxban']],
+      phone: ['AI telefonos recepciós', 'Felveszi a telefont, ha a csapat nem ér rá. Ha mégis lemarad egy hívás, a hívó azonnal SMS-t kap foglalási linkkel.', ['Az AI hang felveszi a hívást, kérdésekre válaszol', 'Asztalt foglal, vagy átkapcsol a megfelelő emberhez', 'Elmaradt hívásnál azonnali SMS foglalási linkkel']],
+      noshow: ['Foglalás, emlékeztető, előleg', 'A vendég online foglal, a rendszer emlékeztet, és ahol kell, előleget kér. A lemondott asztal újra eladható.', ['Online foglalás egyenesen a rendszerbe', 'Automatikus SMS és e-mail emlékeztető, egykattintásos lemondással', 'Előleg nagyobb asztaloknál és rendezvényeknél']],
+      rev: ['Google-értékelések automatikusan', 'Látogatás után a vendég egy kattintással értékelhet, és minden értékelésre gyors, udvarias válasz megy.', ['Látogatás után automatikus üzenet egy értékelés-linkkel', 'Az elégedetlen vendég előbb nálatok jelezhet, nem a Google-on', 'AI-jal megírt válasz minden értékelésre']],
+      list: ['Felébresztjük a régi vendéglistát', 'Aki valaha érdeklődött vagy járt nálatok, újra kap egy jó ajánlatot, minden csatornán. Aki válaszol, azzal az AI beszélget, és foglalásig viszi.', ['Összegyűjtjük a régi kontaktokat: foglalások, megkeresések, vendéglista', 'Egy jó ajánlat SMS-ben, e-mailben, WhatsAppon és Messengerben, csak hozzájárulással', 'A válaszokat az AI viszi tovább, foglalásig']],
+    },
+    demo: {
+      msg: { h: 'Péntek este · minden csatorna', ch: ['Instagram', 'Messenger', 'WhatsApp', 'Google', 'Weboldal'], m1: 'Szia! Ma este 22:00 körül lenne asztal 8 főre? 🍸', m2: 'Szia! 22:00-ra 8 főre a pultnál van hely. Lefoglaljam a neveden?', t: 'AI · 5 mp', m3: 'Igen, Dani 🙌', ok: '✓ Foglalva · Péntek 22:00 · 8 fő' },
+      phone: { h: 'Bejövő hívás · Péntek 21:47', who: 'AI recepciós', sub: 'A bár nevében válaszol', l1: ['Hívó', '„Van hely ma este hat főre? És van happy hour?”'], l2: ['AI', '„Igen, 22:30-ra hat főre van hely. Hétköznap 20:00-ig van happy hour. Lefoglaljam?”'], sms: '📱 Nem fogadott hívás 23:12-kor → azonnali SMS: <b>„Bocsi, hogy nem értünk el! Itt foglalhatsz asztalt: link”</b>' },
+      noshow: { h: 'Egy VIP asztal, az elejétől a végéig', bk: ['VIP asztal · 10 fő', 'Szombat 22:00 · Szülinap · Kovács Anna'], tl: [['Hé', 'Online foglalás, egyenesen a rendszerbe'], ['Hé', '20% előleg SMS-ben, 2 perc alatt kifizetve ✓'], ['Pé', 'Emlékeztető kiment, egy érintéssel megerősít vagy lemond'], ['Szo', 'A vendég megerősített. Az asztal nem maradt üresen.']], ok: '✓ Előleg kifizetve · nincs no-show kockázat' },
+      rev: { h: 'Másnap reggel', ask: '📱 „Köszi, hogy tegnap nálunk voltál! Milyen volt? Értékelj minket egy érintéssel ⭐”', name: 'Google · Márk T.', text: '„A kerület legjobb koktéljai, szuper kedves csapat!”', owner: 'Tulajdonos', reply: 'Köszönjük, Márk, várunk vissza a pultnál! 🍸', ok: '★ Új 5★ értékelés · percek alatt megválaszolva' },
+      list: { h: 'Egy kampány a régi vendéglistára', c: [['Elért régi vendég', 1240], ['Válaszolt', 186], ['Foglalt', 41]], m: '„Szia Kata! Rég láttunk 🍸 Csütörtökön az első kör a miénk. Foglaljunk asztalt?”' },
+    },
+    sS: { ey: 'A keresés AI-ra vált', h: 'Ennyien keresnek már AI-jal.', big: [['2,5 milliárd', 'ember látja havonta a Google AI-válaszait a találatok fölött', 'Google, 2026. május'], ['1 milliárd+', 'havi felhasználó a Google AI Mode-ban egy év alatt', 'Google I/O, 2026. május'], ['~900 millió', 'ember használja a ChatGPT-t hetente', 'OpenAI, 2026 eleje']], clickH: 'Hányan kattintanak tovább egy linkre?', clicks: [['AI-válasz nélkül', 15], ['AI-válasszal', 8]], clickSrc: 'Pew Research, 68 879 Google-keresés, 2025', punch: 'Ha az AI nem titeket említ, a vendég sokszor tovább sem kattint.' },
+    geo: { ey: 'GEO', h: 'Hogy az AI titeket ajánljon.', p: 'A GEO azt jelenti, hogy ti szerepeljetek, amikor valaki a ChatGPT-től, a Geminitől vagy a Google AI-tól kérdezi, hová menjen.', steps: ['Megnézzük, mit válaszolnak ma az AI-ok a ti témáitokra', 'Rendbe tesszük, amiből az AI tanul: weboldal, Google-profil, értékelések, itallap', 'Havonta mérjük, hányszor ajánl titeket az AI'], q: 'Melyik a legjobb koktélbár ma este Budapesten?', a: 'Ma estére jó választás <mark>a ti bárotok</mark>: saját koktélok, pörgős hangulat 22:00 után, és 4,8★ több mint ezer értékelés alapján.' },
+    s4: { ey: 'Ami jön', h: 'Hamarosan a vendég AI-ja foglal a ti AI-otoknál.', a: 'A vendég AI-ügynöke', b: 'A bár AI-ügynöke', foot: 'Emberi beavatkozás nélkül, kevesebb mint egy perc alatt.', chat: [[0, 'Szia! Péntek 21:00-ra keresek asztalt 12 főre, szülinapra.'], [1, 'Szia! Péntek 21:00-ra 12 főre a lounge-ban van hely. Küldjem a parti csomagot?'], [0, 'Igen, fejenként 8000 Ft körül, itallal.'], [1, 'Van egy 7900 Ft/fős csomag welcome shottal. Lefoglaljam 20% előleggel?'], [0, 'Igen, fizetek a linken.'], [1, 'Kész ✓ Foglalás rögzítve, visszaigazolás és emlékeztető kiküldve.']] },
+    sum: { ey: 'A válaszaid alapján', h: 'Itt kezdenénk.', none: 'Mindenre nemet mondtál, ami ritka. Beszéljük meg, mi a legfontosabb nektek.', step: 'Lépés' },
+    end: { ey: 'Te jössz', h: 'Kéred ezt a saját vállalkozásodra, a saját számaitokkal?', p: 'Személyre szabott változatot készítünk: a ti helyeitek, csatornáitok, számaitok, és hogy mivel kezdenénk.', cta: 'Kérem a saját bemutatómat', back: 'Vissza a weboldalra' },
+  },
+};
+
+const TOPICS = ['msg', 'phone', 'noshow', 'rev', 'list'];
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let lang = 'en', i = 0, ans = {}, timers = [];
+try { const q = new URLSearchParams(location.search).get('lang'); lang = q || localStorage.getItem('qais-lang') || ((navigator.language || '').startsWith('hu') ? 'hu' : 'en'); ans = JSON.parse(sessionStorage.getItem('qais-pres-ans') || '{}'); } catch (e) {}
+if (!TX[lang]) lang = 'en';
+const at = (ms, fn) => timers.push(setTimeout(fn, RM ? 0 : ms));
+const on = id => { const e = $(id); if (e) e.classList.add('on'); };
+
+function seq() {
+  const s = [{ k: 'cover' }, { k: 's1' }, { k: 's2' }, { k: 'sT' }];
+  TOPICS.forEach(t => { s.push({ k: 'q', t }); if (ans[t] === true) s.push({ k: 'sol', t }); });
+  s.push({ k: 'sS' }, { k: 'geo' }, { k: 's4' }, { k: 'sum' }, { k: 'end' });
+  return s;
+}
+
+function demoHTML(t, d, x) {
+  if (t === 'msg') return `<div class="hd"><span>${d.h}</span><span class="live">Live</span></div>
+    <div class="chs">${['instagram', 'messenger', 'whatsapp', 'google', 'web'].map((n, k) => `<div class="ch" id="ch${k}">${ico(n)}<b id="chn${k}">0</b>${d.ch[k]}</div>`).join('')}</div>
+    <div class="b l pop" id="m1"><small>Instagram</small>${esc(d.m1)}</div><div class="b r pop" id="m2"><small>${d.t}</small>${esc(d.m2)}</div><div class="b l pop" id="m3">${esc(d.m3)}</div><div class="ok pop" id="m4">${d.ok}</div>`;
+  if (t === 'phone') return `<div class="hd"><span>${d.h}</span><span class="live">Live</span></div>
+    <div class="call"><div class="av">🤖</div><div><b>${d.who}</b><small>${d.sub}</small></div><span class="t" id="ct">00:00</span></div>
+    <div class="wave">${'<s></s>'.repeat(30)}</div>
+    <div class="tr pop" id="p1"><em>${d.l1[0]}</em>${esc(d.l1[1])}</div><div class="tr pop" id="p2"><em>${d.l2[0]}</em>${esc(d.l2[1])}</div><div class="sms pop" id="p3">${d.sms}</div>`;
+  if (t === 'noshow') return `<div class="hd"><span>${d.h}</span></div><div class="bk pop" id="n0"><b>${esc(d.bk[0])}</b><span>${esc(d.bk[1])}</span></div>
+    <div class="tl">${d.tl.map((r, k) => `<div class="pop" id="n${k + 1}"><i>${r[0]}</i><span>${esc(r[1])}</span></div>`).join('')}</div><div class="ok pop" id="n5">${d.ok}</div>`;
+  if (t === 'rev') return `<div class="hd"><span>${d.h}</span></div><div class="sms pop" id="r0">${esc(d.ask)}</div>
+    <div class="rv pop" id="r1"><div class="g">${ico('google')}${esc(d.name)}</div><div class="st" id="stars">☆☆☆☆☆</div><div>${esc(d.text)}</div><div class="rp pop" id="r2"><b>${d.owner}</b> · ${esc(d.reply)}</div></div><div class="ok pop" id="r3">${d.ok}</div>`;
+  if (t === 'list') return `<div class="hd"><span>${d.h}</span></div><div class="b r pop" id="l0"><small>SMS · WhatsApp · Email</small>${esc(d.m)}</div>
+    <div class="ctr">${d.c.map((c, k) => `<div class="${k === 2 ? 'g' : ''}"><b id="lc${k}">0</b><span>${c[0]}</span></div>`).join('')}</div>`;
+  return '';
+}
+function runDemo(t, d) {
+  const loc = lang === 'hu' ? 'hu-HU' : 'en-GB';
+  if (t === 'msg') {
+    const n = [0, 0, 0, 0, 0], tick = k => { n[k]++; const el = $('chn' + k); if (el) { el.textContent = n[k]; $('ch' + k).classList.add('hot'); setTimeout(() => { const c = $('ch' + k); if (c) c.classList.remove('hot'); }, 300); } };
+    for (let s = 0; s < 22; s++) at(200 + s * 170, () => tick([0, 0, 1, 2, 0, 3, 4, 2, 0, 1][s % 10]));
+    at(900, () => on('m1')); at(2100, () => on('m2')); at(3300, () => on('m3')); at(4100, () => on('m4'));
+  }
+  if (t === 'phone') { let s = 0; const tk = () => { s++; const e = $('ct'); if (e) { e.textContent = '00:' + String(s).padStart(2, '0'); at(1000, tk); } }; at(1000, tk); at(700, () => on('p1')); at(2600, () => on('p2')); at(4600, () => on('p3')); }
+  if (t === 'noshow') for (let k = 0; k <= 5; k++) at(300 + k * 800, () => on('n' + k));
+  if (t === 'rev') { at(300, () => on('r0')); at(1300, () => on('r1')); for (let k = 1; k <= 5; k++) at(1500 + k * 200, () => { const e = $('stars'); if (e) e.textContent = '★'.repeat(k) + '☆'.repeat(5 - k); }); at(3000, () => on('r2')); at(3900, () => on('r3')); }
+  if (t === 'list') { at(300, () => on('l0')); d.c.forEach((c, k) => { const t0 = 1100 + k * 900, D = 1300; for (let f = 1; f <= 26; f++) at(t0 + f * D / 26, () => { const e = $('lc' + k); if (e) e.textContent = Math.round(c[1] * f / 26).toLocaleString(loc); }); }); }
+}
+
+function render() {
+  timers.forEach(clearTimeout); timers = [];
+  const S = seq(); if (i > S.length - 1) i = S.length - 1;
+  const cur = S[i], X = TX[lang]; let h = '';
+  document.documentElement.lang = lang;
+  document.title = (lang === 'hu' ? 'Minta-bemutató' : 'Sample presentation') + ' | Quick AI Setup';
+  $('tag').textContent = X.tag; $('exit').innerHTML = `<span class="xl-t">${X.exit.replace(' ×', '')} ×</span><span class="xs-t" aria-label="${X.exit.replace(' ×', '')}">×</span>`;
+  document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
+  const D = k => `style="--d:${k}s"`;
+  if (cur.k === 'cover') { const c = X.cover; h = `<div class="ey in">${c.ey}</div><h1 class="xl in" ${D(.1)}>${c.h}</h1><p class="p in" ${D(.25)}>${c.p}</p><div class="in" ${D(.4)}><button class="btn" data-go="1">${X.start}</button></div><p class="hint in" ${D(.6)}>${c.hint}</p>`; }
+  if (cur.k === 's1') { const c = X.s1; h = `<div class="ey in">${c.ey}</div><h1 class="in" ${D(.1)}>${c.h}</h1><p class="p in" ${D(.2)}>${c.p}</p><div class="stats">${c.stats.map((s, k) => `<div class="in" ${D(.35 + k * .2)}><b>${s[0]}</b><span>${s[1]}</span><small>${s[2]}</small></div>`).join('')}</div>`; }
+  if (cur.k === 's2') { const c = X.s2; h = `<div class="ey in">${c.ey}</div><h1 class="in" ${D(.1)}>${c.h}</h1><div class="vs">${c.cols.map((col, k) => `<div class="in ${k ? 'hi' : ''}" ${D(.3 + k * .45)}><b>${col[0]}</b><ul>${col[1].map(x => `<li>${x}</li>`).join('')}</ul></div>`).join('<span class="ar in" style="--d:.55s">→</span>')}</div>`; }
+  if (cur.k === 'sT') { const c = X.sT; h = `<div class="ey in">${c.ey}</div><h1 class="in" ${D(.1)}>${c.h}</h1><p class="p in" ${D(.2)}>${c.p}</p><div class="team">${c.roles.map((r, k) => `<div class="role in" ${D(.4 + k * .35)}><span class="av">${r[0]}</span><b>${r[1]}</b><p>${r[2]}</p></div>`).join('')}</div>`; }
+  if (cur.k === 'q') { const q = X.qs[cur.t], a = ans[cur.t]; h = `<div class="q"><div class="ey in">${lang === 'hu' ? 'Egy kérdés' : 'A quick question'}</div><h1 class="in" ${D(.1)}>${q[0]}</h1><p class="p in" ${D(.25)}>${q[1]}</p><div class="yn in" ${D(.4)}><button class="y" data-ans="1" aria-pressed="${a === true}">${X.yes}</button><button data-ans="0" aria-pressed="${a === false}">${X.no}</button></div></div>`; }
+  if (cur.k === 'sol') { const s = X.sol[cur.t], d = X.demo[cur.t]; h = `<div class="sol"><div style="display:grid;gap:18px"><div class="ey in">${lang === 'hu' ? 'A megoldás' : 'The fix'}</div><h1 class="in" ${D(.1)}>${s[0]}</h1><p class="p in" ${D(.2)}>${s[1]}</p><div class="steps">${s[2].map((x, k) => `<div class="in" ${D(.35 + k * .15)}><i>0${k + 1}</i><span>${x}</span></div>`).join('')}</div></div><div class="demo in" ${D(.25)}>${demoHTML(cur.t, d)}<span class="ill">${X.ill}</span></div></div>`; }
+  if (cur.k === 'sS') { const c = X.sS; h = `<div class="ey in">${c.ey}</div><h1 class="in" ${D(.1)}>${c.h}</h1><div class="stats">${c.big.map((s, k) => `<div class="in" ${D(.25 + k * .2)}><b>${s[0]}</b><span>${s[1]}</span><small>${s[2]}</small></div>`).join('')}</div><div class="clk in" ${D(.9)}><span class="ill">${c.clickH}</span>${c.clicks.map((x, k) => `<div class="cr${k ? ' ai' : ''}"><span>${x[0]}</span><div><i style="--w:${x[1] / 15 * 100}%;--gd:${1.2 + k * .4}s"></i></div><b>${x[1]}%</b></div>`).join('')}<small class="src">${c.clickSrc}</small></div><p class="punch in" ${D(1.8)}>${c.punch}</p>`; }
+  if (cur.k === 'geo') { const g = X.geo; h = `<div class="sol"><div style="display:grid;gap:18px"><div class="ey in">${g.ey}</div><h1 class="in" ${D(.1)}>${g.h}</h1><p class="p in" ${D(.2)}>${g.p}</p><div class="steps">${g.steps.map((x, k) => `<div class="in" ${D(.35 + k * .15)}><i>0${k + 1}</i><span>${x}</span></div>`).join('')}</div></div><div class="demo in" ${D(.25)}><div class="eng" id="eng"><span>ChatGPT</span><span>Gemini</span><span>Google AI</span><span>Perplexity</span></div><div class="ask"><span id="qq"></span><span class="cur"></span></div><div class="ans" id="aa"></div><span class="ill">${X.ill}</span></div></div>`; }
+  if (cur.k === 's4') { const c = X.s4; h = `<div class="ey in">${c.ey}</div><h1 class="in" ${D(.1)}>${c.h}</h1><div class="a2a in" ${D(.25)}><div class="who"><span>🤖 ${c.a}</span><span>${c.b} 🤖</span></div>${c.chat.map((m, k) => `<div class="b ${m[0] ? 'r' : 'l'} pop" id="aq${k}">${esc(m[1])}</div>`).join('')}<span class="ill">${c.foot}</span></div>`; }
+  if (cur.k === 'sum') { const c = X.sum, picked = TOPICS.filter(t => ans[t] === true); h = `<div class="ey in">${c.ey}</div><h1 class="in" ${D(.1)}>${c.h}</h1>${picked.length ? `<div class="sumg">${picked.concat(['geo']).map((t, k) => `<div class="in" ${D(.3 + k * .15)}><i>${c.step} ${k + 1}</i><b>${t === 'geo' ? X.geo.h : X.sol[t][0]}</b><span>${t === 'geo' ? X.geo.p : X.sol[t][1]}</span></div>`).join('')}</div>` : `<p class="p in" ${D(.25)}>${c.none}</p>`}`; }
+  if (cur.k === 'end') { const c = X.end; h = `<div class="end" style="display:grid;gap:22px"><div class="ey in">${c.ey}</div><h1 class="in" ${D(.1)}>${c.h}</h1><p class="p in" ${D(.25)}>${c.p}</p><div class="ctas in" ${D(.4)}><a class="btn" href="/${lang === 'hu' ? '?lang=hu' : ''}#audit">${c.cta} →</a><a class="btn gh" href="/${lang === 'hu' ? '?lang=hu' : ''}">${c.back}</a></div></div>`; }
+  $('stage').innerHTML = `<section class="slide">${h}</section>`; $('stage').scrollTop = 0;
+  if (cur.k === 'sol') runDemo(cur.t, X.demo[cur.t]);
+  if (cur.k === 'geo') { const g = X.geo, q = g.q; [...q].forEach((c, k) => at(400 + k * 36, () => { const e = $('qq'); if (e) e.textContent = q.slice(0, k + 1); })); const t0 = 600 + q.length * 36, plain = g.a.replace(/<[^>]+>/g, ''); let sh = 0; const st = () => { sh = Math.min(plain.length, sh + 3); let o = '', n = 0, tag = false; for (const ch of g.a) { if (ch === '<') tag = true; if (tag) { o += ch; if (ch === '>') tag = false; continue; } if (n < sh) o += ch; n++; } const e = $('aa'); if (!e) return; e.innerHTML = o; if (sh < plain.length) at(28, st); }; at(t0, st); document.querySelectorAll('#eng span').forEach((e, k) => at(t0 + 2000 + k * 300, () => e.classList.add('on'))); }
+  if (cur.k === 's4') X.s4.chat.forEach((m, k) => at(500 + k * 1100, () => on('aq' + k)));
+  const n = S.length; $('bar').style.width = ((i + 1) / n * 100) + '%'; $('cnt').textContent = `${i + 1} ${X.of} ${n}`;
+  $('prev').disabled = i === 0; const last = i === n - 1, isQ = cur.k === 'q';
+  $('next').textContent = X.next; $('next').disabled = last || (isQ && ans[cur.t] === undefined);
+  $('next').style.visibility = last ? 'hidden' : 'visible';
+}
+function go(d) { const n = seq().length; const ni = Math.max(0, Math.min(n - 1, i + d)); if (ni === i) return; const cur = seq()[i]; if (d > 0 && cur.k === 'q' && ans[cur.t] === undefined) return; i = ni; render(); }
+
+document.addEventListener('click', e => {
+  const lb = e.target.closest('[data-lang]'); if (lb) { lang = lb.dataset.lang; try { localStorage.setItem('qais-lang', lang); } catch (x) {} render(); return; }
+  const a = e.target.closest('[data-ans]'); if (a) { const cur = seq()[i]; ans[cur.t] = a.dataset.ans === '1'; try { sessionStorage.setItem('qais-pres-ans', JSON.stringify(ans)); } catch (x) {} i++; render(); return; }
+  if (e.target.closest('[data-go]')) { go(1); return; }
+  if (e.target.closest('#next')) go(1); else if (e.target.closest('#prev')) go(-1);
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || (e.key === ' ' && e.target === document.body)) { e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+  const cur = seq()[i]; if (cur.k === 'q' && (e.key === 'y' || e.key === 'i' || e.key === 'n')) { ans[cur.t] = e.key !== 'n'; i++; render(); }
+});
+let tx = null; document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => { if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 60) go(dx < 0 ? 1 : -1); tx = null; }, { passive: true });
+render();
+</script>
+</body>
+</html>
