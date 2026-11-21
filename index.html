@@ -68,6 +68,12 @@ section { padding: 140px 0 }
 .seg button { border: 0; background: none; padding: 7px 11px; font: 700 11px var(--mono); color: var(--muted) }
 .seg button[aria-pressed="true"] { background: var(--cyan); color: var(--bg) }
 .nav .btn { padding: 12px 20px; font-size: 14px }
+.biz { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px }
+.biz > span { font: 600 12px var(--f); letter-spacing: .2em; text-transform: uppercase; color: var(--cyan) }
+.biz .chips { display: flex; flex-wrap: wrap; gap: 6px }
+.biz button { border: 1px solid var(--line2); background: rgb(255 255 255 / .02); color: var(--soft); border-radius: 999px; padding: 7px 14px; font: 600 14px var(--f); transition: all .2s }
+.biz button:hover { border-color: var(--muted); color: #fff }
+.biz button[aria-pressed="true"] { background: var(--cyan); border-color: var(--cyan); color: var(--bg) }
 
 /* hero story (scroll-told; the film goes here later) */
 .story { height: 380vh; padding: 0; position: relative; background: radial-gradient(900px 600px at 80% 30%, rgb(56 189 248 / .10), transparent 70%) }
@@ -190,6 +196,9 @@ section { padding: 140px 0 }
 
 /* final */
 .final { background: radial-gradient(800px 420px at 50% 100%, rgb(56 189 248 / .14), transparent 70%) }
+.final-cta { display: grid; justify-items: center; gap: 18px; text-align: center }
+.final-cta .btn { padding: 20px 34px; font-size: 17px }
+.final-cta p { margin: 0; color: var(--faint); font-size: 14.5px } .final-cta a:not(.btn) { color: var(--cyan) }
 form { max-width: 640px; margin: 0 auto; border: 1px solid var(--line); border-radius: 28px; background: var(--surface); padding: 34px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px }
 form label { display: grid; gap: 7px; font-size: 14px; color: var(--soft) }
 form label.full { grid-column: 1 / -1 }
@@ -239,7 +248,9 @@ footer .links a { font-size: 14px; color: var(--muted) } footer .links a:hover {
   .nav .wrap { height: 64px } .brand img { height: 26px }
   .story .wrap { padding-top: 76px; gap: 18px }
   .story .sub-hide { display: none }
-  .story .cta .btn { padding: 15px 20px; font-size: 14px }
+  .story .cta .btn { padding: 15px 20px; font-size: 14px } .story .cta .ghost { display: none }
+  .story h1 { font-size: clamp(32px, 9vw, 42px); margin-top: 16px !important }
+  .biz { gap: 8px } .biz > span { display: none } .biz button { padding: 6px 11px; font-size: 13px }
   .beats { margin-top: 14px } .beat-line { font-size: 17px; min-height: 2.6em }
   .phone { justify-self: center; transform-origin: top center }
   .bento { grid-template-columns: 1fr } .bento .card, .bento .card.w { grid-column: auto; padding: 24px }
@@ -271,7 +282,7 @@ footer .links a { font-size: 14px; color: var(--muted) } footer .links a:hover {
       <button data-lang="en" aria-pressed="true">EN</button>
       <button data-lang="hu" aria-pressed="false">HU</button>
     </div>
-    <a href="#audit" class="btn" data-t="cta"></a>
+    <a href="/presentation/" data-pres class="btn" data-t="cta"></a>
   </div>
 </header>
 
@@ -281,12 +292,12 @@ footer .links a { font-size: 14px; color: var(--muted) } footer .links a:hover {
       <span class="grain" aria-hidden="true"></span>
       <div class="wrap">
         <div>
-          <span class="eyebrow" data-t="heroEy"></span>
-          <h1 style="margin-top:20px" data-t="heroH" data-html></h1>
+          <div class="biz" role="group" aria-labelledby="bizL"><span id="bizL" data-t="bizL"></span><div class="chips" id="bizChips"></div></div>
+          <h1 style="margin-top:22px" data-t="heroH" data-html></h1>
           <p class="lead sub-hide" data-t="heroP"></p>
           <div class="cta">
-            <a href="#audit" class="btn"><span data-t="cta2"></span><span class="arr">→</span></a>
-            <a href="/presentation/" class="btn ghost" id="presLink" data-t="ctaSee"></a>
+            <a href="/presentation/" data-pres class="btn"><span data-t="cta2"></span><span class="arr">→</span></a>
+            <a href="#products" class="btn ghost" data-t="ctaSee"></a>
           </div>
           <div class="beats" aria-live="polite">
             <div class="ticks" id="ticks"><i></i><i></i><i></i><i></i></div>
@@ -297,7 +308,7 @@ footer .links a { font-size: 14px; color: var(--muted) } footer .links a:hover {
           <div class="screen" id="screen">
             <span class="notch"></span>
             <div class="layer lock on" id="L0">
-              <div class="clock">23:41</div>
+              <div class="clock" data-t="c0"></div>
               <div class="date" data-t="pDate"></div>
               <div class="notif"><span class="ap" id="igIcon"></span><div><b>Instagram · Anna</b><span data-t="pMsg"></span></div></div>
             </div>
@@ -309,7 +320,7 @@ footer .links a { font-size: 14px; color: var(--muted) } footer .links a:hover {
               <div class="booked" id="bk" data-t="pBooked"></div>
             </div>
             <div class="layer lock" id="L3">
-              <div class="clock">08:12</div>
+              <div class="clock" data-t="c3"></div>
               <div class="date" data-t="pDate2"></div>
               <div class="rev"><div class="g" id="gHead"></div><div class="st">★★★★★</div><div data-t="pRev"></div><div class="rp"><b data-t="pOwner"></b> · <span data-t="pThanks"></span></div></div>
             </div>
@@ -398,16 +409,7 @@ footer .links a { font-size: 14px; color: var(--muted) } footer .links a:hover {
         <h2 data-t="aH" data-html></h2>
         <p class="lead" data-t="aP"></p>
       </div>
-      <form id="auditForm" class="rv" novalidate>
-        <label><span data-t="fName"></span><input name="fullName" required autocomplete="name"></label>
-        <label><span data-t="fEmail"></span><input name="workEmail" type="email" required autocomplete="email"></label>
-        <label class="full"><span data-t="fBiz"></span><input name="businessName" required autocomplete="organization"></label>
-        <label class="full"><span data-t="fGoal"></span><textarea name="mainGoal" rows="2" required data-ph="fGoalPh"></textarea></label>
-        <label class="consent"><input type="checkbox" name="consent" required><span data-t="fConsent" data-html></span></label>
-        <div class="ferr" id="ferr" role="alert"></div>
-        <button class="btn" type="submit" data-t="fSend"></button>
-        <div class="note" data-t="fNote"></div>
-      </form>
+      <div class="final-cta rv"><a href="/presentation/" data-pres class="btn"><span data-t="aBtn"></span><span class="arr">→</span></a><p data-t="aNote" data-html></p></div>
     </div>
   </section>
 </main>
@@ -434,7 +436,7 @@ const svg = (n, cls = 'ic') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hid
 
 const T = {
   en: {
-    nP: 'Products', nC: 'Clients', nH: 'How it works', nF: 'FAQ', cta: 'Free audit', cta2: 'Get your free audit', ctaSee: 'Watch the presentation', scroll: 'Scroll',
+    nP: 'Products', nC: 'Clients', nH: 'How it works', nF: 'FAQ', cta: 'Watch the presentation', cta2: 'Watch the presentation', ctaSee: 'See how it works', scroll: 'Scroll', bizL: 'I run a', c0: '23:41', c3: '08:12',
     heroEy: 'AI for gyms, salons and cafés', heroH: 'Your business never misses a customer <em>again.</em>',
     heroP: 'AI that answers your messages and calls, books customers and collects Google reviews. Day and night.',
     beats: [['23:41', 'A new message comes in.'], ['23:41', 'Answered in 6 seconds.'], ['23:42', 'Booked. Nobody had to wake up.'], ['08:12', '5★ review by morning.']],
@@ -451,7 +453,7 @@ const T = {
     fP: 'Years in hospitality taught me that businesses don’t lose customers to competitors. They lose them to slow replies. So I build the AI that never replies late.',
     creds: ['Founded Pont Club, Hungary’s #1 small club in 2017', 'Budapest hospitality', 'Hungary + Thailand'],
     qEy: 'FAQ', qH: 'Good questions, <em>straight answers.</em>',
-    aEy: 'Free audit', aH: 'See where you’re <em>losing customers.</em>', aP: 'Two minutes to ask. We look at your messages, calls and reviews, and show you where we’d start.',
+    aEy: 'The presentation', aH: 'See it for your business, <em>in 3 minutes.</em>', aP: 'An interactive presentation with live demos, the same kind we make for our clients. Answer a few yes/no questions and get a plan built from your answers.', aBtn: 'Watch the presentation', aNote: 'Free, no obligation. Prefer email? <a href="mailto:quickaisetup@gmail.com">quickaisetup@gmail.com</a>',
     fName: 'Name', fEmail: 'Email', fBiz: 'Business name', fGoal: 'What would you like to fix?', fGoalPh: 'E.g. we miss calls at peak times…',
     fConsent: 'I agree to the <a href="/privacy-policy/" target="_blank">Privacy Policy</a> and <a href="/terms/" target="_blank">Terms</a>, and to being contacted about my request.',
     fSend: 'Get my free audit', fSending: 'Sending…', fNote: 'Free and no obligation. We reply within 1–2 working days.',
@@ -460,7 +462,7 @@ const T = {
     lSvc: 'All services', lPriv: 'Privacy', lTerms: 'Terms',
   },
   hu: {
-    nP: 'Termékek', nC: 'Ügyfelek', nH: 'Így működik', nF: 'GYIK', cta: 'Ingyenes felmérés', cta2: 'Kérem az ingyenes felmérést', ctaSee: 'Nézd meg a bemutatót', scroll: 'Görgess',
+    nP: 'Termékek', nC: 'Ügyfelek', nH: 'Így működik', nF: 'GYIK', cta: 'Bemutató', cta2: 'Nézd meg a bemutatót', ctaSee: 'Így működik', scroll: 'Görgess', bizL: 'Vállalkozásom', c0: '23:41', c3: '08:12',
     heroEy: 'AI edzőtermeknek, szalonoknak, kávézóknak', heroH: 'A vállalkozásod soha többé nem veszít el <em>vendéget.</em>',
     heroP: 'AI, ami válaszol az üzenetekre és hívásokra, foglal, és Google-értékelést gyűjt. Éjjel-nappal.',
     beats: [['23:41', 'Új üzenet érkezik.'], ['23:41', '6 másodperc alatt megválaszolva.'], ['23:42', 'Lefoglalva. Senkinek nem kellett felkelnie.'], ['08:12', 'Reggelre 5★ értékelés.']],
@@ -477,13 +479,54 @@ const T = {
     fP: 'A vendéglátásban megtanultam: a vállalkozások nem a konkurencia miatt veszítenek vendéget, hanem a lassú válaszok miatt. Ezért építek olyan AI-t, ami sosem késik.',
     creds: ['A Pont Club alapítója, 2017-ben Magyarország legjobb kisklubja', 'Budapesti vendéglátás', 'Magyarország + Thaiföld'],
     qEy: 'GYIK', qH: 'Jó kérdések, <em>egyenes válaszok.</em>',
-    aEy: 'Ingyenes felmérés', aH: 'Nézd meg, hol <em>veszítesz vendéget.</em>', aP: 'Két perc kérni. Átnézzük az üzeneteket, hívásokat és értékeléseket, és megmutatjuk, hol kezdenénk.',
+    aEy: 'A bemutató', aH: 'Nézd meg a saját vállalkozásodra, <em>3 perc alatt.</em>', aP: 'Interaktív bemutató élő demókkal, ugyanolyan, mint amit az ügyfeleinknek készítünk. Válaszolj néhány igen/nem kérdésre, és a válaszaidból kész tervet kapsz.', aBtn: 'Nézd meg a bemutatót', aNote: 'Ingyenes, kötelezettség nélkül. Inkább e-mail? <a href="mailto:quickaisetup@gmail.com">quickaisetup@gmail.com</a>',
     fName: 'Név', fEmail: 'E-mail', fBiz: 'Vállalkozás neve', fGoal: 'Min szeretnél javítani?', fGoalPh: 'Pl. csúcsidőben nem vesszük fel a telefont…',
     fConsent: 'Elfogadom az <a href="/adatkezelesi-tajekoztato/" target="_blank">adatkezelési tájékoztatót</a> és a <a href="/terms/" target="_blank">felhasználási feltételeket</a>, és hozzájárulok, hogy a kérésemmel kapcsolatban felvegyétek velem a kapcsolatot.',
     fSend: 'Kérem az ingyenes felmérést', fSending: 'Küldés…', fNote: 'Ingyenes, kötelezettség nélkül. 1–2 munkanapon belül válaszolunk.',
     fErrReq: 'Add meg a neved, e-mailed, a vállalkozást és hogy min javítanál, és pipáld be a hozzájárulást.', fErrMail: 'Ellenőrizd az e-mail-címet.', fErr: 'Valami hiba történt. Próbáld újra.',
     doneH: 'Megkaptuk, köszönjük!', doneP: '1–2 munkanapon belül jelentkezünk.',
     lSvc: 'Szolgáltatások', lPriv: 'Adatkezelés', lTerms: 'ÁSZF',
+  },
+};
+
+// per-business hero stories: the switcher swaps these into T
+const BIZ_ORDER = ['bar', 'restaurant', 'salon', 'gym', 'hotel', 'other'];
+const BIZ = {
+  en: {
+    bar: { chip: 'Bar', heroH: 'Your bar never misses a guest <em>again.</em>', c0: '23:41', c3: '11:05', pDate: 'Friday · peak hour', pMsg: 'Hi! Table for 8 tonight around 22:00? 🍸', pAi: 'AI · 5 sec', pRep: 'Hi! 22:00 for 8 is free by the bar. Shall I book it under your name?', pOk: 'Yes please, Dani 🙌', pBooked: '✓ Booked · Fri 22:00 · 8 people', pDate2: 'Saturday', pRev: '“Best cocktails in town, amazing vibe!”', pThanks: 'Thank you Dani, see you at the bar! 🍸',
+      beats: [['23:41', 'A table request comes in, mid-rush.'], ['23:41', 'Answered in 5 seconds.'], ['23:42', 'Booked. Deposit link sent.'], ['11:05', '5★ review the next morning.']],
+      moments: [['21:30', 'The call nobody picked up.', 'Friday rush, loud bar. The group books somewhere else.'], ['01:10', 'The message answered tomorrow.', 'By noon they’ve booked another place for the birthday.'], ['★', 'The great night nobody reviewed.', 'They loved it. Nobody asked. Your Google rating stays still.']] },
+    restaurant: { chip: 'Restaurant', heroH: 'Your restaurant never misses a booking <em>again.</em>', c0: '22:47', c3: '21:15', pDate: 'Thursday · kitchen closed', pMsg: 'Hi! Do you have a table for 4 on Saturday at 19:30?', pAi: 'AI · 6 sec', pRep: 'Hi! Saturday 19:30 for 4 is free on the terrace. Shall I book it?', pOk: 'Perfect, thank you! 🙏', pBooked: '✓ Booked · Sat 19:30 · 4 people', pDate2: 'Saturday', pRev: '“Fantastic food and lovely service!”', pThanks: 'Thank you, we hope to see you again soon!',
+      beats: [['22:47', 'A booking request after closing.'], ['22:47', 'Answered in 6 seconds.'], ['22:48', 'Booked. Reminder scheduled.'], ['21:15', '5★ review after dinner.']],
+      moments: [['19:45', 'The call during dinner service.', 'Every hand is busy. The caller books elsewhere.'], ['23:00', 'The group inquiry nobody answered.', 'A company dinner for 20, gone by morning.'], ['20:00', 'The table that never showed up.', 'No reminder, no deposit, an empty table on a Saturday.']] },
+    salon: { chip: 'Salon', heroH: 'Your salon never misses a client <em>again.</em>', c0: '22:14', c3: '17:40', pDate: 'Wednesday · closed', pMsg: 'Hi! Any free slot for a massage on Saturday?', pAi: 'AI · 6 sec', pRep: 'Hi! Saturday 11:00 and 15:30 are free. Which one suits you?', pOk: '15:30 please 🙂', pBooked: '✓ Booked · Sat 15:30', pDate2: 'Saturday', pRev: '“So relaxing, the best massage I’ve ever had!”', pThanks: 'Thank you, see you next time! 🌿',
+      beats: [['22:14', 'A booking request after closing.'], ['22:14', 'Answered in 6 seconds.'], ['22:15', 'Booked. Reminder scheduled.'], ['17:40', '5★ review after the treatment.']],
+      moments: [['14:20', 'The call during a treatment.', 'Hands busy, phone ringing. The client books elsewhere.'], ['12:00', 'The empty slot nobody filled.', 'A cancellation at noon, an empty hour at three.'], ['★', 'The happy client who never reviewed.', 'They loved it, and nobody asked.']] },
+    gym: { chip: 'Gym', heroH: 'Your gym never misses a new member <em>again.</em>', c0: '23:41', c3: '08:12', pDate: 'Tuesday · closed since 22:00', pMsg: 'Hi! Any beginner class tomorrow? 🥊', pAi: 'AI · 6 sec', pRep: 'Hi Anna! Tomorrow at 7:00 or 18:00. Shall I book a free trial?', pOk: '18:00 please! 🙌', pBooked: '✓ Trial booked · Wed 18:00', pDate2: 'Wednesday', pRev: '“Amazing first class, friendly coaches!”', pThanks: 'Thanks Anna, see you on the mat! 💪',
+      beats: [['23:41', 'A trial request after closing.'], ['23:41', 'Answered in 6 seconds.'], ['23:42', 'Free trial booked.'], ['08:12', '5★ review after the first class.']],
+      moments: [['18:04', 'The call at peak hour.', 'Busy front desk. The caller joins another gym.'], ['22:30', 'The trial request answered tomorrow.', 'By then they’ve signed up somewhere else.'], ['↺', 'The member who quietly stopped coming.', 'Nobody noticed, and nobody asked them back.']] },
+    hotel: { chip: 'Hotel', heroH: 'Your hotel never misses a guest request <em>again.</em>', c0: '02:10', c3: '10:30', pDate: 'Sunday · night shift', pMsg: 'Hi! Can we get a late check-out and a taxi to the airport at 14:00?', pAi: 'AI · 5 sec', pRep: 'Of course! Late check-out until 13:00 is confirmed, and a taxi is booked for 14:00.', pOk: 'Amazing, thank you! 🙏', pBooked: '✓ Late check-out + taxi booked', pDate2: 'Sunday', pRev: '“Super helpful team, they sorted everything instantly!”', pThanks: 'Thank you, safe travels and see you again!',
+      beats: [['02:10', 'A guest request in the middle of the night.'], ['02:10', 'Answered in 5 seconds.'], ['02:11', 'Sorted. An extra service sold.'], ['10:30', '5★ review at check-out.']],
+      moments: [['02:00', 'The request nobody was awake for.', 'The guest waits until morning, and tells Google about it.'], ['16:00', 'The booking inquiry answered tomorrow.', 'They booked the hotel that replied first.'], ['€', 'The extras nobody offered.', 'Transfers, spa, late check-out: revenue left on the table.']] },
+    other: { chip: 'Other', heroH: 'Your business never misses a customer <em>again.</em>' },
+  },
+  hu: {
+    bar: { chip: 'Bár', heroH: 'A bárod soha többé nem veszít el <em>vendéget.</em>', c0: '23:41', c3: '11:05', pDate: 'Péntek · csúcsidő', pMsg: 'Szia! Ma este 22:00 körül lenne asztal 8 főre? 🍸', pAi: 'AI · 5 mp', pRep: 'Szia! 22:00-ra 8 főre a pultnál van hely. Lefoglaljam a neveden?', pOk: 'Igen, Dani 🙌', pBooked: '✓ Foglalva · Péntek 22:00 · 8 fő', pDate2: 'Szombat', pRev: '„A város legjobb koktéljai, szuper hangulat!”', pThanks: 'Köszönjük, Dani, várunk vissza a pultnál! 🍸',
+      beats: [['23:41', 'Asztalfoglalás érkezik, a csúcs közepén.'], ['23:41', '5 másodperc alatt megválaszolva.'], ['23:42', 'Lefoglalva. Előleg-link kiküldve.'], ['11:05', 'Másnap reggel 5★ értékelés.']],
+      moments: [['21:30', 'A hívás, amit senki nem vett fel.', 'Péntek esti csúcs, hangos bár. A társaság máshol foglal.'], ['01:10', 'Az üzenet, amire másnap jött válasz.', 'Délre már máshol foglaltak a szülinapra.'], ['★', 'A jó este, amit senki nem értékelt.', 'Imádták. Senki nem kérte. A Google-értékelés nem mozdul.']] },
+    restaurant: { chip: 'Étterem', heroH: 'Az éttermed soha többé nem veszít el <em>foglalást.</em>', c0: '22:47', c3: '21:15', pDate: 'Csütörtök · konyha zárva', pMsg: 'Szia! Van asztal 4 főre szombaton 19:30-ra?', pAi: 'AI · 6 mp', pRep: 'Szia! Szombat 19:30-ra 4 főre a teraszon van hely. Lefoglaljam?', pOk: 'Tökéletes, köszönöm! 🙏', pBooked: '✓ Foglalva · Szombat 19:30 · 4 fő', pDate2: 'Szombat', pRev: '„Fantasztikus ételek, kedves kiszolgálás!”', pThanks: 'Köszönjük, reméljük, hamarosan újra látunk!',
+      beats: [['22:47', 'Foglalási kérés zárás után.'], ['22:47', '6 másodperc alatt megválaszolva.'], ['22:48', 'Lefoglalva. Emlékeztető beállítva.'], ['21:15', 'Vacsora után 5★ értékelés.']],
+      moments: [['19:45', 'A hívás vacsoraidőben.', 'Mindenki kezében tálca. A hívó máshol foglal.'], ['23:00', 'A csoportos megkeresés, amire senki nem válaszolt.', 'Egy 20 fős céges vacsora, reggelre elveszett.'], ['20:00', 'Az asztal, amihez senki nem jött el.', 'Nincs emlékeztető, nincs előleg, üres asztal szombat este.']] },
+    salon: { chip: 'Szalon', heroH: 'A szalonod soha többé nem veszít el <em>vendéget.</em>', c0: '22:14', c3: '17:40', pDate: 'Szerda · zárva', pMsg: 'Szia! Van szabad időpont masszázsra szombaton?', pAi: 'AI · 6 mp', pRep: 'Szia! Szombaton 11:00 és 15:30 szabad. Melyik legyen?', pOk: 'A 15:30 jó 🙂', pBooked: '✓ Foglalva · Szombat 15:30', pDate2: 'Szombat', pRev: '„Annyira pihentető, a legjobb masszázs, amit valaha kaptam!”', pThanks: 'Köszönjük, várunk legközelebb is! 🌿',
+      beats: [['22:14', 'Foglalási kérés zárás után.'], ['22:14', '6 másodperc alatt megválaszolva.'], ['22:15', 'Lefoglalva. Emlékeztető beállítva.'], ['17:40', 'A kezelés után 5★ értékelés.']],
+      moments: [['14:20', 'A hívás kezelés közben.', 'Foglalt kéz, csörgő telefon. A vendég máshol foglal.'], ['12:00', 'Az üres időpont, amit senki nem töltött fel.', 'Déli lemondás, üres óra háromkor.'], ['★', 'Az elégedett vendég, aki nem értékelt.', 'Imádta, de senki nem kérte meg.']] },
+    gym: { chip: 'Edzőterem', heroH: 'Az edzőtermed soha többé nem veszít el <em>új tagot.</em>', c0: '23:41', c3: '08:12', pDate: 'Kedd · 22:00 óta zárva', pMsg: 'Szia! Van holnap kezdő óra? 🥊', pAi: 'AI · 6 mp', pRep: 'Szia Anna! Holnap 7:00-kor vagy 18:00-kor. Foglaljak egy ingyenes próbaedzést?', pOk: 'A 18:00 jó! 🙌', pBooked: '✓ Próbaedzés · Szerda 18:00', pDate2: 'Szerda', pRev: '„Szuper első edzés, kedves edzők!”', pThanks: 'Köszi, Anna, találkozunk a szőnyegen! 💪',
+      beats: [['23:41', 'Próbaedzés-kérés zárás után.'], ['23:41', '6 másodperc alatt megválaszolva.'], ['23:42', 'Ingyenes próbaedzés lefoglalva.'], ['08:12', 'Az első edzés után 5★ értékelés.']],
+      moments: [['18:04', 'A hívás csúcsidőben.', 'Tele a recepció. A hívó másik terembe iratkozik.'], ['22:30', 'A próbaedzés-kérés, amire másnap jött válasz.', 'Addigra már máshol iratkozott fel.'], ['↺', 'A tag, aki csendben elmaradt.', 'Senki nem vette észre, és senki nem hívta vissza.']] },
+    hotel: { chip: 'Szálloda', heroH: 'A szállodád soha többé nem hagy válasz nélkül <em>vendégkérést.</em>', c0: '02:10', c3: '10:30', pDate: 'Vasárnap · éjszakai műszak', pMsg: 'Szia! Kaphatunk késői kijelentkezést és egy taxit a reptérre 14:00-ra?', pAi: 'AI · 5 mp', pRep: 'Természetesen! A késői kijelentkezés 13:00-ig rendben, a taxi 14:00-ra lefoglalva.', pOk: 'Szuper, köszönjük! 🙏', pBooked: '✓ Késői kijelentkezés + taxi lefoglalva', pDate2: 'Vasárnap', pRev: '„Nagyon segítőkész csapat, mindent azonnal elintéztek!”', pThanks: 'Köszönjük, jó utat és várunk vissza!',
+      beats: [['02:10', 'Vendégkérés az éjszaka közepén.'], ['02:10', '5 másodperc alatt megválaszolva.'], ['02:11', 'Elintézve. Egy extra szolgáltatás eladva.'], ['10:30', 'Kijelentkezéskor 5★ értékelés.']],
+      moments: [['02:00', 'A kérés, amire senki nem volt ébren.', 'A vendég reggelig vár, aztán a Google-nek meséli el.'], ['16:00', 'A foglalási kérdés, amire másnap jött válasz.', 'Azt a szállodát foglalták, amelyik elsőként válaszolt.'], ['€', 'Az extrák, amiket senki nem ajánlott.', 'Transzfer, spa, késői kijelentkezés: elveszett bevétel.']] },
+    other: { chip: 'Egyéb', heroH: 'A vállalkozásod soha többé nem veszít el <em>vendéget.</em>' },
   },
 };
 
@@ -542,7 +585,10 @@ const FAQ = {
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
-let lang = 'en';
+let lang = 'en', btype = 'bar';
+try { const qt = new URLSearchParams(location.search).get('type'); btype = qt || localStorage.getItem('qais-type') || 'bar'; } catch (e) {}
+if (!['bar', 'restaurant', 'salon', 'gym', 'hotel', 'other'].includes(btype)) btype = 'bar';
+const TX = () => Object.assign({}, T[lang], BIZ[lang][btype]);
 try { const q = new URLSearchParams(location.search).get('lang'); lang = q || localStorage.getItem('qais-lang') || ((navigator.language || '').startsWith('hu') ? 'hu' : 'en'); } catch (e) {}
 if (!T[lang]) lang = 'en';
 
@@ -550,7 +596,7 @@ if (!T[lang]) lang = 'en';
 let stage = -1;
 function setStage(s) {
   if (s === stage) return; stage = s;
-  const b = T[lang].beats[s];
+  const b = TX().beats[s];
   $('beat').innerHTML = `<span class="t">${b[0]}</span>${esc(b[1])}`;
   $('L0').classList.toggle('on', s === 0);
   $('L1').classList.toggle('on', s === 1 || s === 2);
@@ -576,7 +622,7 @@ function fitPhone() {
   const ph = document.querySelector('.phone'); ph.style.transform = ''; ph.style.marginBottom = '';
   if (innerWidth > 1020) return;
   const top = ph.getBoundingClientRect().top - $('story').querySelector('.stick').getBoundingClientRect().top;
-  const k = Math.min(1, Math.max(.45, (innerHeight - top - 20) / ph.offsetHeight));
+  const k = Math.min(1, Math.max(.36, (innerHeight - top - 16) / ph.offsetHeight));
   ph.style.transform = `scale(${k.toFixed(3)})`; ph.style.marginBottom = `${-(1 - k) * ph.offsetHeight}px`;
 }
 addEventListener('resize', () => { fitPhone(); onScroll(); });
@@ -584,17 +630,19 @@ addEventListener('load', fitPhone);
 if (document.fonts) document.fonts.ready.then(fitPhone);
 
 function render() {
-  const t = T[lang], hu = lang === 'hu';
+  const t = TX(), hu = lang === 'hu';
   document.documentElement.lang = lang;
   document.title = hu ? 'Quick AI Setup | Soha többé elveszett vendég' : 'Quick AI Setup | Never miss a customer again';
   document.querySelectorAll('[data-t]').forEach(el => { const v = t[el.dataset.t]; if (v == null) return; if (el.hasAttribute('data-html')) el.innerHTML = v; else el.textContent = v; });
   document.querySelectorAll('[data-ph]').forEach(el => el.placeholder = t[el.dataset.ph]);
   document.querySelectorAll('[data-lang]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === lang));
   $('lnkPriv').href = hu ? '/adatkezelesi-tajekoztato/' : '/privacy-policy/';
-  $('presLink').href = '/presentation/' + (hu ? '?lang=hu' : '');
   ['svcLink', 'svcLink2'].forEach(id => $(id).href = '/services/' + (hu ? '?lang=hu' : ''));
   $('igIcon').innerHTML = svg('instagram', '');
   $('gHead').innerHTML = svg('google', '') + 'Google · Anna K.';
+  $('bizChips').innerHTML = BIZ_ORDER.map(k => `<button data-biz="${k}" aria-pressed="${k === btype}">${esc(BIZ[lang][k].chip)}</button>`).join('');
+  const pq = new URLSearchParams(); if (hu) pq.set('lang', 'hu'); pq.set('type', btype);
+  document.querySelectorAll('[data-pres]').forEach(a => a.href = '/presentation/?' + pq);
   $('names').innerHTML = NAMES.map(n => `<span>${esc(n)}</span>`).join('');
   $('moments').innerHTML = t.moments.map((m, i) => `<div class="mo rv" style="--d:${i * .12}s"><span class="t">${m[0]}</span><h3>${esc(m[1])}</h3><p>${esc(m[2])}</p></div>`).join('');
   $('bento').innerHTML = PRODUCTS[lang].map((p, i) => `<article class="card ${p[0]} rv" style="--d:${(i % 3) * .1}s"><div class="chs">${p[1].map(n => svg(n)).join('')}</div><h3>${esc(p[2])}</h3><p>${esc(p[3])}</p><div class="v" aria-hidden="true">${VIS[p[4]](hu)}</div></article>`).join('');
@@ -603,7 +651,6 @@ function render() {
   $('creds').innerHTML = t.creds.map(x => `<span>${esc(x)}</span>`).join('');
   $('faqList').innerHTML = FAQ[lang].map((f, i) => `<details${i === 0 ? ' open' : ''}><summary>${esc(f[0])}</summary><p>${f[1]}</p></details>`).join('');
   stage = -1; onScroll(); fitPhone();
-  if (document.querySelector('.done')) showDone();
   observe();
 }
 
@@ -615,27 +662,13 @@ function observe() {
 }
 
 document.addEventListener('click', e => {
+  const bb = e.target.closest('[data-biz]');
+  if (bb) { btype = bb.dataset.biz; try { localStorage.setItem('qais-type', btype); } catch (x) {} render(); return; }
   const lb = e.target.closest('[data-lang]');
   if (!lb) return;
   lang = lb.dataset.lang;
   try { localStorage.setItem('qais-lang', lang); const u = new URL(location.href); if (u.searchParams.has('lang')) { u.searchParams.set('lang', lang); history.replaceState(null, '', u); } } catch (err) {}
   render();
-});
-
-/* ---------- audit form → same Apps Script endpoint and payload keys as before ---------- */
-const GAS = 'https://script.google.com/macros/s/AKfycbzFvn6jZhTvPh9hrHAUTh_zI3_s-MeTufmi2P6fG5s8bvjqVyZ4coC0QrFC08_22XDEwA/exec';
-const form = $('auditForm');
-function showDone() { const t = T[lang]; form.innerHTML = `<div class="done"><i>✓</i><h4>${esc(t.doneH)}</h4><p>${esc(t.doneP)}</p></div>`; }
-form.addEventListener('submit', async e => {
-  e.preventDefault();
-  const t = T[lang], fd = new FormData(form), err = $('ferr'), btn = form.querySelector('button[type=submit]');
-  const v = k => String(fd.get(k) || '').trim();
-  if (!v('fullName') || !v('workEmail') || !v('businessName') || !v('mainGoal') || !form.consent.checked) { err.textContent = t.fErrReq; return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('workEmail'))) { err.textContent = t.fErrMail; return; }
-  err.textContent = ''; btn.disabled = true; btn.textContent = t.fSending;
-  const payload = { fullName: v('fullName'), workEmail: v('workEmail'), businessName: v('businessName'), website: '', mainGoal: v('mainGoal'), consentGiven: true, consentTimestamp: new Date().toISOString(), sourcePage: location.href, userAgent: navigator.userAgent };
-  try { await fetch(GAS, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); showDone(); }
-  catch (x) { err.textContent = t.fErr; btn.disabled = false; btn.textContent = t.fSend; }
 });
 
 $('yr').textContent = new Date().getFullYear();
